@@ -1,46 +1,44 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulado Jurídico</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body class="bg-gray-100 text-gray-800 p-6 font-sans">
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center p-4">
 
-  <div class="max-w-3xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4 text-center">📚 Simulado Jurídico</h1>
+  <div class="w-full max-w-3xl">
 
-    <!-- Importação de arquivo -->
-    <div class="mb-6">
-      <label class="block font-semibold mb-2">Importar arquivo .txt</label>
-      <input
-        type="file"
-        accept=".txt"
-        id="file-input"
-        class="block w-full p-2 border rounded bg-white"
-      />
+    <h1 class="text-3xl font-bold text-center mb-6">Simulado Jurídico</h1>
+
+    <!-- Seletor de matérias -->
+    <div class="mb-4">
+      <label for="materias" class="block text-sm font-medium mb-1">Selecione o simulado:</label>
+      <select id="materias" class="w-full p-2 border rounded bg-white text-gray-700"></select>
     </div>
+
+    <button id="start-btn" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-6 w-full">
+      Iniciar Simulado
+    </button>
 
     <!-- Área do quiz -->
-    <div id="quiz-container" class="space-y-6"></div>
+    <div id="quiz-area" class="hidden space-y-4">
+      <div class="flex justify-between items-center mb-4">
+        <button id="prev-btn" class="px-3 py-2 bg-gray-300 rounded hover:bg-gray-400">Anterior</button>
+        <span class="text-sm">Questão <span id="current-question">1</span> de <span id="total-questions">0</span></span>
+        <button id="next-btn" class="px-3 py-2 bg-gray-300 rounded hover:bg-gray-400">Próxima</button>
+      </div>
 
-    <!-- Navegação -->
-    <div id="navigation" class="flex justify-between mt-8 hidden">
-      <button id="prev-btn" class="px-4 py-2 bg-gray-600 text-white rounded">⬅️ Anterior</button>
-      <span id="progress" class="self-center font-semibold"></span>
-      <button id="next-btn" class="px-4 py-2 bg-gray-600 text-white rounded">Próxima ➡️</button>
-    </div>
+      <div id="questions-area"></div>
 
-    <!-- Resultado e Exportação -->
-    <div id="result-area" class="mt-10 hidden">
-      <div class="bg-white p-4 shadow rounded mb-4" id="result-stats"></div>
-      <button id="export-pdf" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">📄 Exportar PDF</button>
+      <div class="flex justify-end space-x-2 mt-6">
+        <button id="export-pdf" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Exportar PDF</button>
+        <button id="print" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Imprimir</button>
+      </div>
     </div>
   </div>
 
-  <!-- Script JS virá nas próximas etapas -->
   <script src="script.js"></script>
 </body>
 </html>
