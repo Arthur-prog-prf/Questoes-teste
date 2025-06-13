@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulado Jurídico</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 p-6 font-sans">
+
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4 text-center">📚 Simulado Jurídico</h1>
+
+    <!-- Importação de arquivo -->
+    <div class="mb-6">
+      <label class="block font-semibold mb-2">Importar arquivo .txt</label>
+      <input
+        type="file"
+        accept=".txt"
+        id="file-input"
+        class="block w-full p-2 border rounded bg-white"
+      />
+    </div>
+
+    <!-- Área do quiz -->
+    <div id="quiz-container" class="space-y-6"></div>
+
+    <!-- Navegação -->
+    <div id="navigation" class="flex justify-between mt-8 hidden">
+      <button id="prev-btn" class="px-4 py-2 bg-gray-600 text-white rounded">⬅️ Anterior</button>
+      <span id="progress" class="self-center font-semibold"></span>
+      <button id="next-btn" class="px-4 py-2 bg-gray-600 text-white rounded">Próxima ➡️</button>
+    </div>
+
+    <!-- Resultado e Exportação -->
+    <div id="result-area" class="mt-10 hidden">
+      <div class="bg-white p-4 shadow rounded mb-4" id="result-stats"></div>
+      <button id="export-pdf" class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">📄 Exportar PDF</button>
+    </div>
+  </div>
+
+  <!-- Script JS virá nas próximas etapas -->
+  <script src="script.js"></script>
+</body>
+</html>
