@@ -6,10 +6,12 @@
     <link rel="stylesheet" href="style.css">
     <script defer src="quizData.js"></script>
     <script defer src="quizUI.js"></script>
-    <script defer src="fontControl.js"></script>
-    <script defer src="themeToggle.js"></script>
-    <script defer src="pdfExport.js"></script>
+    <script defer src="controls.js"></script>
+    <script defer src="quizLoader.js"></script>
+    <script defer src="materias.js"></script>
+    <script defer src="materiasData.js"></script>
     <script defer src="domElements.js"></script>
+    <script defer src="main.js"></script>
 </head>
 <body>
     <div class="quiz-container">
@@ -20,7 +22,7 @@
             <div class="control-group">
                 <select id="subjectSelect">
                     <option value="">Selecione a matéria</option>
-                    <!-- As opções de matéria são carregadas dinamicamente pelo JS -->
+                    <!-- Opções dinâmicas via JS -->
                 </select>
                 <button id="startBtn">Iniciar Simulado</button>
             </div>
