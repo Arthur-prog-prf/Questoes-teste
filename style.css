@@ -198,7 +198,7 @@ select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Transição da Fundamentação - 1.2s */
+/* Transição da Fundamentação - 0.9s */
 .fundamentacao {
     margin-top: 20px;
     padding: 0 15px;
@@ -208,7 +208,7 @@ select {
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 1.2s ease, opacity 1.2s ease, padding 1.2s ease;
+    transition: max-height 0.9s ease, opacity 0.9s ease, padding 0.9s ease;
     visibility: hidden;
 }
 
