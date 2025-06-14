@@ -1,6 +1,3 @@
-// domElements.js
-// Aqui declaramos as variáveis que representam os elementos HTML (DOM)
-
 const materiasSelect = document.getElementById('materias');
 const startBtn = document.getElementById('start-btn');
 const quizArea = document.getElementById('quiz-area');
@@ -13,3 +10,4 @@ const decreaseFontBtn = document.getElementById('decrease-font');
 const increaseFontBtn = document.getElementById('increase-font');
 const exportPdfBtn = document.getElementById('export-pdf');
 const themeToggleBtn = document.getElementById('theme-toggle');
+const goToQuestionInput = document.getElementById('go-to-question');
