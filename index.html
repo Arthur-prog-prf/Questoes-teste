@@ -7,21 +7,30 @@
 </head>
 <body>
     <div class="quiz-container">
-        <h1>Simulados Jurídicos</h1>
-        <p>Selecione uma matéria para começar</p>
+        <h1 id="quiz-title">Simulados Jurídicos</h1>
+        <p id="quiz-description">Selecione uma matéria para começar</p>
 
-        <button id="decreaseFontBtn">A-</button>
-        <button id="increaseFontBtn">A+</button>
-        <button id="resetFontBtn">Resetar Fonte</button>
+        <div class="controls">
+            <div class="control-group">
+                <button id="decreaseFontBtn">A-</button>
+                <button id="increaseFontBtn">A+</button>
+                <button id="resetFontBtn">Resetar Fonte</button>
+            </div>
 
-        <select id="subjectSelect">
-            <option value="">Selecione uma matéria</option>
-        </select>
+            <div class="control-group">
+                <select id="subjectSelect">
+                    <option value="">Selecione uma matéria</option>
+                </select>
+                <button id="startBtn">Iniciar Simulado</button>
+            </div>
 
-        <button id="startBtn">Iniciar Simulado</button>
-        <button id="exportPdfBtn">Exportar PDF</button>
-        <button id="printBtn">Imprimir</button>
-        <button id="theme-toggle">Modo Escuro</button>
+            <div class="control-group export-print-buttons">
+                <button id="exportPdfBtn">Exportar PDF</button>
+                <button id="printBtn">Imprimir</button>
+            </div>
+
+            <button id="theme-toggle">Modo Escuro</button>
+        </div>
 
         <div id="quiz-area" class="hidden">
             <div id="progress">
