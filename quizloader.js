@@ -1,93 +1,78 @@
-
 // quizLoader.js
-// Este arquivo carrega o arquivo de questões da matéria escolhida
-// e faz o parsing para o formato que o quiz entende.
+// Responsável por carregar o quiz da matéria escolhida
 
-async function loadQuiz(file) {
-    try {
-        const response = await fetch(`materias/${file}`);
-        if (!response.ok) throw new Error('Arquivo não encontrado');
-        const text = await response.text();
-        parseQuizFile(text);
-    } catch (error) {
-        console.error('Erro ao carregar quiz:', error);
-        alert('Erro ao carregar o quiz. Verifique o console para detalhes.');
+let currentQuiz = [];
+let currentQuestionIndex = 0;
+
+startBtn.addEventListener('click', () => {
+    const selectedMateria = materiasSelect.value;
+    if (!selectedMateria) {
+        alert('Por favor, selecione uma matéria.');
+        return;
     }
+
+    const quizFile = materias[selectedMateria];
+    loadQuiz(quizFile);
+});
+
+function loadQuiz(quizFile) {
+    fetch(quizFile)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao carregar o quiz');
+            }
+            return response.text();
+        })
+        .then(text => parseQuizFile(text))
+        .catch(error => {
+            console.error(error);
+            alert('Erro ao carregar o quiz. Verifique o console para detalhes.');
+        });
 }
 
-function parseQuizFile(text) {
-    const lines = text.split('\n');
+function parseQuizFile(fileContent) {
     currentQuiz = [];
-    userAnswers = [];
+    currentQuestionIndex = 0;
 
-    const gabarito = {};
-    const fundamentacao = {};
-    let currentQuestion = null;
-    let mode = 'questoes';
-    let lastFundKey = null;
+    const questions = fileContent.split('---');
+    questions.forEach((questionText, index) => {
+        const lines = questionText.trim().split('\n');
+        if (lines.length >= 3) {
+            const number = index + 1;
+            const text = lines[0].replace(/^\d+\.\s*/, '');
+            const options = [];
+            let explanation = '';
+            let correctOption = '';
 
-    for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (!line) continue;
+            lines.slice(1).forEach(line => {
+                if (line.startsWith('*')) {
+                    correctOption = line.substring(1, 2).toLowerCase();
+                    options.push({
+                        letter: correctOption,
+                        text: line.substring(2).trim(),
+                        correct: true
+                    });
+                } else if (line.startsWith('#')) {
+                    explanation = line.substring(1).trim();
+                } else {
+                    const letter = line.substring(0, 1).toLowerCase();
+                    options.push({
+                        letter: letter,
+                        text: line.substring(1).trim(),
+                        correct: false
+                    });
+                }
+            });
 
-        if (/^Gabarito:/i.test(line)) {
-            mode = 'gabarito';
-            continue;
+            currentQuiz.push({
+                number,
+                text,
+                options,
+                explanation
+            });
         }
-
-        if (/^Fundamentação:/i.test(line)) {
-            mode = 'fundamentacao';
-            continue;
-        }
-
-        if (mode === 'questoes') {
-            const qMatch = line.match(/^Questão\s+(\d+)\s*-\s*(.+)/i);
-            const optMatch = line.match(/^([a-d])\)\s+(.+)/i);
-            if (qMatch) {
-                if (currentQuestion) currentQuiz.push(currentQuestion);
-                currentQuestion = {
-                    number: qMatch[1],
-                    text: qMatch[2].trim(),
-                    options: []
-                };
-                userAnswers.push(null);
-            } else if (optMatch && currentQuestion) {
-                currentQuestion.options.push({
-                    letter: optMatch[1].toLowerCase(),
-                    text: optMatch[2].trim(),
-                    correct: false
-                });
-            }
-        }
-
-        if (mode === 'gabarito') {
-            const match = line.match(/^(\d+)\s*-\s*([a-d])/i);
-            if (match) {
-                gabarito[match[1]] = match[2].toLowerCase();
-            }
-        }
-
-        if (mode === 'fundamentacao') {
-            const keyMatch = line.match(/^(\d+)\s*-\s*([a-d])\)/i);
-            if (keyMatch) {
-                lastFundKey = `${keyMatch[1]}-${keyMatch[2].toLowerCase()}`;
-                fundamentacao[lastFundKey] = '';
-            } else if (lastFundKey) {
-                fundamentacao[lastFundKey] += (fundamentacao[lastFundKey] ? '\n' : '') + line;
-            }
-        }
-    }
-
-    if (currentQuestion) currentQuiz.push(currentQuestion);
-
-    currentQuiz.forEach(question => {
-        const correctLetter = gabarito[question.number];
-        question.options.forEach(opt => {
-            opt.correct = opt.letter === correctLetter;
-        });
-        const fundKey = `${question.number}-${correctLetter}`;
-        question.explanation = fundamentacao[fundKey] || 'Fundamentação não disponível.';
     });
 
-    startQuiz();
+    // ✅ Corrigido: Chamando a função correta
+    showQuiz();
 }
