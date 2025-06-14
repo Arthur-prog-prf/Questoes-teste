@@ -278,77 +278,77 @@ select {
 }
 
 /* ============================
-   MOBILE RESPONSIVO - Botões em linha também no mobile
+   MOBILE RESPONSIVO - Botões Compactos e em Linha
 ============================ */
 @media (max-width: 768px) {
     .quiz-container {
-        padding: 15px;
+        padding: 10px;
     }
 
     #quiz-title {
-        font-size: 22px;
+        font-size: 20px;
     }
 
     #quiz-description {
-        font-size: 16px;
+        font-size: 15px;
     }
 
     .control-group {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .control-group button,
     .control-group select,
     button, select {
         width: auto;
-        padding: 8px 12px;
-        font-size: 14px;
-        margin: 3px;
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 2px;
         display: inline-block;
     }
 
     .controls {
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
     }
 
     .question-container {
-        padding: 15px;
-        margin: 15px 0;
+        padding: 12px;
+        margin: 12px 0;
     }
 
     .option {
-        font-size: 14px;
-        padding: 10px;
-        margin-bottom: 10px;
+        font-size: 13px;
+        padding: 8px;
+        margin-bottom: 8px;
     }
 
     .navigation {
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
     }
 
     .navigation button {
         width: auto;
-        padding: 8px 14px;
-        font-size: 14px;
+        padding: 6px 10px;
+        font-size: 13px;
     }
 
     .feedback {
-        font-size: 1em;
+        font-size: 0.9em;
     }
 
     .fundamentacao-btn {
         width: auto;
-        margin: 10px auto;
+        margin: 8px auto;
         justify-content: center;
-        padding: 8px 14px;
-        font-size: 14px;
+        padding: 6px 10px;
+        font-size: 12px;
     }
 }
 
