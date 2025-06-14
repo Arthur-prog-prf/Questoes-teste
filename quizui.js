@@ -1,103 +1,120 @@
 // quizUI.js
+// Responsável por exibir as perguntas e gerenciar a navegação
 
-function showQuestion(index) {
-    const question = currentQuiz[index];
+function startQuiz() {
+    currentQuestionIndex = 0;
+    quizArea.classList.remove('hidden');
+    totalQuestionsSpan.textContent = currentQuiz.length;
+    renderQuestions();
+}
+
+function renderQuestions() {
     questionsArea.innerHTML = '';
+    updateProgress();
 
-    const container = document.createElement('div');
-    container.classList.add('question-container');
+    const question = currentQuiz[currentQuestionIndex];
+    const isAnswered = userAnswers[currentQuestionIndex] !== null;
+    const userOptionIndex = userAnswers[currentQuestionIndex];
+    const userOption = question.options[userOptionIndex];
 
     const questionElement = document.createElement('div');
-    questionElement.classList.add('question');
-    questionElement.textContent = `Questão ${question.number} - ${question.text}`;
-    container.appendChild(questionElement);
+    questionElement.className = 'question-container';
 
-    const optionsContainer = document.createElement('div');
-    optionsContainer.classList.add('options');
+    questionElement.innerHTML = `
+        <div class="question">Questão ${question.number} - ${question.text}</div>
+        <div class="options">
+            ${question.options.map((option, index) => `
+                <div class="option 
+                    ${isAnswered && userOptionIndex === index ? 'selected' : ''}
+                    ${isAnswered && option.correct ? 'correct' : ''}
+                    ${isAnswered && userOptionIndex === index && !option.correct ? 'incorrect' : ''}"
+                    data-option-index="${index}">
+                    <span class="option-letter">${option.letter.toUpperCase()})</span> ${option.text}
+                </div>
+            `).join('')}
+        </div>
+        ${isAnswered ? `
+            <div class="feedback ${userOption.correct ? 'correct-feedback' : 'incorrect-feedback'}">
+                ${userOption.correct ? '✓ Resposta Correta!' : '✗ Resposta Incorreta!'}
+            </div>
+            <button class="fundamentacao-btn">ℹ️ Ver Fundamentação</button>
+            <div class="fundamentacao">
+                ${question.explanation}
+            </div>
+        ` : ''}
+    `;
 
-    question.options.forEach(option => {
-        const optionElement = document.createElement('div');
-        optionElement.classList.add('option');
-        optionElement.textContent = `${option.letter.toUpperCase()}) ${option.text}`;
+    questionsArea.appendChild(questionElement);
 
-        optionElement.addEventListener('click', () => {
-            document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
-            optionElement.classList.add('selected');
-            question.selected = option.letter;
+    if (!isAnswered) {
+        const options = questionElement.querySelectorAll('.option');
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const index = parseInt(option.dataset.optionIndex);
+                userAnswers[currentQuestionIndex] = index;
+                renderQuestions();
+            });
         });
+    } else {
+        const fundBtn = questionElement.querySelector('.fundamentacao-btn');
+        const fundBox = questionElement.querySelector('.fundamentacao');
 
-        optionsContainer.appendChild(optionElement);
-    });
+        fundBtn.addEventListener('click', () => {
+            fundBox.classList.toggle('show');
+        });
+    }
 
-    container.appendChild(optionsContainer);
-
-    questionsArea.appendChild(container);
-
-    prevBtn.disabled = index === 0;
-    nextBtn.textContent = index === currentQuiz.length - 1 ? 'Finalizar' : 'Próxima';
-
-    currentQuestionSpan.textContent = index + 1;
-    totalQuestionsSpan.textContent = currentQuiz.length;
-
-    // ✅ Atualizar o número da questão no header fixo
-    const headerQuestion = document.getElementById('questao-atual');
-    headerQuestion.textContent = `Questão ${index + 1} de ${currentQuiz.length}`;
+    updateNavigationButtons();
+    setupSwipeDetection();
 }
 
-function showQuiz() {
-    quizArea.classList.remove('hidden');
-    // ✅ Mostrar Header e Footer Fixos ao iniciar o Quiz
-    document.getElementById('fixed-header').classList.remove('hidden');
-    document.getElementById('fixed-footer').classList.remove('hidden');
-
-    // ✅ Atualizar nome da matéria no Header
-    const materiaSelecionada = materiasSelect.options[materiasSelect.selectedIndex].text;
-    document.getElementById('materia-atual').textContent = materiaSelecionada;
-
-    showQuestion(currentQuestionIndex);
+function updateNavigationButtons() {
+    prevBtn.disabled = currentQuestionIndex === 0;
+    nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
 }
 
-prevBtn.addEventListener('click', () => {
-    if (currentQuestionIndex > 0) {
+function updateProgress() {
+    currentQuestionSpan.textContent = currentQuestionIndex + 1;
+}
+
+/* ================================
+   Suporte a Swipe (arrastar lateralmente) - Corrigido
+================================== */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleGesture() {
+    const swipeDistance = touchEndX - touchStartX;
+    const swipeThreshold = 120; // Distância mínima para considerar swipe
+
+    if (swipeDistance > swipeThreshold && currentQuestionIndex > 0) {
+        // Swipe para a direita (voltar uma questão)
         currentQuestionIndex--;
-        showQuestion(currentQuestionIndex);
+        renderQuestions();
     }
-});
 
-nextBtn.addEventListener('click', () => {
-    if (currentQuestionIndex < currentQuiz.length - 1) {
+    if (swipeDistance < -swipeThreshold && currentQuestionIndex < currentQuiz.length - 1) {
+        // Swipe para a esquerda (próxima questão)
         currentQuestionIndex++;
-        showQuestion(currentQuestionIndex);
-    } else {
-        alert('Exercício finalizado!');
+        renderQuestions();
     }
-});
+}
 
-// ✅ Eventos do Footer fixo (navegação pelos botões do rodapé)
-document.getElementById('footer-prev-btn').addEventListener('click', () => {
-    if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        showQuestion(currentQuestionIndex);
-    }
-});
+function setupSwipeDetection() {
+    // Remove os antigos antes de adicionar novos (evita múltiplos binds)
+    questionsArea.removeEventListener('touchstart', swipeStartHandler);
+    questionsArea.removeEventListener('touchend', swipeEndHandler);
 
-document.getElementById('footer-next-btn').addEventListener('click', () => {
-    if (currentQuestionIndex < currentQuiz.length - 1) {
-        currentQuestionIndex++;
-        showQuestion(currentQuestionIndex);
-    } else {
-        alert('Exercício finalizado!');
-    }
-});
+    questionsArea.addEventListener('touchstart', swipeStartHandler);
+    questionsArea.addEventListener('touchend', swipeEndHandler);
+}
 
-// ✅ Evento para "Ir para Questão" (Exemplo simples com prompt - futuramente pode ser modal)
-document.getElementById('footer-jump-btn').addEventListener('click', () => {
-    const input = prompt(`Digite o número da questão (1 a ${currentQuiz.length}):`);
-    const num = parseInt(input);
-    if (!isNaN(num) && num >= 1 && num <= currentQuiz.length) {
-        currentQuestionIndex = num - 1;
-        showQuestion(currentQuestionIndex);
-    } else {
-        alert('Número inválido.');
-    }
-});
+function swipeStartHandler(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}
+
+function swipeEndHandler(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
+}
