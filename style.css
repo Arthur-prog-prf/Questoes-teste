@@ -233,7 +233,7 @@ select {
 }
 
 .navigation {
-    display: none; /* Ocultamos a navegação antiga */
+    display: none;
 }
 
 .fixed-navigation {
@@ -262,17 +262,27 @@ select {
 .go-to-question {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 0 8px;
+    position: relative;
 }
 
 #goto-input {
-    width: 60px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
+    width: 140px;
+    padding: 10px;
+    font-size: 15px;
     text-align: center;
-    font-size: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    display: none;
+}
+
+#goto-input.visible {
+    display: inline-block;
+}
+
+#goto-toggle {
+    padding: 10px 20px;
 }
 
 .dark-mode .fixed-navigation {
@@ -313,9 +323,6 @@ select {
     }
 }
 
-/* ============================
-   MOBILE RESPONSIVO
-============================ */
 @media (max-width: 768px) {
     .quiz-container {
         padding: 10px;
