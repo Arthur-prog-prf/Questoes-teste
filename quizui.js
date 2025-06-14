@@ -1,11 +1,41 @@
-// quizUI.js
-// Responsável por exibir as perguntas e gerenciar a navegação
+let currentQuiz = [];
+let userAnswers = [];
+let currentQuestionIndex = 0;
 
 function startQuiz() {
     currentQuestionIndex = 0;
     quizArea.classList.remove('hidden');
+    document.querySelector('.navigation').classList.remove('hidden');
     totalQuestionsSpan.textContent = currentQuiz.length;
     renderQuestions();
+    setupQuestionNavigation();
+}
+
+function setupQuestionNavigation() {
+    const goToInput = document.getElementById('go-to-question');
+    goToInput.max = currentQuiz.length;
+    
+    goToInput.addEventListener('change', (e) => {
+        const questionNum = parseInt(e.target.value);
+        if (!isNaN(questionNum)) {
+            const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+            currentQuestionIndex = newIndex;
+            renderQuestions();
+            e.target.value = '';
+        }
+    });
+    
+    goToInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const questionNum = parseInt(e.target.value);
+            if (!isNaN(questionNum)) {
+                const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+                currentQuestionIndex = newIndex;
+                renderQuestions();
+                e.target.value = '';
+            }
+        }
+    });
 }
 
 function renderQuestions() {
@@ -71,38 +101,32 @@ function renderQuestions() {
 function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
+    document.getElementById('go-to-question').max = currentQuiz.length;
 }
 
 function updateProgress() {
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
 }
 
-/* ================================
-   Suporte a Swipe (arrastar lateralmente) - Corrigido
-================================== */
-
 let touchStartX = 0;
 let touchEndX = 0;
 
 function handleGesture() {
     const swipeDistance = touchEndX - touchStartX;
-    const swipeThreshold = 120; // Distância mínima para considerar swipe
+    const swipeThreshold = 120;
 
     if (swipeDistance > swipeThreshold && currentQuestionIndex > 0) {
-        // Swipe para a direita (voltar uma questão)
         currentQuestionIndex--;
         renderQuestions();
     }
 
     if (swipeDistance < -swipeThreshold && currentQuestionIndex < currentQuiz.length - 1) {
-        // Swipe para a esquerda (próxima questão)
         currentQuestionIndex++;
         renderQuestions();
     }
 }
 
 function setupSwipeDetection() {
-    // Remove os antigos antes de adicionar novos (evita múltiplos binds)
     questionsArea.removeEventListener('touchstart', swipeStartHandler);
     questionsArea.removeEventListener('touchend', swipeEndHandler);
 
