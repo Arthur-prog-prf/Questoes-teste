@@ -77,10 +77,11 @@ body {
 }
 
 button, select {
-    padding: 10px 18px;
+    padding: 10px 15px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    font-size: var(--font-size);
 }
 
 button {
@@ -109,10 +110,10 @@ select {
 
 .question-container {
     margin-bottom: 30px;
-    padding: 25px;
-    border-radius: 10px;
+    padding: 20px;
+    border-radius: 8px;
     background-color: var(--card-background);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .question {
@@ -122,12 +123,12 @@ select {
 }
 
 .options {
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .option {
-    padding: 12px 15px;
-    margin: 8px 0;
+    padding: 10px 12px;
+    margin: 6px 0;
     background: var(--highlight-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -149,7 +150,6 @@ select {
     border-color: #27ae60 !important;
     color: #145a32 !important;
     font-weight: bold;
-    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
 }
 
 .incorrect {
@@ -160,64 +160,54 @@ select {
 .correct-feedback {
     color: #27ae60;
     font-weight: bold;
-    font-size: 1.2em;
-    margin-top: 15px;
+    margin-top: 12px;
     background-color: #eafaf1;
-    padding: 10px 15px;
-    border-left: 5px solid #27ae60;
-    border-radius: 6px;
+    padding: 10px;
+    border-left: 4px solid #27ae60;
+    border-radius: 4px;
 }
 
 .incorrect-feedback {
     color: #c0392b;
     font-weight: bold;
-    font-size: 1.2em;
-    margin-top: 15px;
+    margin-top: 12px;
     background-color: #fdecea;
-    padding: 10px 15px;
-    border-left: 5px solid #c0392b;
-    border-radius: 6px;
+    padding: 10px;
+    border-left: 4px solid #c0392b;
+    border-radius: 4px;
 }
 
 .fundamentacao-btn {
-    margin-top: 15px;
-    padding: 10px 20px;
+    margin-top: 12px;
+    padding: 8px 15px;
     background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    transition: all 0.2s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
 }
 
 .fundamentacao-btn:hover {
     background-color: #2980b9;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .fundamentacao {
-    margin-top: 20px;
-    padding: 0 15px;
+    margin-top: 15px;
+    padding: 0 12px;
     background: #e2f0fd;
-    border-left: 4px solid var(--secondary-color);
-    border-radius: 6px;
+    border-left: 3px solid var(--secondary-color);
+    border-radius: 4px;
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.9s ease, opacity 0.9s ease, padding 0.9s ease;
-    visibility: hidden;
+    transition: all 0.3s ease;
 }
 
 .fundamentacao.show {
     opacity: 1;
-    max-height: 800px;
-    padding: 15px;
-    visibility: visible;
+    max-height: 500px;
+    padding: 12px;
 }
 
 .dark-mode .fundamentacao {
@@ -227,69 +217,69 @@ select {
 
 .progress {
     text-align: center;
-    margin: 20px 0;
+    margin: 15px 0;
     font-weight: bold;
     color: var(--primary-color);
 }
 
 /* ====================== */
-/* NAVEGAÇÃO ATUALIZADA */
+/* NAVEGAÇÃO OTIMIZADA */
 /* ====================== */
 .navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--card-background);
-    padding: 12px 15px;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    padding: 8px 12px;
+    box-shadow: 0 -1px 8px rgba(0,0,0,0.1);
     z-index: 100;
 }
 
 .nav-btn {
     flex: 1;
-    padding: 10px;
-    min-width: 80px;
-    font-size: 14px;
+    padding: 8px 4px;
+    min-width: 70px;
+    max-width: 100px;
+    font-size: 13px;
     white-space: nowrap;
 }
 
 .go-to-question {
     display: flex;
-    flex: 1;
+    flex: 2;
     min-width: 120px;
-    max-width: 180px;
-    gap: 5px;
+    max-width: 160px;
+    gap: 4px;
 }
 
 #question-input {
     flex: 1;
-    padding: 10px;
+    padding: 8px;
     border: 1px solid var(--border-color);
-    border-radius: 6px;
+    border-radius: 5px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
     min-width: 0;
 }
 
 #question-input::placeholder {
     color: #999;
-    text-align: center;
+    font-size: 12px;
 }
 
 #go-btn {
-    padding: 10px 12px;
-    min-width: 40px;
-    font-size: 14px;
+    padding: 8px 10px;
+    min-width: 35px;
+    font-size: 13px;
 }
 
-/* Ajuste para o quiz area não ficar escondido atrás da navegação fixa */
 #quiz-area {
-    padding-bottom: 80px;
+    padding-bottom: 70px;
 }
 
 #theme-toggle {
@@ -302,6 +292,82 @@ select {
 
 .hidden {
     display: none;
+}
+
+/* ============================
+   MOBILE RESPONSIVO
+============================ */
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 15px;
+    }
+
+    #quiz-title {
+        font-size: 22px;
+    }
+
+    #quiz-description {
+        font-size: 16px;
+    }
+
+    .question-container {
+        padding: 15px;
+    }
+
+    .option {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    /* NAVEGAÇÃO MOBILE */
+    .navigation {
+        padding: 6px 8px;
+        gap: 4px;
+    }
+    
+    .nav-btn {
+        padding: 6px 3px;
+        font-size: 12px;
+        min-width: 60px;
+        max-width: 80px;
+    }
+    
+    .go-to-question {
+        min-width: 100px;
+        max-width: 130px;
+    }
+    
+    #question-input {
+        padding: 6px;
+        font-size: 12px;
+    }
+    
+    #question-input::placeholder {
+        font-size: 11px;
+    }
+    
+    #go-btn {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    
+    #quiz-area {
+        padding-bottom: 60px;
+    }
+}
+
+/* ====================== */
+/* MODOS DE TELA
+/* ====================== */
+@media (min-width: 992px) {
+    .nav-btn {
+        min-width: 80px;
+        max-width: 110px;
+    }
+    
+    .go-to-question {
+        max-width: 150px;
+    }
 }
 
 @media print {
@@ -323,114 +389,13 @@ select {
     }
     .fundamentacao {
         display: block !important;
-    }
-}
-
-/* ============================
-   MOBILE RESPONSIVO
-============================ */
-@media (max-width: 768px) {
-    .quiz-container {
-        padding: 10px;
-    }
-
-    #quiz-title {
-        font-size: 20px;
-    }
-
-    #quiz-description {
-        font-size: 15px;
-    }
-
-    .control-group {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px;
-    }
-
-    .control-group button,
-    .control-group select,
-    button, select {
-        width: auto;
-        padding: 6px 10px;
-        font-size: 12px;
-        margin: 2px;
-        display: inline-block;
-    }
-
-    .controls {
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .question-container {
-        padding: 12px;
-        margin: 12px 0;
-    }
-
-    .option {
-        font-size: 13px;
-        padding: 8px;
-        margin-bottom: 8px;
-    }
-
-    /* NAVEGAÇÃO MOBILE */
-    .navigation {
-        padding: 8px 10px;
-        gap: 5px;
-    }
-    
-    .nav-btn {
-        padding: 8px;
-        font-size: 12px;
-        min-width: 70px;
-    }
-    
-    .go-to-question {
-        min-width: 100px;
-        max-width: 140px;
-    }
-    
-    #question-input {
-        padding: 8px;
-        font-size: 12px;
-    }
-    
-    #go-btn {
-        padding: 8px 10px;
-        font-size: 12px;
-        min-width: 35px;
-    }
-    
-    #quiz-area {
-        padding-bottom: 65px;
-    }
-
-    .feedback {
-        font-size: 0.9em;
-    }
-
-    .fundamentacao-btn {
-        width: auto;
-        margin: 8px auto;
-        justify-content: center;
-        padding: 6px 10px;
-        font-size: 12px;
+        opacity: 1 !important;
+        max-height: none !important;
     }
 }
 
 /* ====================== */
-/* ESTILOS PARA TELAS GRANDES */
-/* ====================== */
-@media (min-width: 1200px) {
-    .go-to-question {
-        max-width: 160px;
-    }
-}
-
-/* ====================== */
-/* ESTILOS PARA MODO ESCURO */
+/* ESTILOS PARA MODO ESCURO
 /* ====================== */
 .dark-mode .option {
     background: #3c4a5a;
@@ -439,23 +404,20 @@ select {
 
 .dark-mode .option:hover {
     background: #4b5a6b;
-    color: #ffffff;
 }
 
 .dark-mode .option.selected {
     background: #5c7ea5;
-    border-color: #4a9fe0;
-    color: #ffffff;
 }
 
 .dark-mode .correct {
     background: #2ecc71 !important;
-    color: #ffffff !important;
+    color: white !important;
 }
 
 .dark-mode .incorrect {
     background: #e74c3c !important;
-    color: #ffffff !important;
+    color: white !important;
 }
 
 .dark-mode #question-input {
