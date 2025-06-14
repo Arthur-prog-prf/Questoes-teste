@@ -41,8 +41,14 @@
             <div id="questions-area"></div>
 
             <div class="navigation">
-                <button id="prev-btn" disabled>Anterior</button>
-                <button id="next-btn">Próxima</button>
+                <button id="prev-btn" class="nav-btn" disabled>Anterior</button>
+                
+                <div class="go-to-question">
+                    <input type="number" id="question-input" placeholder="Ir para questão" min="1">
+                    <button id="go-btn">Ir</button>
+                </div>
+                
+                <button id="next-btn" class="nav-btn">Próxima</button>
             </div>
         </div>
     </div>
