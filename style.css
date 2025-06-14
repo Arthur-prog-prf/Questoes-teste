@@ -14,9 +14,6 @@
     --button-hover-color: #2980b9;
 }
 
-/* ================================
-   Estilo Geral da Página
-================================== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     font-size: var(--font-size);
@@ -39,9 +36,6 @@ body {
     --button-hover-color: #4a5a6b;
 }
 
-/* ================================
-   Container Principal
-================================== */
 .quiz-container {
     max-width: 900px;
     margin: 20px auto;
@@ -64,9 +58,6 @@ body {
     margin-bottom: 20px;
 }
 
-/* ================================
-   Controles
-================================== */
 .controls {
     display: flex;
     justify-content: space-between;
@@ -114,9 +105,6 @@ select {
     border-color: #5a6b7c;
 }
 
-/* ================================
-   Questões e Opções
-================================== */
 .question-container {
     margin-bottom: 30px;
     padding: 25px;
@@ -167,9 +155,6 @@ select {
     border-color: #f5c6cb !important;
 }
 
-/* ================================
-   Feedback de Resposta
-================================== */
 .correct-feedback {
     color: #27ae60;
     font-weight: bold;
@@ -192,9 +177,6 @@ select {
     border-radius: 6px;
 }
 
-/* ================================
-   Botão de Fundamentação com Ícone
-================================== */
 .fundamentacao-btn {
     margin-top: 15px;
     padding: 10px 20px;
@@ -216,9 +198,6 @@ select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* ================================
-   Animação da Fundamentação
-================================== */
 .fundamentacao {
     display: none;
     margin-top: 20px;
@@ -244,9 +223,6 @@ select {
     border-left-color: #4a9fe0;
 }
 
-/* ================================
-   Barra de Progresso e Navegação
-================================== */
 .progress {
     text-align: center;
     margin: 20px 0;
@@ -265,9 +241,6 @@ select {
     margin: 0 5px;
 }
 
-/* ================================
-   Botão de Tema
-================================== */
 #theme-toggle {
     background: #6c757d;
 }
@@ -276,9 +249,6 @@ select {
     background: #5a6268;
 }
 
-/* ================================
-   Elementos Escondidos
-================================== */
 .hidden {
     display: none;
 }
@@ -305,5 +275,54 @@ select {
     }
     .fundamentacao {
         display: block !important;
+    }
+}
+
+/* ================================
+   Responsividade Mobile/Tablet
+================================== */
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 15px;
+    }
+
+    #quiz-title {
+        font-size: 22px;
+    }
+
+    #quiz-description {
+        font-size: 16px;
+    }
+
+    .control-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .control-group button,
+    .control-group select {
+        width: 100%;
+    }
+
+    .question-container {
+        padding: 15px;
+    }
+
+    .option {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .navigation {
+        flex-direction: column;
+    }
+
+    .navigation button {
+        margin: 5px 0;
+        width: 100%;
+    }
+
+    .feedback {
+        font-size: 1em;
     }
 }
