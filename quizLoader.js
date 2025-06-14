@@ -1,13 +1,8 @@
 function loadQuiz(subjectFile) {
-    fetch(`materia/${subjectFile}.json`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Erro ao carregar o arquivo ${subjectFile}.json`);
-            }
-            return response.json();
-        })
+    fetch(`materia/${subjectFile}`)
+        .then(response => response.text())
         .then(data => {
-            questionsData = data.perguntas;
+            questionsData = parseTxtData(data);
             totalQuestions = questionsData.length;
             currentQuestion = 0;
 
