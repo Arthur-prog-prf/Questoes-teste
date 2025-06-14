@@ -2,22 +2,26 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Quiz Interativo</title>
+    <title>Simulados Jurídicos</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="quiz-container">
-        <h1 id="quiz-title">Quiz Interativo</h1>
-        <p id="quiz-description">Selecione a matéria e inicie o simulado!</p>
+        <h1>Simulados Jurídicos</h1>
+        <p>Selecione uma matéria para começar</p>
 
-        <div class="controls">
-            <div class="control-group">
-                <select id="subjectSelect">
-                    <option value="">Selecione a matéria</option>
-                </select>
-                <button id="startBtn">Iniciar Simulado</button>
-            </div>
-        </div>
+        <button id="decreaseFontBtn">A-</button>
+        <button id="increaseFontBtn">A+</button>
+        <button id="resetFontBtn">Resetar Fonte</button>
+
+        <select id="subjectSelect">
+            <option value="">Selecione uma matéria</option>
+        </select>
+
+        <button id="startBtn">Iniciar Simulado</button>
+        <button id="exportPdfBtn">Exportar PDF</button>
+        <button id="printBtn">Imprimir</button>
+        <button id="theme-toggle">Modo Escuro</button>
 
         <div id="quiz-area" class="hidden">
             <div id="progress">
@@ -31,13 +35,6 @@
         </div>
     </div>
 
-    <!-- Botões Flutuantes -->
-    <button id="decreaseFontBtn">A-</button>
-    <button id="increaseFontBtn">A+</button>
-    <button id="exportPdfBtn">📝</button>
-    <button id="theme-toggle">🌗</button>
-
-    <!-- Scripts na ordem correta -->
     <script src="materias.js"></script>
     <script src="materiasData.js"></script>
     <script src="domElements.js"></script>
