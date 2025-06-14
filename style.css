@@ -60,9 +60,8 @@ body {
 
 .controls {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 15px;
     margin: 20px 0;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--border-color);
@@ -71,6 +70,8 @@ body {
 .control-group {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
 }
 
