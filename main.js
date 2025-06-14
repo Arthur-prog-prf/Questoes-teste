@@ -27,24 +27,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Novo código para o botão "Ir para questão"
-    const gotoBtn = document.getElementById('goto-btn');
+    // ===== Ir para questão (botão vira input) =====
+
+    const gotoToggle = document.getElementById('goto-toggle');
     const gotoInput = document.getElementById('goto-input');
 
-    gotoBtn.addEventListener('click', () => {
-        const target = parseInt(gotoInput.value, 10);
-        if (!isNaN(target) && target >= 1 && target <= currentQuiz.length) {
-            currentQuestionIndex = target - 1;
-            renderQuestions();
-        } else {
-            alert(`Digite um número entre 1 e ${currentQuiz.length}`);
-        }
+    gotoToggle.addEventListener('click', () => {
+        gotoToggle.style.display = 'none';
+        gotoInput.classList.add('visible');
+        gotoInput.focus();
     });
 
-    // Permitir ENTER dentro do input
+    gotoInput.addEventListener('blur', () => {
+        gotoInput.classList.remove('visible');
+        gotoToggle.style.display = 'inline-block';
+    });
+
     gotoInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            gotoBtn.click();
+            const value = parseInt(gotoInput.value, 10);
+            if (!isNaN(value) && value >= 1 && value <= currentQuiz.length) {
+                currentQuestionIndex = value - 1;
+                renderQuestions();
+            } else {
+                alert(`Digite um número entre 1 e ${currentQuiz.length}`);
+            }
+
+            // Oculta o input e volta o botão
+            gotoInput.blur();
         }
     });
 });
