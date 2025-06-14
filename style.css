@@ -278,7 +278,7 @@ select {
 }
 
 /* ============================
-   MOBILE RESPONSIVO - Botões Compactos
+   MOBILE RESPONSIVO - Botões em linha também no mobile
 ============================ */
 @media (max-width: 768px) {
     .quiz-container {
@@ -304,10 +304,15 @@ select {
     .control-group select,
     button, select {
         width: auto;
-        padding: 8px 14px;
+        padding: 8px 12px;
         font-size: 14px;
-        margin: 5px;
+        margin: 3px;
         display: inline-block;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 8px;
     }
 
     .question-container {
