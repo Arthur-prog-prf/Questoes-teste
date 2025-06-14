@@ -198,7 +198,6 @@ select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* Transição da Fundamentação - 0.9s */
 .fundamentacao {
     margin-top: 20px;
     padding: 0 15px;
@@ -276,6 +275,9 @@ select {
     }
 }
 
+/* ============================
+   MOBILE RESPONSIVO (correções)
+============================ */
 @media (max-width: 768px) {
     .quiz-container {
         padding: 15px;
@@ -292,6 +294,7 @@ select {
     .control-group {
         flex-direction: column;
         align-items: stretch;
+        gap: 10px;
     }
 
     .control-group button,
@@ -301,15 +304,18 @@ select {
 
     .question-container {
         padding: 15px;
+        margin: 15px 0;
     }
 
     .option {
         font-size: 14px;
         padding: 10px;
+        margin-bottom: 10px;
     }
 
     .navigation {
         flex-direction: column;
+        gap: 10px;
     }
 
     .navigation button {
@@ -317,8 +323,23 @@ select {
         width: 100%;
     }
 
+    .controls {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    button, select {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
     .feedback {
         font-size: 1em;
+    }
+
+    .fundamentacao-btn {
+        width: 100%;
+        justify-content: center;
     }
 }
 
