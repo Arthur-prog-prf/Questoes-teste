@@ -1,8 +1,13 @@
 // quizUI.js
 // Responsável por exibir as perguntas e gerenciar a navegação
 
+let currentQuestionIndex = 0;
+let currentQuiz = [];
+let userAnswers = [];
+
 function startQuiz() {
     currentQuestionIndex = 0;
+    userAnswers = new Array(currentQuiz.length).fill(null);
     quizArea.classList.remove('hidden');
     totalQuestionsSpan.textContent = currentQuiz.length;
     renderQuestions();
@@ -15,7 +20,7 @@ function renderQuestions() {
     const question = currentQuiz[currentQuestionIndex];
     const isAnswered = userAnswers[currentQuestionIndex] !== null;
     const userOptionIndex = userAnswers[currentQuestionIndex];
-    const userOption = question.options[userOptionIndex];
+    const userOption = userOptionIndex !== null ? question.options[userOptionIndex] : null;
 
     const questionElement = document.createElement('div');
     questionElement.className = 'question-container';
@@ -72,8 +77,11 @@ function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
     
-    // Atualiza o placeholder do input
-    questionInput.placeholder = `Ir para questão (1-${currentQuiz.length})`;
+    // Atualiza o placeholder do input desktop
+    if (questionInput) {
+        questionInput.placeholder = `1-${currentQuiz.length}`;
+        questionInput.max = currentQuiz.length;
+    }
 }
 
 function updateProgress() {
@@ -81,31 +89,27 @@ function updateProgress() {
 }
 
 /* ================================
-   Suporte a Swipe (arrastar lateralmente) - Corrigido
+   Suporte a Swipe (arrastar lateralmente)
 ================================== */
-
 let touchStartX = 0;
 let touchEndX = 0;
 
 function handleGesture() {
     const swipeDistance = touchEndX - touchStartX;
-    const swipeThreshold = 120; // Distância mínima para considerar swipe
+    const swipeThreshold = 100;
 
     if (swipeDistance > swipeThreshold && currentQuestionIndex > 0) {
-        // Swipe para a direita (voltar uma questão)
         currentQuestionIndex--;
         renderQuestions();
     }
 
     if (swipeDistance < -swipeThreshold && currentQuestionIndex < currentQuiz.length - 1) {
-        // Swipe para a esquerda (próxima questão)
         currentQuestionIndex++;
         renderQuestions();
     }
 }
 
 function setupSwipeDetection() {
-    // Remove os antigos antes de adicionar novos (evita múltiplos binds)
     questionsArea.removeEventListener('touchstart', swipeStartHandler);
     questionsArea.removeEventListener('touchend', swipeEndHandler);
 
@@ -120,4 +124,25 @@ function swipeStartHandler(e) {
 function swipeEndHandler(e) {
     touchEndX = e.changedTouches[0].screenX;
     handleGesture();
+}
+
+/* ================================
+   Funções auxiliares para navegação mobile
+================================== */
+function goToQuestionMobile() {
+    const questionNumber = prompt(`Ir para questão (1-${currentQuiz.length}):`);
+    if (questionNumber) {
+        const num = parseInt(questionNumber);
+        if (!isNaN(num) && num >= 1 && num <= currentQuiz.length) {
+            currentQuestionIndex = num - 1;
+            renderQuestions();
+        } else {
+            alert(`Por favor, digite um número entre 1 e ${currentQuiz.length}`);
+        }
+    }
+}
+
+// Inicializa o evento do botão mobile
+if (goToQuestionBtn) {
+    goToQuestionBtn.addEventListener('click', goToQuestionMobile);
 }
