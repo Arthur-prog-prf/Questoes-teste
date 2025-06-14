@@ -283,7 +283,7 @@ select {
 
 /* ============================
    MOBILE RESPONSIVO
-   (Versão otimizada com placeholder que expande)
+   (3 botões como na imagem de referência)
 ============================ */
 @media (max-width: 768px) {
     .quiz-container {
@@ -307,74 +307,35 @@ select {
         font-size: 14px;
     }
 
-    /* NAVEGAÇÃO MOBILE - Placeholder que expande */
+    /* NAVEGAÇÃO MOBILE - 3 BOTÕES IGUAIS */
     .navigation {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 6px;
         padding: 8px 10px;
-        gap: 5px;
     }
 
     .nav-btn {
-        flex: 1;
+        width: 100%;
         padding: 10px 5px;
         font-size: 13px;
-        min-width: auto;
+        text-align: center;
     }
 
     .go-to-container {
         display: none;
-        position: relative;
-        flex: 2;
     }
 
-    .mobile-go-to-placeholder {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
+    .go-to-question-btn {
+        display: block;
+        width: 100%;
+        padding: 10px 5px;
         background-color: var(--button-color);
         color: white;
+        border: none;
         border-radius: 6px;
-        cursor: pointer;
         font-weight: bold;
-        text-align: center;
-        flex: 1;
-    }
-
-    .mobile-go-to-placeholder:hover {
-        background-color: var(--button-hover-color);
-    }
-
-    .mobile-go-to-expanded {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 0;
-        right: 0;
-        background: var(--card-background);
-        padding: 10px;
-        border-radius: 6px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        z-index: 101;
-    }
-
-    .mobile-go-to-expanded.active {
-        display: flex;
-        gap: 5px;
-    }
-
-    .mobile-go-to-expanded input {
-        flex: 1;
-        padding: 8px;
-        border: 1px solid var(--border-color);
-        border-radius: 4px;
-        text-align: center;
-    }
-
-    .mobile-go-to-expanded button {
-        padding: 8px 12px;
+        cursor: pointer;
     }
 
     #quiz-area {
@@ -382,30 +343,11 @@ select {
     }
 }
 
-/* Classes para controle do estado expandido */
-.mobile-go-to-wrapper {
-    position: relative;
-    flex: 1;
-}
-
-.mobile-go-to-placeholder {
-    display: none;
-}
-
-@media (max-width: 768px) {
-    .mobile-go-to-placeholder {
-        display: flex;
-    }
-    .go-to-container {
-        display: none;
-    }
-}
-
 /* ====================== */
 /* MODOS DE TELA
 /* ====================== */
 @media (min-width: 769px) {
-    .mobile-go-to-placeholder {
+    .go-to-question-btn {
         display: none !important;
     }
     .go-to-container {
@@ -469,15 +411,6 @@ select {
     border-color: #5a6b7c;
 }
 
-.dark-mode .mobile-go-to-placeholder {
+.dark-mode .go-to-question-btn {
     background-color: var(--button-color);
-}
-
-.dark-mode .mobile-go-to-placeholder:hover {
-    background-color: var(--button-hover-color);
-}
-
-.dark-mode .mobile-go-to-expanded {
-    background: var(--card-background);
-    border: 1px solid var(--border-color);
 }
