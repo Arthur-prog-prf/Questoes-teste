@@ -1,4 +1,3 @@
-// domElements.js
 const subjectSelect = document.getElementById('subjectSelect');
 const startBtn = document.getElementById('startBtn');
 const quizArea = document.getElementById('quiz-area');
