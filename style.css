@@ -259,4 +259,117 @@ select {
     body * {
         visibility: hidden;
     }
-    .quiz-container, .quiz-container
+    .quiz-container, .quiz-container * {
+        visibility: visible;
+    }
+    .quiz-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+    }
+    .controls, button, .fundamentacao-btn {
+        display: none !important;
+    }
+    .fundamentacao {
+        display: block !important;
+    }
+}
+
+/* ============================
+   MOBILE RESPONSIVO - Botões Compactos
+============================ */
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 15px;
+    }
+
+    #quiz-title {
+        font-size: 22px;
+    }
+
+    #quiz-description {
+        font-size: 16px;
+    }
+
+    .control-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .control-group button,
+    .control-group select,
+    button, select {
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .question-container {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .option {
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .navigation button {
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+
+    .feedback {
+        font-size: 1em;
+    }
+
+    .fundamentacao-btn {
+        width: auto;
+        margin: 10px auto;
+        justify-content: center;
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+}
+
+/* Hover no Modo Escuro */
+.dark-mode .option {
+    background: #3c4a5a;
+    color: #dce3ea;
+}
+
+.dark-mode .option:hover {
+    background: #4b5a6b;
+    color: #ffffff;
+}
+
+.dark-mode .option.selected {
+    background: #5c7ea5;
+    border-color: #4a9fe0;
+    color: #ffffff;
+}
+
+.dark-mode .correct {
+    background: #2ecc71 !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .incorrect {
+    background: #e74c3c !important;
+    color: #ffffff !important;
+}
