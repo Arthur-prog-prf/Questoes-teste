@@ -1,6 +1,5 @@
-
 // controls.js
-// Controles extras: fonte, tema, PDF, impressão
+// Controles extras: fonte, tema, PDF
 
 decreaseFontBtn.addEventListener('click', () => {
     if (fontSize > 12) {
@@ -16,11 +15,6 @@ increaseFontBtn.addEventListener('click', () => {
     }
 });
 
-resetFontBtn.addEventListener('click', () => {
-    fontSize = 16;
-    document.documentElement.style.setProperty('--font-size', `${fontSize}px`);
-});
-
 exportPdfBtn.addEventListener('click', exportToPdf);
 
 function exportToPdf() {
@@ -28,7 +22,7 @@ function exportToPdf() {
     const doc = new jsPDF();
     let y = 20;
     doc.setFontSize(16);
-    doc.text("Simulado Jurídico", 105, y, { align: 'center' });
+    doc.text("Lista de Exercícios", 105, y, { align: 'center' });
     y += 10;
     doc.setFontSize(12);
 
@@ -52,10 +46,8 @@ function exportToPdf() {
         }
     });
 
-    doc.save("simulado-juridico.pdf");
+    doc.save("lista-de-exercicios.pdf");
 }
-
-printBtn.addEventListener('click', () => window.print());
 
 themeToggleBtn.addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
