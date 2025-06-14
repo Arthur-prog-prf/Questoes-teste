@@ -1,6 +1,5 @@
-
 // quizUI.js
-// Este arquivo cuida da exibição das questões e navegação
+// Responsável por exibir as perguntas e gerenciar a navegação
 
 function startQuiz() {
     currentQuestionIndex = 0;
@@ -38,8 +37,8 @@ function renderQuestions() {
             <div class="feedback ${userOption.correct ? 'correct-feedback' : 'incorrect-feedback'}">
                 ${userOption.correct ? '✓ Resposta Correta!' : '✗ Resposta Incorreta!'}
             </div>
-            <button class="fundamentacao-btn">Ver Fundamentação</button>
-            <div class="fundamentacao" style="display:none;">
+            <button class="fundamentacao-btn">ℹ️ Ver Fundamentação</button>
+            <div class="fundamentacao">
                 ${question.explanation}
             </div>
         ` : ''}
@@ -47,6 +46,7 @@ function renderQuestions() {
 
     questionsArea.appendChild(questionElement);
 
+    // Se a pergunta ainda não foi respondida
     if (!isAnswered) {
         const options = questionElement.querySelectorAll('.option');
         options.forEach(option => {
@@ -57,10 +57,12 @@ function renderQuestions() {
             });
         });
     } else {
+        // Adiciona o evento para mostrar a fundamentação com animação
         const fundBtn = questionElement.querySelector('.fundamentacao-btn');
         const fundBox = questionElement.querySelector('.fundamentacao');
+
         fundBtn.addEventListener('click', () => {
-            fundBox.style.display = fundBox.style.display === 'block' ? 'none' : 'block';
+            fundBox.classList.toggle('show');
         });
     }
 
