@@ -1,6 +1,8 @@
 // controls.js
 // Controles extras: fonte, tema, PDF
 
+let fontSize = 16; // Valor inicial padrão
+
 decreaseFontBtn.addEventListener('click', () => {
     if (fontSize > 12) {
         fontSize -= 2;
