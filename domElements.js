@@ -1,18 +1,15 @@
-
 // domElements.js
-// Aqui declaramos as variáveis que representam os elementos HTML (DOM)
-
-const materiasSelect = document.getElementById('materias');
-const startBtn = document.getElementById('start-btn');
+const subjectSelect = document.getElementById('subjectSelect');
+const startBtn = document.getElementById('startBtn');
 const quizArea = document.getElementById('quiz-area');
+const progressArea = document.getElementById('progress');
 const questionsArea = document.getElementById('questions-area');
-const prevBtn = document.getElementById('prev-btn');
-const nextBtn = document.getElementById('next-btn');
 const currentQuestionSpan = document.getElementById('current-question');
 const totalQuestionsSpan = document.getElementById('total-questions');
-const decreaseFontBtn = document.getElementById('decrease-font');
-const increaseFontBtn = document.getElementById('increase-font');
-const resetFontBtn = document.getElementById('reset-font');
-const exportPdfBtn = document.getElementById('export-pdf');
-const printBtn = document.getElementById('print');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+const decreaseFontBtn = document.getElementById('decreaseFontBtn');
+const increaseFontBtn = document.getElementById('increaseFontBtn');
+const exportPdfBtn = document.getElementById('exportPdfBtn');
 const themeToggleBtn = document.getElementById('theme-toggle');
