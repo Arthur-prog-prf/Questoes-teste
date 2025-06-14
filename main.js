@@ -1,4 +1,3 @@
-
 // main.js
 // Este é o arquivo que conecta tudo. Aqui ficam os listeners de clique.
 
@@ -25,6 +24,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentQuestionIndex < currentQuiz.length - 1) {
             currentQuestionIndex++;
             renderQuestions();
+        }
+    });
+
+    // Novo event listener para o botão "Ir"
+    goBtn.addEventListener('click', () => {
+        const questionNumber = parseInt(questionInput.value);
+        
+        if (questionNumber && questionNumber >= 1 && questionNumber <= currentQuiz.length) {
+            currentQuestionIndex = questionNumber - 1;
+            renderQuestions();
+            questionInput.value = '';
+        } else {
+            alert(`Por favor, insira um número entre 1 e ${currentQuiz.length}`);
+        }
+    });
+    
+    // Adiciona suporte para pressionar Enter no input
+    questionInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            goBtn.click();
         }
     });
 });
