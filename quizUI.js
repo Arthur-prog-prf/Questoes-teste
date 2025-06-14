@@ -46,7 +46,6 @@ function renderQuestions() {
 
     questionsArea.appendChild(questionElement);
 
-    // Se a pergunta ainda não foi respondida
     if (!isAnswered) {
         const options = questionElement.querySelectorAll('.option');
         options.forEach(option => {
@@ -57,7 +56,6 @@ function renderQuestions() {
             });
         });
     } else {
-        // Adiciona o evento para mostrar a fundamentação com animação
         const fundBtn = questionElement.querySelector('.fundamentacao-btn');
         const fundBox = questionElement.querySelector('.fundamentacao');
 
@@ -67,6 +65,7 @@ function renderQuestions() {
     }
 
     updateNavigationButtons();
+    setupSwipeDetection();
 }
 
 function updateNavigationButtons() {
@@ -76,4 +75,38 @@ function updateNavigationButtons() {
 
 function updateProgress() {
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
+}
+
+/* ================================
+   Suporte a Swipe (arrastar lateralmente)
+================================== */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleGesture() {
+    const swipeDistance = touchEndX - touchStartX;
+
+    // Swipe para direita (voltar questão)
+    if (swipeDistance > 50 && currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestions();
+    }
+
+    // Swipe para esquerda (próxima questão)
+    if (swipeDistance < -50 && currentQuestionIndex < currentQuiz.length - 1) {
+        currentQuestionIndex++;
+        renderQuestions();
+    }
+}
+
+function setupSwipeDetection() {
+    questionsArea.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+
+    questionsArea.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleGesture();
+    });
 }
