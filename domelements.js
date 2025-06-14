@@ -13,3 +13,5 @@ const decreaseFontBtn = document.getElementById('decrease-font');
 const increaseFontBtn = document.getElementById('increase-font');
 const exportPdfBtn = document.getElementById('export-pdf');
 const themeToggleBtn = document.getElementById('theme-toggle');
+const questionInput = document.getElementById('question-input');
+const goBtn = document.getElementById('go-btn');
