@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    loadMaterias();  // Carrega as matérias no select ao iniciar a página
+    loadMaterias();
 
     startBtn.addEventListener('click', () => {
         const selectedSubject = subjectSelect.value;
