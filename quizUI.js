@@ -1,120 +1,81 @@
-// quizUI.js
-// Responsável por exibir as perguntas e gerenciar a navegação
-
-function startQuiz() {
-    currentQuestionIndex = 0;
-    quizArea.classList.remove('hidden');
-    totalQuestionsSpan.textContent = currentQuiz.length;
-    renderQuestions();
-}
-
-function renderQuestions() {
+function displayQuestion() {
     questionsArea.innerHTML = '';
-    updateProgress();
 
-    const question = currentQuiz[currentQuestionIndex];
-    const isAnswered = userAnswers[currentQuestionIndex] !== null;
-    const userOptionIndex = userAnswers[currentQuestionIndex];
-    const userOption = question.options[userOptionIndex];
+    const questionObj = questionsData[currentQuestion];
+    const questionDiv = document.createElement('div');
+    questionDiv.classList.add('question-container');
 
-    const questionElement = document.createElement('div');
-    questionElement.className = 'question-container';
+    const questionTitle = document.createElement('div');
+    questionTitle.classList.add('question');
+    questionTitle.textContent = questionObj.pergunta;
+    questionDiv.appendChild(questionTitle);
 
-    questionElement.innerHTML = `
-        <div class="question">Questão ${question.number} - ${question.text}</div>
-        <div class="options">
-            ${question.options.map((option, index) => `
-                <div class="option 
-                    ${isAnswered && userOptionIndex === index ? 'selected' : ''}
-                    ${isAnswered && option.correct ? 'correct' : ''}
-                    ${isAnswered && userOptionIndex === index && !option.correct ? 'incorrect' : ''}"
-                    data-option-index="${index}">
-                    <span class="option-letter">${option.letter.toUpperCase()})</span> ${option.text}
-                </div>
-            `).join('')}
-        </div>
-        ${isAnswered ? `
-            <div class="feedback ${userOption.correct ? 'correct-feedback' : 'incorrect-feedback'}">
-                ${userOption.correct ? '✓ Resposta Correta!' : '✗ Resposta Incorreta!'}
-            </div>
-            <button class="fundamentacao-btn">ℹ️ Ver Fundamentação</button>
-            <div class="fundamentacao">
-                ${question.explanation}
-            </div>
-        ` : ''}
-    `;
+    const optionsDiv = document.createElement('div');
+    optionsDiv.classList.add('options');
 
-    questionsArea.appendChild(questionElement);
+    questionObj.opcoes.forEach((opcao, index) => {
+        const optionButton = document.createElement('div');
+        optionButton.classList.add('option');
+        optionButton.textContent = opcao;
+        optionButton.addEventListener('click', () => selectOption(index, optionButton, questionObj));
+        optionsDiv.appendChild(optionButton);
+    });
 
-    if (!isAnswered) {
-        const options = questionElement.querySelectorAll('.option');
-        options.forEach(option => {
-            option.addEventListener('click', () => {
-                const index = parseInt(option.dataset.optionIndex);
-                userAnswers[currentQuestionIndex] = index;
-                renderQuestions();
-            });
-        });
+    questionDiv.appendChild(optionsDiv);
+    questionsArea.appendChild(questionDiv);
+
+    currentQuestionSpan.textContent = currentQuestion + 1;
+}
+
+function selectOption(selectedIndex, button, questionObj) {
+    const allOptions = document.querySelectorAll('.option');
+    allOptions.forEach(option => option.classList.remove('selected'));
+
+    button.classList.add('selected');
+
+    const feedbackDiv = document.createElement('div');
+
+    if (selectedIndex === questionObj.correta) {
+        button.classList.add('correct');
+        feedbackDiv.textContent = 'Resposta correta!';
+        feedbackDiv.classList.add('correct-feedback');
     } else {
-        const fundBtn = questionElement.querySelector('.fundamentacao-btn');
-        const fundBox = questionElement.querySelector('.fundamentacao');
-
-        fundBtn.addEventListener('click', () => {
-            fundBox.classList.toggle('show');
-        });
+        button.classList.add('incorrect');
+        feedbackDiv.textContent = `Resposta incorreta! A resposta correta era: ${questionObj.opcoes[questionObj.correta]}`;
+        feedbackDiv.classList.add('incorrect-feedback');
     }
 
-    updateNavigationButtons();
-    setupSwipeDetection();
-}
+    questionsArea.appendChild(feedbackDiv);
 
-function updateNavigationButtons() {
-    prevBtn.disabled = currentQuestionIndex === 0;
-    nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
-}
+    if (questionObj.fundamentacao) {
+        const fundamentacaoButton = document.createElement('button');
+        fundamentacaoButton.textContent = 'Ver Fundamentação';
+        fundamentacaoButton.classList.add('fundamentacao-btn');
+        fundamentacaoButton.addEventListener('click', () => toggleFundamentacao(fundamentacaoDiv));
 
-function updateProgress() {
-    currentQuestionSpan.textContent = currentQuestionIndex + 1;
-}
+        const fundamentacaoDiv = document.createElement('div');
+        fundamentacaoDiv.classList.add('fundamentacao');
+        fundamentacaoDiv.innerHTML = questionObj.fundamentacao;
 
-/* ================================
-   Suporte a Swipe (arrastar lateralmente) - Corrigido
-================================== */
-
-let touchStartX = 0;
-let touchEndX = 0;
-
-function handleGesture() {
-    const swipeDistance = touchEndX - touchStartX;
-    const swipeThreshold = 120; // Distância mínima para considerar swipe
-
-    if (swipeDistance > swipeThreshold && currentQuestionIndex > 0) {
-        // Swipe para a direita (voltar uma questão)
-        currentQuestionIndex--;
-        renderQuestions();
-    }
-
-    if (swipeDistance < -swipeThreshold && currentQuestionIndex < currentQuiz.length - 1) {
-        // Swipe para a esquerda (próxima questão)
-        currentQuestionIndex++;
-        renderQuestions();
+        questionsArea.appendChild(fundamentacaoButton);
+        questionsArea.appendChild(fundamentacaoDiv);
     }
 }
 
-function setupSwipeDetection() {
-    // Remove os antigos antes de adicionar novos (evita múltiplos binds)
-    questionsArea.removeEventListener('touchstart', swipeStartHandler);
-    questionsArea.removeEventListener('touchend', swipeEndHandler);
-
-    questionsArea.addEventListener('touchstart', swipeStartHandler);
-    questionsArea.addEventListener('touchend', swipeEndHandler);
+function toggleFundamentacao(div) {
+    div.classList.toggle('show');
 }
 
-function swipeStartHandler(e) {
-    touchStartX = e.changedTouches[0].screenX;
-}
+prevBtn.addEventListener('click', () => {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+    }
+});
 
-function swipeEndHandler(e) {
-    touchEndX = e.changedTouches[0].screenX;
-    handleGesture();
-}
+nextBtn.addEventListener('click', () => {
+    if (currentQuestion < totalQuestions - 1) {
+        currentQuestion++;
+        displayQuestion();
+    }
+});
