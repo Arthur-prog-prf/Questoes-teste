@@ -326,3 +326,32 @@ select {
         font-size: 1em;
     }
 }
+
+/* ================================
+   Hover nas Opções - Modo Escuro
+================================== */
+.dark-mode .option {
+    background: #3c4a5a;
+    color: #dce3ea;
+}
+
+.dark-mode .option:hover {
+    background: #4b5a6b;
+    color: #ffffff;
+}
+
+.dark-mode .option.selected {
+    background: #5c7ea5;
+    border-color: #4a9fe0;
+    color: #ffffff;
+}
+
+.dark-mode .correct {
+    background: #2ecc71 !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .incorrect {
+    background: #e74c3c !important;
+    color: #ffffff !important;
+}
