@@ -71,6 +71,9 @@ function renderQuestions() {
 function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
+    
+    // Atualiza o placeholder do input
+    questionInput.placeholder = `Ir para questão (1-${currentQuiz.length})`;
 }
 
 function updateProgress() {
