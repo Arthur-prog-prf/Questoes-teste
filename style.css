@@ -1,294 +1,373 @@
-/* ====================================
-   Tema Acadêmico Clean - Simulado Jurídico
-==================================== */
-
-/* Fontes base: Roboto e Open Sans */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
-
+/* ================================
+   Variáveis Globais de Cores e Fontes
+================================== */
 :root {
     --font-size: 16px;
     --primary-color: #2c3e50;
-    --secondary-color: #006699;
-    --background-color: #f9f9f9;
+    --secondary-color: #3498db;
+    --background-color: #f0f2f5;
     --text-color: #333;
-    --border-color: #ccc;
+    --border-color: #ddd;
     --card-background: #ffffff;
-    --highlight-color: #eef4fa;
-    --button-color: #006699;
-    --button-hover-color: #004d66;
-    --correct-color: #2e7d32;
-    --incorrect-color: #c62828;
+    --highlight-color: #eaf4fc;
+    --button-color: #3498db;
+    --button-hover-color: #2980b9;
 }
 
 body {
-    font-family: 'Open Sans', Arial, sans-serif;
+    font-family: 'Segoe UI', Arial, sans-serif;
     font-size: var(--font-size);
+    line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
     margin: 0;
     padding: 20px;
-    line-height: 1.7;
+    transition: all 0.3s ease;
+}
+
+.dark-mode {
+    --primary-color: #34495e;
+    --background-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --border-color: #4a5a6b;
+    --card-background: #3a4a5c;
+    --highlight-color: #4a5a6b;
+    --button-color: #5a6b7c;
+    --button-hover-color: #4a5a6b;
 }
 
 .quiz-container {
-    max-width: 950px;
-    margin: 30px auto;
+    max-width: 900px;
+    margin: 20px auto;
     padding: 30px;
     background: var(--card-background);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #quiz-title {
     text-align: center;
-    font-size: 28px;
     color: var(--primary-color);
-    margin-bottom: 8px;
+    font-size: 28px;
+    margin-bottom: 10px;
 }
 
 #quiz-description {
     text-align: center;
     font-size: 18px;
-    margin-bottom: 25px;
-    color: var(--secondary-color);
+    margin-bottom: 20px;
 }
 
 .controls {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-between;
-    margin-bottom: 25px;
+    margin: 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .control-group {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
+    align-items: center;
 }
 
 button, select {
-    padding: 10px 16px;
+    padding: 10px 18px;
     border-radius: 6px;
-    border: 1px solid var(--border-color);
     cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease-in-out;
 }
 
 button {
     background-color: var(--button-color);
     color: white;
     border: none;
+    font-weight: bold;
 }
 
 button:hover {
     background-color: var(--button-hover-color);
+    transform: translateY(-2px);
 }
 
 select {
+    border: 1px solid var(--border-color);
     background-color: white;
     color: var(--text-color);
 }
 
 .dark-mode select {
-    background-color: #2e3c4f;
+    background-color: #3a4a5c;
     color: white;
+    border-color: #5a6b7c;
 }
 
 .question-container {
+    margin-bottom: 30px;
     padding: 25px;
     border-radius: 10px;
     background-color: var(--card-background);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    margin-bottom: 25px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .question {
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: bold;
     margin-bottom: 15px;
+    font-size: calc(var(--font-size) + 2px);
 }
 
 .options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    margin: 20px 0;
 }
 
 .option {
-    padding: 12px 16px;
+    padding: 12px 15px;
+    margin: 8px 0;
     background: var(--highlight-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .option:hover {
-    background-color: #dbeaf7;
+    background: #dceaf6;
 }
 
 .option.selected {
-    background-color: #cfe5f4;
-    border-color: #99c2e0;
+    background: #bcdffb;
+    border-color: #a0c9e7;
 }
 
 .correct {
-    background-color: #e8f5e9 !important;
-    border-color: var(--correct-color) !important;
-    color: var(--correct-color);
+    background: #c8f7c5 !important;
+    border-color: #27ae60 !important;
+    color: #145a32 !important;
     font-weight: bold;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
 }
 
 .incorrect {
-    background-color: #fbe9e7 !important;
-    border-color: var(--incorrect-color) !important;
-    color: var(--incorrect-color);
-}
-
-.correct-feedback, .incorrect-feedback {
-    margin-top: 20px;
-    padding: 12px 18px;
-    border-radius: 8px;
-    font-weight: bold;
+    background: #f8d7da !important;
+    border-color: #f5c6cb !important;
 }
 
 .correct-feedback {
-    background-color: #e0f2f1;
-    color: var(--correct-color);
-    border-left: 5px solid var(--correct-color);
+    color: #27ae60;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 15px;
+    background-color: #eafaf1;
+    padding: 10px 15px;
+    border-left: 5px solid #27ae60;
+    border-radius: 6px;
 }
 
 .incorrect-feedback {
-    background-color: #ffebee;
-    color: var(--incorrect-color);
-    border-left: 5px solid var(--incorrect-color);
+    color: #c0392b;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 15px;
+    background-color: #fdecea;
+    padding: 10px 15px;
+    border-left: 5px solid #c0392b;
+    border-radius: 6px;
 }
 
 .fundamentacao-btn {
     margin-top: 15px;
     padding: 10px 20px;
-    background-color: var(--secondary-color);
+    background-color: #3498db;
     color: white;
+    border: none;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
-    transition: background 0.2s ease;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .fundamentacao-btn:hover {
-    background-color: #004d66;
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .fundamentacao {
-    margin-top: 15px;
-    padding: 12px 18px;
-    background: #f1f8ff;
+    margin-top: 20px;
+    padding: 0 15px;
+    background: #e2f0fd;
     border-left: 4px solid var(--secondary-color);
     border-radius: 6px;
+    opacity: 0;
     max-height: 0;
     overflow: hidden;
-    opacity: 0;
-    transition: all 0.4s ease;
+    transition: max-height 0.9s ease, opacity 0.9s ease, padding 0.9s ease;
     visibility: hidden;
 }
 
 .fundamentacao.show {
-    max-height: 800px;
     opacity: 1;
+    max-height: 800px;
+    padding: 15px;
     visibility: visible;
-    padding-top: 15px;
+}
+
+.dark-mode .fundamentacao {
+    background: #2a3a4c;
+    border-left-color: #4a9fe0;
 }
 
 .progress {
     text-align: center;
-    font-weight: 600;
+    margin: 20px 0;
+    font-weight: bold;
     color: var(--primary-color);
-    margin-bottom: 15px;
 }
 
 .navigation {
     display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
+    justify-content: space-between;
+    margin-top: 30px;
 }
 
 .navigation button {
-    flex: 0 1 auto;
-    padding: 10px 20px;
-    font-size: 15px;
+    flex: 1;
+    margin: 0 5px;
+}
+
+#theme-toggle {
+    background: #6c757d;
+}
+
+#theme-toggle:hover {
+    background: #5a6268;
 }
 
 .hidden {
     display: none;
 }
 
-/* Dark Mode */
-.dark-mode {
-    --background-color: #2c3e50;
-    --card-background: #34495e;
-    --text-color: #ecf0f1;
-    --border-color: #4a5a6b;
-    --highlight-color: #3c4a5a;
-    --button-color: #4a6fa5;
-    --button-hover-color: #3c5f85;
-}
-
-.dark-mode .option {
-    background-color: #3c4a5a;
-    color: #dce3ea;
-}
-
-.dark-mode .option:hover {
-    background-color: #4a5a6b;
-}
-
-.dark-mode .correct {
-    background-color: #2ecc71 !important;
-    color: #ffffff !important;
-}
-
-.dark-mode .incorrect {
-    background-color: #e74c3c !important;
-    color: #ffffff !important;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .controls, .control-group {
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .navigation {
-        flex-direction: column;
-    }
-
-    button, select {
-        width: 100%;
-    }
-}
-
-/* Impressão */
 @media print {
     body * {
         visibility: hidden;
     }
-
     .quiz-container, .quiz-container * {
         visibility: visible;
     }
-
+    .quiz-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+    }
     .controls, button, .fundamentacao-btn {
         display: none !important;
     }
-
     .fundamentacao {
         display: block !important;
-        max-height: none !important;
-        opacity: 1 !important;
-        visibility: visible !important;
     }
+}
+
+/* ============================
+   MOBILE RESPONSIVO - Botões Compactos
+============================ */
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 15px;
+    }
+
+    #quiz-title {
+        font-size: 22px;
+    }
+
+    #quiz-description {
+        font-size: 16px;
+    }
+
+    .control-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .control-group button,
+    .control-group select,
+    button, select {
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .question-container {
+        padding: 15px;
+        margin: 15px 0;
+    }
+
+    .option {
+        font-size: 14px;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .navigation button {
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+
+    .feedback {
+        font-size: 1em;
+    }
+
+    .fundamentacao-btn {
+        width: auto;
+        margin: 10px auto;
+        justify-content: center;
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+}
+
+/* Hover no Modo Escuro */
+.dark-mode .option {
+    background: #3c4a5a;
+    color: #dce3ea;
+}
+
+.dark-mode .option:hover {
+    background: #4b5a6b;
+    color: #ffffff;
+}
+
+.dark-mode .option.selected {
+    background: #5c7ea5;
+    border-color: #4a9fe0;
+    color: #ffffff;
+}
+
+.dark-mode .correct {
+    background: #2ecc71 !important;
+    color: #ffffff !important;
+}
+
+.dark-mode .incorrect {
+    background: #e74c3c !important;
+    color: #ffffff !important;
 }
