@@ -208,7 +208,7 @@ select {
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 1.2s ease, opacity 1.2s ease, padding 1.2s ease;
+    transition: max-height 3s ease, opacity 3s ease, padding 3s ease;
 }
 
 .fundamentacao.show {
