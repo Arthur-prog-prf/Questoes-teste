@@ -41,7 +41,7 @@ function selectOption(selectedIndex, button, questionObj) {
         feedbackDiv.classList.add('correct-feedback');
     } else {
         button.classList.add('incorrect');
-        feedbackDiv.textContent = `Resposta incorreta! A resposta correta era: ${questionObj.opcoes[questionObj.correta]}`;
+        feedbackDiv.textContent = `Resposta incorreta! A correta era: ${questionObj.opcoes[questionObj.correta]}`;
         feedbackDiv.classList.add('incorrect-feedback');
     }
 
