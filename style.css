@@ -77,11 +77,10 @@ body {
 }
 
 button, select {
-    padding: 10px 15px;
+    padding: 10px 18px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    font-size: var(--font-size);
 }
 
 button {
@@ -110,10 +109,10 @@ select {
 
 .question-container {
     margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 8px;
+    padding: 25px;
+    border-radius: 10px;
     background-color: var(--card-background);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .question {
@@ -123,12 +122,12 @@ select {
 }
 
 .options {
-    margin: 15px 0;
+    margin: 20px 0;
 }
 
 .option {
-    padding: 10px 12px;
-    margin: 6px 0;
+    padding: 12px 15px;
+    margin: 8px 0;
     background: var(--highlight-color);
     border: 1px solid var(--border-color);
     border-radius: 6px;
@@ -150,6 +149,7 @@ select {
     border-color: #27ae60 !important;
     color: #145a32 !important;
     font-weight: bold;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.6);
 }
 
 .incorrect {
@@ -160,54 +160,64 @@ select {
 .correct-feedback {
     color: #27ae60;
     font-weight: bold;
-    margin-top: 12px;
+    font-size: 1.2em;
+    margin-top: 15px;
     background-color: #eafaf1;
-    padding: 10px;
-    border-left: 4px solid #27ae60;
-    border-radius: 4px;
+    padding: 10px 15px;
+    border-left: 5px solid #27ae60;
+    border-radius: 6px;
 }
 
 .incorrect-feedback {
     color: #c0392b;
     font-weight: bold;
-    margin-top: 12px;
+    font-size: 1.2em;
+    margin-top: 15px;
     background-color: #fdecea;
-    padding: 10px;
-    border-left: 4px solid #c0392b;
-    border-radius: 4px;
+    padding: 10px 15px;
+    border-left: 5px solid #c0392b;
+    border-radius: 6px;
 }
 
 .fundamentacao-btn {
-    margin-top: 12px;
-    padding: 8px 15px;
+    margin-top: 15px;
+    padding: 10px 20px;
     background-color: #3498db;
     color: white;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .fundamentacao-btn:hover {
     background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .fundamentacao {
-    margin-top: 15px;
-    padding: 0 12px;
+    margin-top: 20px;
+    padding: 0 15px;
     background: #e2f0fd;
-    border-left: 3px solid var(--secondary-color);
-    border-radius: 4px;
+    border-left: 4px solid var(--secondary-color);
+    border-radius: 6px;
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: max-height 0.9s ease, opacity 0.9s ease, padding 0.9s ease;
+    visibility: hidden;
 }
 
 .fundamentacao.show {
     opacity: 1;
-    max-height: 500px;
-    padding: 12px;
+    max-height: 800px;
+    padding: 15px;
+    visibility: visible;
 }
 
 .dark-mode .fundamentacao {
@@ -217,56 +227,20 @@ select {
 
 .progress {
     text-align: center;
-    margin: 15px 0;
+    margin: 20px 0;
     font-weight: bold;
     color: var(--primary-color);
 }
 
-/* ====================== */
-/* NAVEGAÇÃO DESKTOP
-/* ====================== */
 .navigation {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--card-background);
-    padding: 10px 15px;
-    box-shadow: 0 -1px 8px rgba(0,0,0,0.1);
-    z-index: 100;
+    margin-top: 30px;
 }
 
-.nav-btn {
-    padding: 10px;
-    font-size: 14px;
-    white-space: nowrap;
-}
-
-.go-to-container {
-    display: flex;
-    gap: 5px;
-}
-
-#question-input {
-    width: 50px;
-    padding: 10px;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    text-align: center;
-    font-size: 14px;
-}
-
-#go-btn {
-    padding: 10px 15px;
-    font-size: 14px;
-}
-
-#quiz-area {
-    padding-bottom: 80px;
+.navigation button {
+    flex: 1;
+    margin: 0 5px;
 }
 
 #theme-toggle {
@@ -279,80 +253,6 @@ select {
 
 .hidden {
     display: none;
-}
-
-/* ============================
-   MOBILE RESPONSIVO
-   (3 botões como na imagem de referência)
-============================ */
-@media (max-width: 768px) {
-    .quiz-container {
-        padding: 15px;
-    }
-
-    #quiz-title {
-        font-size: 22px;
-    }
-
-    #quiz-description {
-        font-size: 16px;
-    }
-
-    .question-container {
-        padding: 15px;
-    }
-
-    .option {
-        padding: 8px 10px;
-        font-size: 14px;
-    }
-
-    /* NAVEGAÇÃO MOBILE - 3 BOTÕES IGUAIS */
-    .navigation {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 6px;
-        padding: 8px 10px;
-    }
-
-    .nav-btn {
-        width: 100%;
-        padding: 10px 5px;
-        font-size: 13px;
-        text-align: center;
-    }
-
-    .go-to-container {
-        display: none;
-    }
-
-    .go-to-question-btn {
-        display: block;
-        width: 100%;
-        padding: 10px 5px;
-        background-color: var(--button-color);
-        color: white;
-        border: none;
-        border-radius: 6px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    #quiz-area {
-        padding-bottom: 70px;
-    }
-}
-
-/* ====================== */
-/* MODOS DE TELA
-/* ====================== */
-@media (min-width: 769px) {
-    .go-to-question-btn {
-        display: none !important;
-    }
-    .go-to-container {
-        display: flex !important;
-    }
 }
 
 @media print {
@@ -374,14 +274,85 @@ select {
     }
     .fundamentacao {
         display: block !important;
-        opacity: 1 !important;
-        max-height: none !important;
     }
 }
 
-/* ====================== */
-/* ESTILOS PARA MODO ESCURO
-/* ====================== */
+/* ============================
+   MOBILE RESPONSIVO - Botões Compactos e em Linha
+============================ */
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 10px;
+    }
+
+    #quiz-title {
+        font-size: 20px;
+    }
+
+    #quiz-description {
+        font-size: 15px;
+    }
+
+    .control-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .control-group button,
+    .control-group select,
+    button, select {
+        width: auto;
+        padding: 6px 10px;
+        font-size: 12px;
+        margin: 2px;
+        display: inline-block;
+    }
+
+    .controls {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .question-container {
+        padding: 12px;
+        margin: 12px 0;
+    }
+
+    .option {
+        font-size: 13px;
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    .navigation {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+
+    .navigation button {
+        width: auto;
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .feedback {
+        font-size: 0.9em;
+    }
+
+    .fundamentacao-btn {
+        width: auto;
+        margin: 8px auto;
+        justify-content: center;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+/* Hover no Modo Escuro */
 .dark-mode .option {
     background: #3c4a5a;
     color: #dce3ea;
@@ -389,28 +360,21 @@ select {
 
 .dark-mode .option:hover {
     background: #4b5a6b;
+    color: #ffffff;
 }
 
 .dark-mode .option.selected {
     background: #5c7ea5;
+    border-color: #4a9fe0;
+    color: #ffffff;
 }
 
 .dark-mode .correct {
     background: #2ecc71 !important;
-    color: white !important;
+    color: #ffffff !important;
 }
 
 .dark-mode .incorrect {
     background: #e74c3c !important;
-    color: white !important;
-}
-
-.dark-mode #question-input {
-    background-color: #3a4a5c;
-    color: white;
-    border-color: #5a6b7c;
-}
-
-.dark-mode .go-to-question-btn {
-    background-color: var(--button-color);
+    color: #ffffff !important;
 }
