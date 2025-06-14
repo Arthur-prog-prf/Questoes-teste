@@ -1,12 +1,22 @@
+/* ================================
+   Variáveis Globais de Cores e Fontes
+================================== */
 :root {
     --font-size: 16px;
     --primary-color: #2c3e50;
     --secondary-color: #3498db;
-    --background-color: #f8f9fa;
+    --background-color: #f0f2f5;
     --text-color: #333;
     --border-color: #ddd;
+    --card-background: #ffffff;
+    --highlight-color: #eaf4fc;
+    --button-color: #3498db;
+    --button-hover-color: #2980b9;
 }
 
+/* ================================
+   Estilo Geral da Página
+================================== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     font-size: var(--font-size);
@@ -18,26 +28,49 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Modo Escuro */
 .dark-mode {
     --primary-color: #34495e;
     --background-color: #2c3e50;
     --text-color: #ecf0f1;
     --border-color: #4a5a6b;
+    --card-background: #3a4a5c;
+    --highlight-color: #4a5a6b;
+    --button-color: #5a6b7c;
+    --button-hover-color: #4a5a6b;
 }
 
+/* ================================
+   Container Principal
+================================== */
 .quiz-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 20px auto;
-    padding: 25px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.dark-mode .quiz-container {
-    background: var(--primary-color);
+/* ================================
+   Título e Descrição
+================================== */
+#quiz-title {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 28px;
+    margin-bottom: 10px;
 }
 
+#quiz-description {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+/* ================================
+   Controles (Botões e Select)
+================================== */
 .controls {
     display: flex;
     justify-content: space-between;
@@ -55,26 +88,28 @@ body {
 }
 
 button, select {
-    padding: 8px 15px;
-    border-radius: 5px;
+    padding: 10px 18px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease-in-out;
 }
 
 button {
-    background-color: var(--secondary-color);
+    background-color: var(--button-color);
     color: white;
     border: none;
+    font-weight: bold;
 }
 
 button:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
+    background-color: var(--button-hover-color);
+    transform: translateY(-2px);
 }
 
 select {
     border: 1px solid var(--border-color);
     background-color: white;
+    color: var(--text-color);
 }
 
 .dark-mode select {
@@ -83,16 +118,15 @@ select {
     border-color: #5a6b7c;
 }
 
+/* ================================
+   Questões e Opções
+================================== */
 .question-container {
     margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.dark-mode .question-container {
-    background-color: #3a4a5c;
+    padding: 25px;
+    border-radius: 10px;
+    background-color: var(--card-background);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .question {
@@ -108,34 +142,20 @@ select {
 .option {
     padding: 12px 15px;
     margin: 8px 0;
-    background: #f9f9f9;
+    background: var(--highlight-color);
     border: 1px solid var(--border-color);
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
-}
-
-.dark-mode .option {
-    background: #4a5a6b;
-    border-color: #5a6b7c;
+    transition: all 0.2s ease;
 }
 
 .option:hover {
-    background: #e9e9e9;
-}
-
-.dark-mode .option:hover {
-    background: #5a6b7c;
+    background: #dceaf6;
 }
 
 .option.selected {
-    background: #d4e6f7;
-    border-color: #b3d4fc;
-}
-
-.dark-mode .option.selected {
-    background: #3a5a7c;
-    border-color: #4a6b8c;
+    background: #bcdffb;
+    border-color: #a0c9e7;
 }
 
 .correct {
@@ -148,6 +168,9 @@ select {
     border-color: #f5c6cb !important;
 }
 
+/* ================================
+   Feedback de Resposta
+================================== */
 .feedback {
     margin-top: 15px;
     font-weight: bold;
@@ -161,9 +184,16 @@ select {
     color: #dc3545;
 }
 
+/* ================================
+   Botão de Fundamentação
+================================== */
 .fundamentacao-btn {
     margin-top: 15px;
     background: #17a2b8;
+}
+
+.fundamentacao-btn:hover {
+    background: #138496;
 }
 
 .fundamentacao {
@@ -172,7 +202,7 @@ select {
     padding: 15px;
     background: #e2f0fd;
     border-left: 4px solid var(--secondary-color);
-    border-radius: 5px;
+    border-radius: 6px;
 }
 
 .dark-mode .fundamentacao {
@@ -180,10 +210,14 @@ select {
     border-left-color: #4a9fe0;
 }
 
+/* ================================
+   Barra de Progresso e Navegação
+================================== */
 .progress {
     text-align: center;
     margin: 20px 0;
     font-weight: bold;
+    color: var(--primary-color);
 }
 
 .navigation {
@@ -192,14 +226,32 @@ select {
     margin-top: 30px;
 }
 
-.hidden {
-    display: none;
+.navigation button {
+    flex: 1;
+    margin: 0 5px;
 }
 
+/* ================================
+   Botão de Tema
+================================== */
 #theme-toggle {
     background: #6c757d;
 }
 
+#theme-toggle:hover {
+    background: #5a6268;
+}
+
+/* ================================
+   Elementos Escondidos
+================================== */
+.hidden {
+    display: none;
+}
+
+/* ================================
+   Estilo para Impressão
+================================== */
 @media print {
     body * {
         visibility: hidden;
