@@ -1,7 +1,3 @@
-
-// main.js
-// Este é o arquivo que conecta tudo. Aqui ficam os listeners de clique.
-
 document.addEventListener('DOMContentLoaded', () => {
     loadMaterias();
 
