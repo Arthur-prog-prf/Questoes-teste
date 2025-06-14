@@ -201,20 +201,20 @@ select {
 .fundamentacao {
     display: none;
     margin-top: 20px;
-    padding: 15px;
+    padding: 0 15px;
     background: #e2f0fd;
     border-left: 4px solid var(--secondary-color);
     border-radius: 6px;
     opacity: 0;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.4s ease;
+    transition: max-height 0.6s ease, opacity 0.6s ease, padding 0.6s ease;
 }
 
 .fundamentacao.show {
     display: block;
     opacity: 1;
-    max-height: 500px;
+    max-height: 800px;
     padding: 15px;
 }
 
@@ -253,9 +253,6 @@ select {
     display: none;
 }
 
-/* ================================
-   Estilo para Impressão
-================================== */
 @media print {
     body * {
         visibility: hidden;
@@ -278,9 +275,6 @@ select {
     }
 }
 
-/* ================================
-   Responsividade Mobile/Tablet
-================================== */
 @media (max-width: 768px) {
     .quiz-container {
         padding: 15px;
@@ -327,9 +321,7 @@ select {
     }
 }
 
-/* ================================
-   Hover nas Opções - Modo Escuro
-================================== */
+/* Hover no Modo Escuro */
 .dark-mode .option {
     background: #3c4a5a;
     color: #dce3ea;
