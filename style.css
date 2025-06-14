@@ -198,8 +198,8 @@ select {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Transição corrigida da Fundamentação (sem display none) */
 .fundamentacao {
-    display: none;
     margin-top: 20px;
     padding: 0 15px;
     background: #e2f0fd;
@@ -209,13 +209,14 @@ select {
     max-height: 0;
     overflow: hidden;
     transition: max-height 3s ease, opacity 3s ease, padding 3s ease;
+    visibility: hidden;
 }
 
 .fundamentacao.show {
-    display: block;
     opacity: 1;
     max-height: 800px;
     padding: 15px;
+    visibility: visible;
 }
 
 .dark-mode .fundamentacao {
