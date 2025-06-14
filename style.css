@@ -233,14 +233,48 @@ select {
 }
 
 .navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 30px;
+    display: none; /* Esconde a antiga navegação */
 }
 
-.navigation button {
-    flex: 1;
-    margin: 0 5px;
+.fixed-navigation {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--card-background);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 20px;
+    z-index: 999;
+}
+
+.fixed-navigation button {
+    flex: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.go-to-question {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#goto-input {
+    width: 60px;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.dark-mode .fixed-navigation {
+    background-color: #3a4a5c;
 }
 
 #theme-toggle {
@@ -269,7 +303,7 @@ select {
         width: 100%;
         box-shadow: none;
     }
-    .controls, button, .fundamentacao-btn {
+    .controls, button, .fundamentacao-btn, .fixed-navigation {
         display: none !important;
     }
     .fundamentacao {
@@ -277,9 +311,7 @@ select {
     }
 }
 
-/* ============================
-   MOBILE RESPONSIVO - Botões Compactos e em Linha
-============================ */
+/* MOBILE RESPONSIVO */
 @media (max-width: 768px) {
     .quiz-container {
         padding: 10px;
@@ -350,9 +382,13 @@ select {
         padding: 6px 10px;
         font-size: 12px;
     }
+
+    .fixed-navigation {
+        flex-direction: column;
+        gap: 8px;
+    }
 }
 
-/* Hover no Modo Escuro */
 .dark-mode .option {
     background: #3c4a5a;
     color: #dce3ea;
