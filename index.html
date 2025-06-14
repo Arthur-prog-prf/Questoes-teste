@@ -4,14 +4,6 @@
     <meta charset="UTF-8">
     <title>Quiz Interativo</title>
     <link rel="stylesheet" href="style.css">
-    <script defer src="quizData.js"></script>
-    <script defer src="quizUI.js"></script>
-    <script defer src="controls.js"></script>
-    <script defer src="quizLoader.js"></script>
-    <script defer src="materias.js"></script>
-    <script defer src="materiasData.js"></script>
-    <script defer src="domElements.js"></script>
-    <script defer src="main.js"></script>
 </head>
 <body>
     <div class="quiz-container">
@@ -22,7 +14,6 @@
             <div class="control-group">
                 <select id="subjectSelect">
                     <option value="">Selecione a matéria</option>
-                    <!-- Opções dinâmicas via JS -->
                 </select>
                 <button id="startBtn">Iniciar Simulado</button>
             </div>
@@ -40,10 +31,20 @@
         </div>
     </div>
 
-    <!-- Botões Flutuantes Fixos no canto inferior direito -->
+    <!-- Botões Flutuantes -->
     <button id="decreaseFontBtn">A-</button>
     <button id="increaseFontBtn">A+</button>
     <button id="exportPdfBtn">📝</button>
     <button id="theme-toggle">🌗</button>
+
+    <!-- Scripts carregados no final para garantir DOM completo -->
+    <script src="quizData.js"></script>
+    <script src="quizUI.js"></script>
+    <script src="controls.js"></script>
+    <script src="quizLoader.js"></script>
+    <script src="materias.js"></script>
+    <script src="materiasData.js"></script>
+    <script src="domElements.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
