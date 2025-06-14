@@ -276,7 +276,7 @@ select {
 }
 
 /* ============================
-   MOBILE RESPONSIVO (com botões mais estreitos)
+   MOBILE RESPONSIVO - Botões Compactos
 ============================ */
 @media (max-width: 768px) {
     .quiz-container {
@@ -292,22 +292,20 @@ select {
     }
 
     .control-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
     }
 
     .control-group button,
-    .control-group select {
-        width: 80%;
-        margin: 0 auto 10px auto;
-        display: block;
-    }
-
+    .control-group select,
     button, select {
-        width: 80%;
-        margin: 0 auto 10px auto;
-        display: block;
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
+        margin: 5px;
+        display: inline-block;
     }
 
     .question-container {
@@ -322,19 +320,16 @@ select {
     }
 
     .navigation {
-        flex-direction: column;
-        gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
     }
 
     .navigation button {
-        margin: 5px auto;
-        width: 80%;
-        display: block;
-    }
-
-    .controls {
-        flex-direction: column;
-        gap: 10px;
+        width: auto;
+        padding: 8px 14px;
+        font-size: 14px;
     }
 
     .feedback {
@@ -342,9 +337,11 @@ select {
     }
 
     .fundamentacao-btn {
-        width: 80%;
+        width: auto;
         margin: 10px auto;
         justify-content: center;
+        padding: 8px 14px;
+        font-size: 14px;
     }
 }
 
