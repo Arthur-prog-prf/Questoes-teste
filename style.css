@@ -233,7 +233,7 @@ select {
 }
 
 .navigation {
-    display: none; /* Esconde a antiga navegação */
+    display: none; /* Ocultamos a navegação antiga */
 }
 
 .fixed-navigation {
@@ -263,14 +263,16 @@ select {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 0 8px;
 }
 
 #goto-input {
     width: 60px;
-    padding: 6px 8px;
-    border-radius: 4px;
+    padding: 8px;
+    border-radius: 6px;
     border: 1px solid var(--border-color);
     text-align: center;
+    font-size: 16px;
 }
 
 .dark-mode .fixed-navigation {
@@ -311,7 +313,9 @@ select {
     }
 }
 
-/* MOBILE RESPONSIVO */
+/* ============================
+   MOBILE RESPONSIVO
+============================ */
 @media (max-width: 768px) {
     .quiz-container {
         padding: 10px;
