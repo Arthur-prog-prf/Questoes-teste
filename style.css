@@ -223,63 +223,50 @@ select {
 }
 
 /* ====================== */
-/* NAVEGAÇÃO OTIMIZADA */
+/* NAVEGAÇÃO DESKTOP
 /* ====================== */
 .navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 6px;
+    gap: 8px;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--card-background);
-    padding: 8px 12px;
+    padding: 10px 15px;
     box-shadow: 0 -1px 8px rgba(0,0,0,0.1);
     z-index: 100;
 }
 
 .nav-btn {
-    flex: 1;
-    padding: 8px 4px;
-    min-width: 70px;
-    max-width: 100px;
-    font-size: 13px;
+    padding: 10px;
+    font-size: 14px;
     white-space: nowrap;
 }
 
-.go-to-question {
+.go-to-container {
     display: flex;
-    flex: 2;
-    min-width: 120px;
-    max-width: 160px;
-    gap: 4px;
+    gap: 5px;
 }
 
 #question-input {
-    flex: 1;
-    padding: 8px;
+    width: 50px;
+    padding: 10px;
     border: 1px solid var(--border-color);
     border-radius: 5px;
     text-align: center;
-    font-size: 13px;
-    min-width: 0;
-}
-
-#question-input::placeholder {
-    color: #999;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 #go-btn {
-    padding: 8px 10px;
-    min-width: 35px;
-    font-size: 13px;
+    padding: 10px 15px;
+    font-size: 14px;
 }
 
 #quiz-area {
-    padding-bottom: 70px;
+    padding-bottom: 80px;
 }
 
 #theme-toggle {
@@ -296,6 +283,7 @@ select {
 
 /* ============================
    MOBILE RESPONSIVO
+   (Estilo como na imagem de referência)
 ============================ */
 @media (max-width: 768px) {
     .quiz-container {
@@ -319,54 +307,53 @@ select {
         font-size: 14px;
     }
 
-    /* NAVEGAÇÃO MOBILE */
+    /* NAVEGAÇÃO MOBILE - 3 BOTÕES SEPARADOS */
     .navigation {
-        padding: 6px 8px;
-        gap: 4px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 5px;
+        padding: 8px 10px;
     }
-    
+
     .nav-btn {
-        padding: 6px 3px;
-        font-size: 12px;
-        min-width: 60px;
-        max-width: 80px;
+        width: 100%;
+        padding: 10px 5px;
+        font-size: 13px;
+        text-align: center;
     }
-    
-    .go-to-question {
-        min-width: 100px;
-        max-width: 130px;
+
+    .go-to-container {
+        display: none;
     }
-    
-    #question-input {
-        padding: 6px;
-        font-size: 12px;
+
+    .go-to-question-btn {
+        display: block !important;
+        width: 100%;
+        padding: 10px 5px;
     }
-    
-    #question-input::placeholder {
-        font-size: 11px;
-    }
-    
-    #go-btn {
-        padding: 6px 8px;
-        font-size: 12px;
-    }
-    
+
     #quiz-area {
-        padding-bottom: 60px;
+        padding-bottom: 70px;
     }
+}
+
+/* Classes adicionais para o novo layout mobile */
+.go-to-question-btn {
+    display: none;
+    background-color: var(--button-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 /* ====================== */
 /* MODOS DE TELA
 /* ====================== */
-@media (min-width: 992px) {
-    .nav-btn {
-        min-width: 80px;
-        max-width: 110px;
-    }
-    
-    .go-to-question {
-        max-width: 150px;
+@media (min-width: 769px) {
+    .go-to-question-btn {
+        display: none !important;
     }
 }
 
@@ -424,8 +411,4 @@ select {
     background-color: #3a4a5c;
     color: white;
     border-color: #5a6b7c;
-}
-
-.dark-mode #question-input::placeholder {
-    color: #b0b0b0;
 }
