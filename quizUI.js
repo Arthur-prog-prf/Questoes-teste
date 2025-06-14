@@ -78,7 +78,7 @@ function updateProgress() {
 }
 
 /* ================================
-   Suporte a Swipe (arrastar lateralmente)
+   Suporte a Swipe (arrastar lateralmente) - Corrigido
 ================================== */
 
 let touchStartX = 0;
@@ -86,27 +86,35 @@ let touchEndX = 0;
 
 function handleGesture() {
     const swipeDistance = touchEndX - touchStartX;
+    const swipeThreshold = 120; // Distância mínima para considerar swipe
 
-    // Swipe para direita (voltar questão)
-    if (swipeDistance > 50 && currentQuestionIndex > 0) {
+    if (swipeDistance > swipeThreshold && currentQuestionIndex > 0) {
+        // Swipe para a direita (voltar uma questão)
         currentQuestionIndex--;
         renderQuestions();
     }
 
-    // Swipe para esquerda (próxima questão)
-    if (swipeDistance < -50 && currentQuestionIndex < currentQuiz.length - 1) {
+    if (swipeDistance < -swipeThreshold && currentQuestionIndex < currentQuiz.length - 1) {
+        // Swipe para a esquerda (próxima questão)
         currentQuestionIndex++;
         renderQuestions();
     }
 }
 
 function setupSwipeDetection() {
-    questionsArea.addEventListener('touchstart', e => {
-        touchStartX = e.changedTouches[0].screenX;
-    });
+    // Remove os antigos antes de adicionar novos (evita múltiplos binds)
+    questionsArea.removeEventListener('touchstart', swipeStartHandler);
+    questionsArea.removeEventListener('touchend', swipeEndHandler);
 
-    questionsArea.addEventListener('touchend', e => {
-        touchEndX = e.changedTouches[0].screenX;
-        handleGesture();
-    });
+    questionsArea.addEventListener('touchstart', swipeStartHandler);
+    questionsArea.addEventListener('touchend', swipeEndHandler);
+}
+
+function swipeStartHandler(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}
+
+function swipeEndHandler(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleGesture();
 }
