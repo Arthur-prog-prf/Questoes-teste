@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Carrega as matérias disponíveis
     loadMaterias();
 
+    // Configura o botão de iniciar quiz
     startBtn.addEventListener('click', () => {
         const file = materiasSelect.value;
         if (file) {
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Configura os botões de navegação
     prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
