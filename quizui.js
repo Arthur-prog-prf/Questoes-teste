@@ -14,7 +14,7 @@ function startQuiz() {
 function setupQuestionNavigation() {
     const goToInput = document.getElementById('go-to-question');
     goToInput.max = currentQuiz.length;
-    goToInput.min = 1; // Definido aqui inicialmente
+    goToInput.min = 1;
 
     const validateAndNavigate = (value) => {
         const questionNum = parseInt(value);
@@ -27,9 +27,16 @@ function setupQuestionNavigation() {
             goToInput.value = '';
             goToInput.placeholder = 'Ir para questão';
         } else {
+            // Adiciona a classe de erro e altera o placeholder
             goToInput.classList.add('error');
             goToInput.value = '';
             goToInput.placeholder = `Inválido (1 a ${maxQuestions})`;
+
+            // Remove a classe de erro e restaura o placeholder após 2 segundos
+            setTimeout(() => {
+                goToInput.classList.remove('error');
+                goToInput.placeholder = 'Ir para questão';
+            }, 2000); // 2000 milissegundos = 2 segundos
         }
     };
 
@@ -60,7 +67,7 @@ function renderQuestions() {
         <div class="question">Questão ${question.number} - ${question.text}</div>
         <div class="options">
             ${question.options.map((option, index) => `
-                <div class="option 
+                <div class="option
                     ${isAnswered && userOptionIndex === index ? 'selected' : ''}
                     ${isAnswered && option.correct ? 'correct' : ''}
                     ${isAnswered && userOptionIndex === index && !option.correct ? 'incorrect' : ''}"
@@ -108,7 +115,7 @@ function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
     document.getElementById('go-to-question').max = currentQuiz.length;
-    document.getElementById('go-to-question').min = 1; // <--- Adicionada esta linha
+    document.getElementById('go-to-question').min = 1;
 }
 
 function updateProgress() {
@@ -134,8 +141,6 @@ function handleGesture() {
 }
 
 function setupSwipeDetection() {
-    // É uma boa prática remover os event listeners antes de adicioná-los novamente
-    // para evitar que se acumulem se a função for chamada múltiplas vezes.
     questionsArea.removeEventListener('touchstart', swipeStartHandler);
     questionsArea.removeEventListener('touchend', swipeEndHandler);
 
