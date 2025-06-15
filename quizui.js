@@ -16,28 +16,26 @@ function setupQuestionNavigation() {
     goToInput.max = currentQuiz.length;
     
     goToInput.addEventListener('change', (e) => {
-        handleQuestionNavigation(e.target.value);
+        const questionNum = parseInt(e.target.value);
+        if (!isNaN(questionNum)) {
+            const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+            currentQuestionIndex = newIndex;
+            renderQuestions();
+            e.target.value = '';
+        }
     });
     
     goToInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            handleQuestionNavigation(e.target.value);
+            const questionNum = parseInt(e.target.value);
+            if (!isNaN(questionNum)) {
+                const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+                currentQuestionIndex = newIndex;
+                renderQuestions();
+                e.target.value = '';
+            }
         }
     });
-}
-
-function handleQuestionNavigation(inputValue) {
-    const questionNum = parseInt(inputValue);
-    if (!isNaN(questionNum)) {
-        if (questionNum < 1 || questionNum > currentQuiz.length) {
-            alert(`Por favor, insira um número entre 1 e ${currentQuiz.length}`);
-            document.getElementById('go-to-question').value = '';
-            return;
-        }
-        currentQuestionIndex = questionNum - 1;
-        renderQuestions();
-        document.getElementById('go-to-question').value = '';
-    }
 }
 
 function renderQuestions() {
@@ -47,7 +45,7 @@ function renderQuestions() {
     const question = currentQuiz[currentQuestionIndex];
     const isAnswered = userAnswers[currentQuestionIndex] !== null;
     const userOptionIndex = userAnswers[currentQuestionIndex];
-    const userOption = isAnswered ? question.options[userOptionIndex] : null;
+    const userOption = question.options[userOptionIndex];
 
     const questionElement = document.createElement('div');
     questionElement.className = 'question-container';
@@ -90,6 +88,7 @@ function renderQuestions() {
     } else {
         const fundBtn = questionElement.querySelector('.fundamentacao-btn');
         const fundBox = questionElement.querySelector('.fundamentacao');
+
         fundBtn.addEventListener('click', () => {
             fundBox.classList.toggle('show');
         });

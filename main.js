@@ -1,10 +1,8 @@
-import { domElements } from './domElements.js';
-
 document.addEventListener('DOMContentLoaded', () => {
     loadMaterias();
 
-    domElements.startBtn.addEventListener('click', () => {
-        const file = domElements.materiasSelect.value;
+    startBtn.addEventListener('click', () => {
+        const file = materiasSelect.value;
         if (file) {
             loadQuiz(file);
         } else {
@@ -12,14 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    domElements.prevBtn.addEventListener('click', () => {
+    prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             renderQuestions();
         }
     });
 
-    domElements.nextBtn.addEventListener('click', () => {
+    nextBtn.addEventListener('click', () => {
         if (currentQuestionIndex < currentQuiz.length - 1) {
             currentQuestionIndex++;
             renderQuestions();

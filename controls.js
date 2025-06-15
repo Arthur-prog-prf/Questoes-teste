@@ -1,37 +1,28 @@
-import { domElements } from './domElements.js';
+// controls.js
+// Controles extras: fonte, tema, PDF
 
-let fontSize = 16;
+let fontSize = 16; // Valor inicial padrão
 
-// Controle de tamanho de fonte
-domElements.decreaseFontBtn.addEventListener('click', () => {
+decreaseFontBtn.addEventListener('click', () => {
     if (fontSize > 12) {
         fontSize -= 2;
         document.documentElement.style.setProperty('--font-size', `${fontSize}px`);
     }
 });
 
-domElements.increaseFontBtn.addEventListener('click', () => {
+increaseFontBtn.addEventListener('click', () => {
     if (fontSize < 24) {
         fontSize += 2;
         document.documentElement.style.setProperty('--font-size', `${fontSize}px`);
     }
 });
 
-// Controle de tema
-domElements.themeToggleBtn.addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-    domElements.themeToggleBtn.textContent = 
-        document.body.classList.contains('dark-mode') ? 'Modo Claro' : 'Modo Escuro';
-});
-
-// Exportação para PDF
-domElements.exportPdfBtn.addEventListener('click', exportToPdf);
+exportPdfBtn.addEventListener('click', exportToPdf);
 
 function exportToPdf() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     let y = 20;
-    
     doc.setFontSize(16);
     doc.text("Lista de Exercícios", 105, y, { align: 'center' });
     y += 10;
@@ -59,3 +50,8 @@ function exportToPdf() {
 
     doc.save("lista-de-exercicios.pdf");
 }
+
+themeToggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    themeToggleBtn.textContent = document.body.classList.contains('dark-mode') ? 'Modo Claro' : 'Modo Escuro';
+});

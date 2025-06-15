@@ -1,60 +1,51 @@
-/* ============================================
-   ESTILOS GLOBAIS E VARIÁVEIS DE CORES/FONTES
-   ============================================ */
 :root {
-    --tamanho-fonte: 16px;
-    --cor-primaria: #2c3e50;
-    --cor-secundaria: #3498db;
-    --cor-fundo: #f0f2f5;
-    --cor-texto: #333;
-    --cor-borda: #ddd;
-    --cor-cartao: #ffffff;
-    --cor-destaque: #eaf4fc;
-    --cor-botao: #3498db;
-    --cor-botao-hover: #2980b9;
+    --font-size: 16px;
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --background-color: #f0f2f5;
+    --text-color: #333;
+    --border-color: #ddd;
+    --card-background: #ffffff;
+    --highlight-color: #eaf4fc;
+    --button-color: #3498db;
+    --button-hover-color: #2980b9;
 }
 
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    font-size: var(--tamanho-fonte);
+    font-size: var(--font-size);
     line-height: 1.6;
-    color: var(--cor-texto);
-    background-color: var(--cor-fundo);
+    color: var(--text-color);
+    background-color: var(--background-color);
     margin: 0;
     padding: 20px;
     padding-bottom: 100px;
     transition: all 0.3s ease;
 }
 
-/* ============================================
-   TEMA ESCURO
-   ============================================ */
-.modo-escuro {
-    --cor-primaria: #34495e;
-    --cor-fundo: #2c3e50;
-    --cor-texto: #ecf0f1;
-    --cor-borda: #4a5a6b;
-    --cor-cartao: #3a4a5c;
-    --cor-destaque: #4a5a6b;
-    --cor-botao: #5a6b7c;
-    --cor-botao-hover: #4a5a6b;
+.dark-mode {
+    --primary-color: #34495e;
+    --background-color: #2c3e50;
+    --text-color: #ecf0f1;
+    --border-color: #4a5a6b;
+    --card-background: #3a4a5c;
+    --highlight-color: #4a5a6b;
+    --button-color: #5a6b7c;
+    --button-hover-color: #4a5a6b;
 }
 
-/* ============================================
-   CONTAINER PRINCIPAL DO QUIZ
-   ============================================ */
 .quiz-container {
     max-width: 900px;
     margin: 20px auto;
     padding: 30px;
-    background: var(--cor-cartao);
+    background: var(--card-background);
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 #quiz-title {
     text-align: center;
-    color: var(--cor-primaria);
+    color: var(--primary-color);
     font-size: 28px;
     margin-bottom: 10px;
 }
@@ -65,9 +56,6 @@ body {
     margin-bottom: 10px;
 }
 
-/* ============================================
-   GRUPOS DE CONTROLE E BOTÕES
-   ============================================ */
 .control-group {
     display: flex;
     gap: 10px;
@@ -83,7 +71,7 @@ body {
     gap: 10px;
     margin-top: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid var(--cor-borda);
+    border-bottom: 1px solid var(--border-color);
 }
 
 button, select {
@@ -94,44 +82,41 @@ button, select {
 }
 
 button {
-    background-color: var(--cor-botao);
+    background-color: var(--button-color);
     color: white;
     border: none;
     font-weight: bold;
 }
 
 button:hover {
-    background-color: var(--cor-botao-hover);
+    background-color: var(--button-hover-color);
     transform: translateY(-2px);
 }
 
 select {
-    border: 1px solid var(--cor-borda);
+    border: 1px solid var(--border-color);
     background-color: white;
-    color: var(--cor-texto);
+    color: var(--text-color);
 }
 
-.modo-escuro select {
+.dark-mode select {
     background-color: #3a4a5c;
     color: white;
     border-color: #5a6b7c;
 }
 
-/* ============================================
-   ESTILOS DAS QUESTÕES
-   ============================================ */
 .question-container {
     margin-bottom: 30px;
     padding: 25px;
     border-radius: 10px;
-    background-color: var(--cor-cartao);
+    background-color: var(--card-background);
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .question {
     font-weight: bold;
     margin-bottom: 15px;
-    font-size: calc(var(--tamanho-fonte) + 2px);
+    font-size: calc(var(--font-size) + 2px);
 }
 
 .options {
@@ -141,8 +126,8 @@ select {
 .option {
     padding: 12px 15px;
     margin: 8px 0;
-    background: var(--cor-destaque);
-    border: 1px solid var(--cor-borda);
+    background: var(--highlight-color);
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -157,9 +142,6 @@ select {
     border-color: #a0c9e7;
 }
 
-/* ============================================
-   FEEDBACK DE RESPOSTAS
-   ============================================ */
 .correct {
     background: #c8f7c5 !important;
     border-color: #27ae60 !important;
@@ -195,9 +177,6 @@ select {
     border-radius: 6px;
 }
 
-/* ============================================
-   FUNDAMENTAÇÃO TEÓRICA
-   ============================================ */
 .fundamentacao-btn {
     margin-top: 15px;
     padding: 10px 20px;
@@ -223,7 +202,7 @@ select {
     margin-top: 20px;
     padding: 0 15px;
     background: #e2f0fd;
-    border-left: 4px solid var(--cor-secundaria);
+    border-left: 4px solid var(--secondary-color);
     border-radius: 6px;
     opacity: 0;
     max-height: 0;
@@ -239,14 +218,18 @@ select {
     visibility: visible;
 }
 
-.modo-escuro .fundamentacao {
+.dark-mode .fundamentacao {
     background: #2a3a4c;
     border-left-color: #4a9fe0;
 }
 
-/* ============================================
-   BARRA DE NAVEGAÇÃO FIXA
-   ============================================ */
+.progress {
+    text-align: center;
+    margin: 20px 0;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
 .navigation {
     position: fixed;
     bottom: 20px;
@@ -256,7 +239,7 @@ select {
     justify-content: center;
     align-items: center;
     gap: 15px;
-    background: var(--cor-cartao);
+    background: var(--card-background);
     padding: 12px 20px;
     border-radius: 50px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -281,45 +264,35 @@ select {
 #go-to-question {
     width: 120px;
     padding: 10px 15px;
-    border: 2px solid var(--cor-borda);
+    border: 2px solid var(--border-color);
     border-radius: 30px;
     text-align: center;
     font-size: 14px;
-    background: var(--cor-cartao);
-    color: var(--cor-texto);
+    background: var(--card-background);
+    color: var(--text-color);
     transition: all 0.3s ease;
 }
 
 #go-to-question:focus {
     outline: none;
-    border-color: var(--cor-secundaria);
+    border-color: var(--secondary-color);
     box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
 }
 
 #go-to-question::placeholder {
-    color: var(--cor-texto);
+    color: var(--text-color);
     opacity: 0.6;
 }
 
-#go-to-question:invalid {
-    border-color: #e74c3c;
-    animation: shake 0.5s;
+.dark-mode #go-to-question {
+    background: var(--card-background);
+    border-color: var(--border-color);
 }
 
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-5px); }
-    40%, 80% { transform: translateX(5px); }
+.hidden {
+    display: none;
 }
 
-.modo-escuro #go-to-question {
-    background: var(--cor-cartao);
-    border-color: var(--cor-borda);
-}
-
-/* ============================================
-   ESTILOS PARA IMPRESSÃO
-   ============================================ */
 @media print {
     body * {
         visibility: hidden;
@@ -342,9 +315,6 @@ select {
     }
 }
 
-/* ============================================
-   RESPONSIVIDADE PARA DISPOSITIVOS MÓVEIS
-   ============================================ */
 @media (max-width: 768px) {
     body {
         padding-bottom: 90px;
@@ -425,31 +395,28 @@ select {
     }
 }
 
-/* ============================================
-   ESTILOS ESPECÍFICOS PARA MODO ESCURO
-   ============================================ */
-.modo-escuro .option {
+.dark-mode .option {
     background: #3c4a5a;
     color: #dce3ea;
 }
 
-.modo-escuro .option:hover {
+.dark-mode .option:hover {
     background: #4b5a6b;
     color: #ffffff;
 }
 
-.modo-escuro .option.selected {
+.dark-mode .option.selected {
     background: #5c7ea5;
     border-color: #4a9fe0;
     color: #ffffff;
 }
 
-.modo-escuro .correct {
+.dark-mode .correct {
     background: #2ecc71 !important;
     color: #ffffff !important;
 }
 
-.modo-escuro .incorrect {
+.dark-mode .incorrect {
     background: #e74c3c !important;
     color: #ffffff !important;
 }
