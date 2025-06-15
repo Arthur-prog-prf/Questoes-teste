@@ -62,7 +62,7 @@ Fundamentação:
 Conforme o art. 186 do Código Civil, o ato ilícito se configura pela ação ou omissão voluntária, com dolo ou culpa, que cause dano a outrem. No exemplo, há conduta voluntária (manobra arriscada), dano (lesão do pedestre), culpa (imprudência), e nexo causal. Mesmo sem dolo, configura-se responsabilidade civil subjetiva. A alternativa correta é a que reconhece todos esses elementos.
 
 2 - d)
-Segundo o art. 187 do Código Civil, o abuso de direito pode configurar ato ilícito ainda que o titular do direito esteja formalmente amparado pela norma, desde que atue contrariando a boa-fé ou a função social. Logo, mesmo um direito legítimo pode ser exercido de maneira abusiva, tornando a conduta ilícita. A alternativa "c" está incorreta e, portanto, é a resposta certa da questão.
+Segundo o art. 187 do Código Civil, o abuso de direito pode configurar ato ilícito ainda que o titular do direito esteja formalmente amparado pela norma, desde que atue contrariando a boa-fé ou a função social. Logo, mesmo um direito legítimo pode ser exercido de maneira abusiva, tornando a conduta ilícita. A alternativa "d" está incorreta e, portanto, é a resposta certa da questão.
 
 3 - c)
 A teoria da actio nata, prevista no art. 189 do CC, estabelece que o prazo prescricional começa a correr a partir do momento em que o titular tem ciência da violação do seu direito, e não com a simples ocorrência do fato gerador. Isso garante que o prazo não corra contra quem ainda desconhece o dano.
