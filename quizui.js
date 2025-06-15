@@ -14,26 +14,32 @@ function startQuiz() {
 function setupQuestionNavigation() {
     const goToInput = document.getElementById('go-to-question');
     goToInput.max = currentQuiz.length;
-    
-    goToInput.addEventListener('change', (e) => {
-        const questionNum = parseInt(e.target.value);
-        if (!isNaN(questionNum)) {
-            const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
-            currentQuestionIndex = newIndex;
+    goToInput.min = 1;
+
+    const validateAndNavigate = (value) => {
+        const questionNum = parseInt(value);
+        const maxQuestions = currentQuiz.length;
+
+        if (!isNaN(questionNum) && questionNum >= 1 && questionNum <= maxQuestions) {
+            currentQuestionIndex = questionNum - 1;
             renderQuestions();
-            e.target.value = '';
+            goToInput.classList.remove('error');
+            goToInput.value = '';
+            goToInput.placeholder = 'Ir para questão';
+        } else {
+            goToInput.classList.add('error');
+            goToInput.value = '';
+            goToInput.placeholder = `Inválido (1 a ${maxQuestions})`;
         }
+    };
+
+    goToInput.addEventListener('change', (e) => {
+        validateAndNavigate(e.target.value);
     });
-    
+
     goToInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            const questionNum = parseInt(e.target.value);
-            if (!isNaN(questionNum)) {
-                const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
-                currentQuestionIndex = newIndex;
-                renderQuestions();
-                e.target.value = '';
-            }
+            validateAndNavigate(e.target.value);
         }
     });
 }
