@@ -13,47 +13,29 @@ function startQuiz() {
 
 function setupQuestionNavigation() {
     const goToInput = document.getElementById('go-to-question');
-    const maxQuestions = currentQuiz.length;
+    goToInput.max = currentQuiz.length;
     
-    // Define atributos dinâmicos
-    goToInput.min = 1;
-    goToInput.max = maxQuestions;
-    goToInput.placeholder = `Ir para questão (1-${maxQuestions})`;
-    
-    // Limpa qualquer valor anterior
-    goToInput.value = '';
-
     goToInput.addEventListener('change', (e) => {
-        handleQuestionNavigation(e.target.value);
+        const questionNum = parseInt(e.target.value);
+        if (!isNaN(questionNum)) {
+            const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+            currentQuestionIndex = newIndex;
+            renderQuestions();
+            e.target.value = '';
+        }
     });
     
     goToInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            handleQuestionNavigation(e.target.value);
-        }
-    });
-
-    goToInput.addEventListener('input', (e) => {
-        const value = parseInt(e.target.value);
-        if (!isNaN(value)) {
-            if (value < 1) {
-                e.target.value = 1;
-            } else if (value > maxQuestions) {
-                e.target.value = maxQuestions;
+            const questionNum = parseInt(e.target.value);
+            if (!isNaN(questionNum)) {
+                const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
+                currentQuestionIndex = newIndex;
+                renderQuestions();
+                e.target.value = '';
             }
         }
     });
-}
-
-function handleQuestionNavigation(inputValue) {
-    const questionNum = parseInt(inputValue);
-    if (!isNaN(questionNum)) {
-        const maxQuestions = currentQuiz.length;
-        const clampedValue = Math.min(Math.max(questionNum, 1), maxQuestions);
-        currentQuestionIndex = clampedValue - 1;
-        renderQuestions();
-        document.getElementById('go-to-question').value = '';
-    }
 }
 
 function renderQuestions() {
@@ -63,7 +45,7 @@ function renderQuestions() {
     const question = currentQuiz[currentQuestionIndex];
     const isAnswered = userAnswers[currentQuestionIndex] !== null;
     const userOptionIndex = userAnswers[currentQuestionIndex];
-    const userOption = userOptionIndex !== null ? question.options[userOptionIndex] : null;
+    const userOption = question.options[userOptionIndex];
 
     const questionElement = document.createElement('div');
     questionElement.className = 'question-container';
@@ -119,11 +101,11 @@ function renderQuestions() {
 function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
+    document.getElementById('go-to-question').max = currentQuiz.length;
 }
 
 function updateProgress() {
     currentQuestionSpan.textContent = currentQuestionIndex + 1;
-    totalQuestionsSpan.textContent = currentQuiz.length;
 }
 
 let touchStartX = 0;
