@@ -25,8 +25,13 @@ function exportToPdf() {
     let y = 20; // Posição Y inicial no PDF
 
     // Definindo as margens esquerda e direita de forma explícita e AUMENTADAS
-    const leftMargin = 25; // Aumentado para 25mm
-    const rightMargin = 25; // Aumentado para 25mm
+    const leftMargin = 25; // Margem esquerda de 25mm
+    const rightMargin = 25; // Margem direita de 25mm
+
+    // Um buffer adicional para garantir que o texto não chegue muito perto da margem direita
+    // Isso "encolhe" a área de texto disponível, forçando quebras de linha mais cedo.
+    const justificationBuffer = 5; // Adicionei 5mm de buffer para a justificação
+
     const indentationForOptions = 10; // Espaço adicional para indentação das opções
 
     const lineHeight = 7; // Altura aproximada de uma linha para o font-size 12
@@ -34,9 +39,9 @@ function exportToPdf() {
     const smallGap = 4; // Espaçamento menor
     const pageBreakThreshold = doc.internal.pageSize.height - 20; // Limite Y para quebra de página
 
-    // Calculando a largura disponível para o conteúdo com base nas margens maiores
-    const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin;
-    const indentedContentWidth = contentWidth - indentationForOptions; // Largura para texto identado (opções)
+    // Calculando a largura disponível para o conteúdo com base nas margens e no buffer
+    const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin - justificationBuffer;
+    const indentedContentWidth = contentWidth - indentationForOptions; // Largura para texto indentado (opções)
 
 
     // --- Título do Documento ---
@@ -106,7 +111,7 @@ function exportToPdf() {
 
     const gabaritoColumns = 4; // Número de colunas para o gabarito
     // A largura da coluna do gabarito também deve considerar a nova margem
-    const colWidth = contentWidth / gabaritoColumns;
+    const colWidth = contentWidth / gabaritoColumns; // contentWidth já inclui o buffer
 
     for (let i = 0; i < gabaritoContent.length; i++) {
         const colIndex = i % gabaritoColumns;
