@@ -28,6 +28,9 @@ function exportToPdf() {
     const sectionGap = 8; // Espaçamento entre as seções
     const smallGap = 4; // Espaçamento menor
     const pageBreakThreshold = doc.internal.pageSize.height - 20; // Limite Y para quebra de página
+    const contentWidth = doc.internal.pageSize.width - (margin * 2); // Largura total disponível para o texto principal
+    const indentedContentWidth = doc.internal.pageSize.width - (margin * 2) - 5; // Largura para texto identado (opções)
+
 
     // --- Título do Documento ---
     doc.setFontSize(16);
@@ -42,11 +45,11 @@ function exportToPdf() {
         // Calcula a altura da questão atual para verificar quebra de página
         let estimatedQuestionHeight = 0;
         const qTextContent = `Questão ${q.number} - ${q.text}`;
-        const qTextLines = doc.splitTextToSize(qTextContent, doc.internal.pageSize.width - (margin * 2));
+        const qTextLines = doc.splitTextToSize(qTextContent, contentWidth); // Usa contentWidth
         estimatedQuestionHeight += qTextLines.length * lineHeight; // Texto da questão
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
-            const oTextLines = doc.splitTextToSize(oTextContent, doc.internal.pageSize.width - (margin * 2) - 5);
+            const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth); // Usa indentedContentWidth
             estimatedQuestionHeight += oTextLines.length * lineHeight; // Opções
         });
         estimatedQuestionHeight += sectionGap; // Espaço após a questão
@@ -60,14 +63,14 @@ function exportToPdf() {
 
         // Desenha a questão
         doc.setFont(undefined, 'bold');
-        doc.text(qTextLines, margin, y);
+        doc.text(qTextLines, margin, y, { align: 'justify' }); // Texto justificado
         y += qTextLines.length * lineHeight;
         doc.setFont(undefined, 'normal');
 
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
-            const oTextLines = doc.splitTextToSize(oTextContent, doc.internal.pageSize.width - (margin * 2) - 5);
-            doc.text(oTextLines, margin + 5, y); // Indentação para opções
+            const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
+            doc.text(oTextLines, margin + 5, y, { align: 'justify' }); // Texto justificado e identado
             y += oTextLines.length * lineHeight;
         });
         y += sectionGap; // Espaço após cada questão
@@ -130,9 +133,9 @@ function exportToPdf() {
 
         // Calcula a altura da fundamentação atual para verificar quebra de página
         let estimatedFundHeight = 0;
-        const fundTitleLines = doc.splitTextToSize(fundTitle, doc.internal.pageSize.width - (margin * 2));
+        const fundTitleLines = doc.splitTextToSize(fundTitle, contentWidth);
         estimatedFundHeight += fundTitleLines.length * lineHeight; // Título da fundamentação
-        const fundTextLines = doc.splitTextToSize(q.explanation, doc.internal.pageSize.width - (margin * 2));
+        const fundTextLines = doc.splitTextToSize(q.explanation, contentWidth); // Usa contentWidth
         estimatedFundHeight += fundTextLines.length * lineHeight; // Texto da fundamentação
         estimatedFundHeight += sectionGap; // Espaço após cada fundamentação
 
@@ -144,12 +147,12 @@ function exportToPdf() {
 
         // Desenha o título da fundamentação (ex: "1 - B)")
         doc.setFont(undefined, 'bold');
-        doc.text(fundTitleLines, margin, y);
+        doc.text(fundTitleLines, margin, y, { align: 'justify' }); // Título da fundamentação justificado
         y += fundTitleLines.length * lineHeight + smallGap;
         doc.setFont(undefined, 'normal');
 
         // Desenha o texto da fundamentação
-        doc.text(fundTextLines, margin, y);
+        doc.text(fundTextLines, margin, y, { align: 'justify' }); // Texto da fundamentação justificado
         y += fundTextLines.length * lineHeight + sectionGap; // Espaço após cada fundamentação
     });
 
