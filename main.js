@@ -1,10 +1,10 @@
+import { domElements } from './domElements.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-    // Carrega as matérias disponíveis
     loadMaterias();
 
-    // Configura o botão de iniciar quiz
-    startBtn.addEventListener('click', () => {
-        const file = materiasSelect.value;
+    domElements.startBtn.addEventListener('click', () => {
+        const file = domElements.materiasSelect.value;
         if (file) {
             loadQuiz(file);
         } else {
@@ -12,15 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Configura os botões de navegação
-    prevBtn.addEventListener('click', () => {
+    domElements.prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
             renderQuestions();
         }
     });
 
-    nextBtn.addEventListener('click', () => {
+    domElements.nextBtn.addEventListener('click', () => {
         if (currentQuestionIndex < currentQuiz.length - 1) {
             currentQuestionIndex++;
             renderQuestions();
