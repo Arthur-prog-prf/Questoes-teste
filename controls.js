@@ -28,8 +28,11 @@ function exportToPdf() {
     const sectionGap = 8; // Espaçamento entre as seções
     const smallGap = 4; // Espaçamento menor
     const pageBreakThreshold = doc.internal.pageSize.height - 20; // Limite Y para quebra de página
-    const contentWidth = doc.internal.pageSize.width - (margin * 2); // Largura total disponível para o texto principal
-    const indentedContentWidth = doc.internal.pageSize.width - (margin * 2) - 5; // Largura para texto identado (opções)
+
+    // Ajuste aqui: Reduzimos um pouco a largura para garantir a margem direita
+    const marginBuffer = 2; // Pequeno buffer para garantir a margem direita
+    const contentWidth = doc.internal.pageSize.width - (margin * 2) - marginBuffer; // Largura total disponível para o texto principal
+    const indentedContentWidth = doc.internal.pageSize.width - (margin * 2) - 5 - marginBuffer; // Largura para texto identado (opções)
 
 
     // --- Título do Documento ---
@@ -95,7 +98,8 @@ function exportToPdf() {
     });
 
     const gabaritoColumns = 4; // Número de colunas para o gabarito
-    const colWidth = (doc.internal.pageSize.width - (margin * 2)) / gabaritoColumns;
+    // A largura da coluna do gabarito também deve considerar o buffer
+    const colWidth = (doc.internal.pageSize.width - (margin * 2) - marginBuffer) / gabaritoColumns;
 
     for (let i = 0; i < gabaritoContent.length; i++) {
         const colIndex = i % gabaritoColumns;
