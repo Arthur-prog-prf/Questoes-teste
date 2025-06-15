@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Exercícios</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Bibliotecas para exportar PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -13,11 +14,13 @@
         <h1 id="quiz-title">Lista de Exercícios</h1>
         <p id="quiz-description">Selecione uma matéria para começar</p>
 
+        <!-- Seção de seleção de matéria -->
         <div class="control-group">
             <select id="materias"></select>
             <button id="start-btn">Iniciar Exercício</button>
         </div>
 
+        <!-- Controles (fonte, tema, PDF) -->
         <div class="controls">
             <div class="control-group">
                 <button id="decrease-font">A-</button>
@@ -27,6 +30,7 @@
             </div>
         </div>
 
+        <!-- Área do quiz (inicialmente oculta) -->
         <div id="quiz-area" class="hidden">
             <div class="progress">
                 <span id="current-question">1</span> de <span id="total-questions">0</span> questões
@@ -36,18 +40,20 @@
         </div>
     </div>
 
+    <!-- Barra de navegação fixa (inicialmente oculta) -->
     <div class="navigation hidden">
         <button id="prev-btn" disabled>Anterior</button>
-        <input type="number" id="go-to-question" placeholder="Ir para questão" min="1" max="1" title="Digite um número entre 1 e o total de questões">
+        <input type="number" id="go-to-question" placeholder="Ir para questão" min="1" max="1" 
+               title="Digite um número entre 1 e o total de questões">
         <button id="next-btn">Próxima</button>
     </div>
 
+    <!-- Scripts (ATENÇÃO: alterada a ordem e adicionado type="module") -->
     <script src="materiasData.js"></script>
-    <script src="domElements.js"></script>
     <script src="materias.js"></script>
     <script src="quizLoader.js"></script>
     <script src="quizUI.js"></script>
-    <script src="controls.js"></script>
-    <script src="main.js"></script>
+    <script type="module" src="controls.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
