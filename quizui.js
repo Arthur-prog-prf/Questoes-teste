@@ -14,7 +14,7 @@ function startQuiz() {
 function setupQuestionNavigation() {
     const goToInput = document.getElementById('go-to-question');
     goToInput.max = currentQuiz.length;
-    goToInput.min = 1;
+    goToInput.min = 1; // Definido aqui inicialmente
 
     const validateAndNavigate = (value) => {
         const questionNum = parseInt(value);
@@ -108,6 +108,7 @@ function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
     document.getElementById('go-to-question').max = currentQuiz.length;
+    document.getElementById('go-to-question').min = 1; // <--- Adicionada esta linha
 }
 
 function updateProgress() {
@@ -133,6 +134,8 @@ function handleGesture() {
 }
 
 function setupSwipeDetection() {
+    // É uma boa prática remover os event listeners antes de adicioná-los novamente
+    // para evitar que se acumulem se a função for chamada múltiplas vezes.
     questionsArea.removeEventListener('touchstart', swipeStartHandler);
     questionsArea.removeEventListener('touchend', swipeEndHandler);
 
