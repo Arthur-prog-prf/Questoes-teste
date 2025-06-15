@@ -11,3 +11,8 @@ const increaseFontBtn = document.getElementById('increase-font');
 const exportPdfBtn = document.getElementById('export-pdf');
 const themeToggleBtn = document.getElementById('theme-toggle');
 const goToQuestionInput = document.getElementById('go-to-question');
+
+// Cria elemento de mensagem de erro dinamicamente
+const goToQuestionError = document.createElement('div');
+goToQuestionError.className = 'error-message';
+goToQuestionInput.parentNode.insertBefore(goToQuestionError, goToQuestionInput.nextSibling);
