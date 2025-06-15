@@ -28,6 +28,11 @@ function exportToPdf() {
     const leftMargin = 25; // Mantendo 25mm para um bom espaço lateral
     const rightMargin = 25; // Mantendo 25mm para um bom espaço lateral
 
+    // Adicionei um pequeno buffer para a justificação. Isso "encolhe" a área de texto disponível,
+    // forçando o jsPDF a quebrar as linhas mais cedo, o que geralmente melhora a justificação
+    // e evita que o texto saia das margens.
+    const justifyPadding = 3;
+
     const indentationForOptions = 10; // Espaço adicional para indentação das opções
 
     const lineHeight = 7; // Altura aproximada de uma linha para o font-size 12
@@ -49,6 +54,11 @@ function exportToPdf() {
         return currentY;
     }
 
+    // Calculando a largura disponível para o conteúdo com base nas margens e justifyPadding
+    const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin - justifyPadding;
+    const indentedContentWidth = contentWidth - indentationForOptions;
+
+
     // --- Título do Documento ---
     doc.setFontSize(16);
     doc.setFont(undefined, 'bold');
@@ -56,11 +66,6 @@ function exportToPdf() {
     y += sectionGap * 2;
     doc.setFontSize(12);
     doc.setFont(undefined, 'normal');
-
-    // Calculando a largura disponível para o conteúdo com base nas margens
-    const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin;
-    const indentedContentWidth = contentWidth - indentationForOptions;
-
 
     // --- Seção de Questões ---
     currentQuiz.forEach((q, i) => {
@@ -85,9 +90,8 @@ function exportToPdf() {
         // Desenha o título da questão
         doc.setFont(undefined, 'bold');
         qTextLines.forEach(line => {
-            // Não precisa de checkPageBreak aqui, pois já fizemos a verificação do bloco acima
-            // e assumimos que o texto da questão em si não será muito longo para não caber em uma página
-            doc.text(line, leftMargin, y);
+            // Re-habilitando align: 'justify' e fornecendo a coordenada x baseada na leftMargin
+            doc.text(line, leftMargin, y, { align: 'justify' });
             y += lineHeight;
         });
         doc.setFont(undefined, 'normal');
@@ -99,7 +103,8 @@ function exportToPdf() {
             const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
             oTextLines.forEach(line => {
                 y = checkPageBreak(y); // Verifica quebra de página antes de cada linha da opção
-                doc.text(line, leftMargin + indentationForOptions, y);
+                // Re-habilitando align: 'justify' e fornecendo a coordenada x baseada na leftMargin + indentationForOptions
+                doc.text(line, leftMargin + indentationForOptions, y, { align: 'justify' });
                 y += lineHeight;
             });
         });
@@ -125,7 +130,7 @@ function exportToPdf() {
     });
 
     const gabaritoColumns = 4; // Número de colunas para o gabarito
-    const colWidth = contentWidth / gabaritoColumns;
+    const colWidth = contentWidth / gabaritoColumns; // contentWidth já está ajustado pelas novas margens
 
     for (let i = 0; i < gabaritoContent.length; i++) {
         const colIndex = i % gabaritoColumns;
@@ -171,7 +176,7 @@ function exportToPdf() {
         const fundTitleLines = doc.splitTextToSize(fundTitle, contentWidth);
         fundTitleLines.forEach(line => {
             y = checkPageBreak(y); // Verifica quebra de página antes de cada linha do título
-            doc.text(line, leftMargin, y);
+            doc.text(line, leftMargin, y, { align: 'justify' });
             y += lineHeight;
         });
         y += smallGap; // Pequeno espaço entre o título e o texto da fundamentação
@@ -181,7 +186,7 @@ function exportToPdf() {
         const fundTextLines = doc.splitTextToSize(q.explanation, contentWidth);
         fundTextLines.forEach(line => {
             y = checkPageBreak(y); // Verifica quebra de página antes de cada linha da fundamentação
-            doc.text(line, leftMargin, y);
+            doc.text(line, leftMargin, y, { align: 'justify' });
             y += lineHeight;
         });
     });
