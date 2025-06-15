@@ -24,9 +24,9 @@ function exportToPdf() {
     const doc = new jsPDF();
     let y = 20; // Posição Y inicial no PDF
 
-    // Definindo as margens esquerda e direita de forma explícita
-    const leftMargin = 20;
-    const rightMargin = 20;
+    // Definindo as margens esquerda e direita de forma explícita e AUMENTADAS
+    const leftMargin = 25; // Aumentado para 25mm
+    const rightMargin = 25; // Aumentado para 25mm
     const indentationForOptions = 10; // Espaço adicional para indentação das opções
 
     const lineHeight = 7; // Altura aproximada de uma linha para o font-size 12
@@ -34,35 +34,9 @@ function exportToPdf() {
     const smallGap = 4; // Espaçamento menor
     const pageBreakThreshold = doc.internal.pageSize.height - 20; // Limite Y para quebra de página
 
-    // Calculando a largura disponível para o conteúdo com base nas margens
+    // Calculando a largura disponível para o conteúdo com base nas margens maiores
     const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin;
     const indentedContentWidth = contentWidth - indentationForOptions; // Largura para texto identado (opções)
-
-    // --- Função auxiliar para desenhar texto justificado ---
-    // Esta função tentará simular a justificação de texto linha por linha
-    function drawJustifiedText(textLines, x, yStart, maxWidth, font, fontSize) {
-        doc.setFont(font || undefined, 'normal'); // Reseta a fonte para normal por padrão na justificação
-        doc.setFontSize(fontSize || 12); // Define o tamanho da fonte
-
-        let currentY = yStart;
-        textLines.forEach(line => {
-            const words = line.split(' ');
-            if (words.length <= 1) { // Não justifica se houver 0 ou 1 palavra
-                doc.text(line, x, currentY);
-            } else {
-                let textWidth = doc.getTextWidth(line);
-                let spacing = (maxWidth - textWidth) / (words.length - 1);
-                let currentX = x;
-
-                words.forEach((word, index) => {
-                    doc.text(word, currentX, currentY);
-                    currentX += doc.getTextWidth(word) + spacing;
-                });
-            }
-            currentY += lineHeight;
-        });
-        return currentY - yStart; // Retorna a altura total consumida
-    }
 
 
     // --- Título do Documento ---
@@ -96,22 +70,23 @@ function exportToPdf() {
 
         // Desenha a questão
         doc.setFont(undefined, 'bold');
-        // Usamos a função auxiliar para desenhar o texto justificado
-        drawJustifiedText(qTextLines, leftMargin, y, contentWidth, undefined, 12); // Passamos o tamanho da fonte
+        // Usamos a justificação nativa do jsPDF
+        doc.text(qTextLines, leftMargin, y, { align: 'justify' });
         y += qTextLines.length * lineHeight;
         doc.setFont(undefined, 'normal');
 
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
             const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
-            // Usamos a função auxiliar para desenhar o texto justificado
-            drawJustifiedText(oTextLines, leftMargin + indentationForOptions, y, indentedContentWidth, undefined, 12);
+            // Usamos a justificação nativa do jsPDF
+            doc.text(oTextLines, leftMargin + indentationForOptions, y, { align: 'justify' });
             y += oTextLines.length * lineHeight;
         });
         y += sectionGap; // Espaço após cada questão
     });
 
     // --- Quebra de Página para o Gabarito ---
+    // Adiciona uma nova página dedicada ao gabarito
     doc.addPage();
     y = leftMargin; // Reinicia Y na nova página, usando a mesma margem superior
 
@@ -152,6 +127,7 @@ function exportToPdf() {
 
 
     // --- Quebra de Página para a Fundamentação ---
+    // Adiciona uma nova página dedicada à fundamentação
     doc.addPage();
     y = leftMargin; // Reinicia Y na nova página, usando a mesma margem superior
 
@@ -183,14 +159,14 @@ function exportToPdf() {
 
         // Desenha o título da fundamentação (ex: "1 - B)")
         doc.setFont(undefined, 'bold');
-        // Usamos a função auxiliar para desenhar o texto justificado
-        drawJustifiedText(fundTitleLines, leftMargin, y, contentWidth, undefined, 12);
+        // Usamos a justificação nativa do jsPDF
+        doc.text(fundTitleLines, leftMargin, y, { align: 'justify' });
         y += fundTitleLines.length * lineHeight + smallGap;
         doc.setFont(undefined, 'normal');
 
         // Desenha o texto da fundamentação
-        // Usamos a função auxiliar para desenhar o texto justificado
-        drawJustifiedText(fundTextLines, leftMargin, y, contentWidth, undefined, 12);
+        // Usamos a justificação nativa do jsPDF
+        doc.text(fundTextLines, leftMargin, y, { align: 'justify' });
         y += fundTextLines.length * lineHeight + sectionGap; // Espaço após cada fundamentação
     });
 
