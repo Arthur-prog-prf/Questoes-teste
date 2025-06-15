@@ -289,6 +289,22 @@ select {
     border-color: var(--border-color);
 }
 
+/* --- Novas regras para feedback de erro --- */
+#go-to-question.error {
+    border-color: #e74c3c; /* Cor da borda vermelha */
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3); /* Sombra vermelha */
+    background-color: #fcebeb; /* Fundo levemente avermelhado */
+    color: #c0392b; /* Texto em vermelho */
+}
+
+.dark-mode #go-to-question.error {
+    border-color: #c0392b;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3);
+    background-color: #4f2a2e;
+    color: #e74c3c;
+}
+/* ------------------------------------------- */
+
 .hidden {
     display: none;
 }
@@ -319,7 +335,7 @@ select {
     body {
         padding-bottom: 90px;
     }
-    
+
     .quiz-container {
         padding: 10px;
     }
