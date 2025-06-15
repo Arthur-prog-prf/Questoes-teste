@@ -271,7 +271,18 @@ select {
     background: var(--card-background);
     color: var(--text-color);
     transition: all 0.3s ease;
+
+    /* --- Novas regras para remover as setas (spinners) --- */
+    -moz-appearance: textfield; /* Para Firefox */
 }
+
+/* Para Chrome, Safari, Edge, Opera */
+#go-to-question::-webkit-outer-spin-button,
+#go-to-question::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* -------------------------------------------------------- */
 
 #go-to-question:focus {
     outline: none;
@@ -289,7 +300,7 @@ select {
     border-color: var(--border-color);
 }
 
-/* --- Novas regras para feedback de erro --- */
+/* --- Regras para feedback de erro --- */
 #go-to-question.error {
     border-color: #e74c3c; /* Cor da borda vermelha */
     box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.3); /* Sombra vermelha */
