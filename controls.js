@@ -24,12 +24,9 @@ function exportToPdf() {
     const doc = new jsPDF();
     let y = 20; // Posição Y inicial no PDF
 
-    // Definindo as margens esquerda e direita de forma explícita e AUMENTADAS para evitar cortes
-    const leftMargin = 30; // Aumentado para 30mm para mais espaço
-    const rightMargin = 30; // Aumentado para 30mm para mais espaço
-
-    // Removemos o justificationBuffer, pois não usaremos justificação.
-    // O foco agora é garantir espaço suficiente e alinhamento à esquerda.
+    // Definindo as margens esquerda e direita de forma explícita e MAIS AUMENTADAS para evitar cortes
+    const leftMargin = 35; // Aumentado para 35mm para garantir mais espaço
+    const rightMargin = 35; // Aumentado para 35mm para garantir mais espaço
 
     const indentationForOptions = 10; // Espaço adicional para indentação das opções
 
@@ -74,24 +71,21 @@ function exportToPdf() {
 
         // Desenha a questão
         doc.setFont(undefined, 'bold');
-        // Removida a justificação. O alinhamento padrão é à esquerda.
-        doc.text(qTextLines, leftMargin, y);
+        doc.text(qTextLines, leftMargin, y); // Alinhamento padrão é à esquerda
         y += qTextLines.length * lineHeight;
         doc.setFont(undefined, 'normal');
 
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
             const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
-            // Removida a justificação. O alinhamento padrão é à esquerda.
-            doc.text(oTextLines, leftMargin + indentationForOptions, y);
+            doc.text(oTextLines, leftMargin + indentationForOptions, y); // Alinhamento padrão é à esquerda.
             y += oTextLines.length * lineHeight;
         });
         y += sectionGap; // Espaço após cada questão
     });
 
     // --- Quebra de Página para o Gabarito ---
-    // Adiciona uma nova página dedicada ao gabarito
-    doc.addPage();
+    doc.addPage(); // Adiciona uma nova página dedicada ao gabarito
     y = leftMargin; // Reinicia Y na nova página, usando a mesma margem superior
 
     // --- Seção de Gabarito ---
@@ -109,7 +103,6 @@ function exportToPdf() {
     });
 
     const gabaritoColumns = 4; // Número de colunas para o gabarito
-    // A largura da coluna do gabarito também deve considerar a nova margem
     const colWidth = contentWidth / gabaritoColumns; // contentWidth já está ajustado pelas novas margens
 
     for (let i = 0; i < gabaritoContent.length; i++) {
@@ -131,8 +124,7 @@ function exportToPdf() {
 
 
     // --- Quebra de Página para a Fundamentação ---
-    // Adiciona uma nova página dedicada à fundamentação
-    doc.addPage();
+    doc.addPage(); // Adiciona uma nova página dedicada à fundamentação
     y = leftMargin; // Reinicia Y na nova página, usando a mesma margem superior
 
     // --- Seção de Fundamentação ---
@@ -163,14 +155,12 @@ function exportToPdf() {
 
         // Desenha o título da fundamentação (ex: "1 - B)")
         doc.setFont(undefined, 'bold');
-        // Removida a justificação. O alinhamento padrão é à esquerda.
-        doc.text(fundTitleLines, leftMargin, y);
+        doc.text(fundTitleLines, leftMargin, y); // Alinhamento padrão é à esquerda.
         y += fundTitleLines.length * lineHeight + smallGap;
         doc.setFont(undefined, 'normal');
 
         // Desenha o texto da fundamentação
-        // Removida a justificação. O alinhamento padrão é à esquerda.
-        doc.text(fundTextLines, leftMargin, y);
+        doc.text(fundTextLines, leftMargin, y); // Alinhamento padrão é à esquerda.
         y += fundTextLines.length * lineHeight + sectionGap; // Espaço após cada fundamentação
     });
 
