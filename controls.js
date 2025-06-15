@@ -70,18 +70,30 @@ function exportToPdf() {
             y = checkPageBreak(y); // Verifica se o espaço adicionado não força quebra prematura
         }
 
-        // Desenha o título da questão
-        doc.setFont(undefined, 'bold');
+        // Calcula a altura APENAS do texto da questão (não das opções)
         const qTextContent = `Questão ${q.number} - ${q.text}`;
         const qTextLines = doc.splitTextToSize(qTextContent, contentWidth);
+        const estimatedQuestionTextHeight = qTextLines.length * lineHeight;
+
+        // VERIFICAÇÃO PARA MANTER O TEXTO DA QUESTÃO COMO UM BLOCO
+        // Se o texto da questão não couber, adicione uma nova página (exceto na primeira questão da lista)
+        if (y + estimatedQuestionTextHeight > pageBreakThreshold && i > 0) {
+            doc.addPage();
+            y = leftMargin; // Reinicia Y na nova página
+        }
+
+        // Desenha o título da questão
+        doc.setFont(undefined, 'bold');
         qTextLines.forEach(line => {
-            y = checkPageBreak(y); // Verifica quebra de página antes de cada linha da questão
+            // Não precisa de checkPageBreak aqui, pois já fizemos a verificação do bloco acima
+            // e assumimos que o texto da questão em si não será muito longo para não caber em uma página
             doc.text(line, leftMargin, y);
             y += lineHeight;
         });
         doc.setFont(undefined, 'normal');
+        y += smallGap; // Pequeno espaço após o texto da questão, antes das opções
 
-        // Desenha as opções
+        // Desenha as opções (estas podem quebrar de página)
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
             const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
@@ -117,17 +129,12 @@ function exportToPdf() {
 
     for (let i = 0; i < gabaritoContent.length; i++) {
         const colIndex = i % gabaritoColumns;
-        const rowIndex = Math.floor(i / gabaritoColumns);
-
         // A posição Y é calculada com base na linha atual do gabarito.
         // Se for o início de uma nova linha de gabarito e não couber, adicione página.
         if (colIndex === 0) { // Só verifica a quebra de página no início de uma nova linha de gabarito
              y = checkPageBreak(y);
         }
         const xPos = leftMargin + (colIndex * colWidth);
-        const yPos = y + (rowIndex * lineHeight); // Ajusta o Y para o elemento atual dentro da linha de gabarito.
-                                                 // No entanto, a verificação de quebra de página já lida com o 'y' global.
-
         doc.text(gabaritoContent[i], xPos, y); // desenha na linha atual
         if (colIndex === gabaritoColumns - 1 || i === gabaritoContent.length - 1) {
             y += lineHeight; // Avança para a próxima linha somente ao final da coluna ou do gabarito
