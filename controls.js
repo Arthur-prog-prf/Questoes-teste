@@ -36,7 +36,33 @@ function exportToPdf() {
 
     // Calculando a largura disponível para o conteúdo com base nas margens
     const contentWidth = doc.internal.pageSize.width - leftMargin - rightMargin;
-    const indentedContentWidth = doc.internal.pageSize.width - leftMargin - rightMargin - indentationForOptions;
+    const indentedContentWidth = contentWidth - indentationForOptions; // Largura para texto identado (opções)
+
+    // --- Função auxiliar para desenhar texto justificado ---
+    // Esta função tentará simular a justificação de texto linha por linha
+    function drawJustifiedText(textLines, x, yStart, maxWidth, font, fontSize) {
+        doc.setFont(font || undefined, 'normal'); // Reseta a fonte para normal por padrão na justificação
+        doc.setFontSize(fontSize || 12); // Define o tamanho da fonte
+
+        let currentY = yStart;
+        textLines.forEach(line => {
+            const words = line.split(' ');
+            if (words.length <= 1) { // Não justifica se houver 0 ou 1 palavra
+                doc.text(line, x, currentY);
+            } else {
+                let textWidth = doc.getTextWidth(line);
+                let spacing = (maxWidth - textWidth) / (words.length - 1);
+                let currentX = x;
+
+                words.forEach((word, index) => {
+                    doc.text(word, currentX, currentY);
+                    currentX += doc.getTextWidth(word) + spacing;
+                });
+            }
+            currentY += lineHeight;
+        });
+        return currentY - yStart; // Retorna a altura total consumida
+    }
 
 
     // --- Título do Documento ---
@@ -70,14 +96,16 @@ function exportToPdf() {
 
         // Desenha a questão
         doc.setFont(undefined, 'bold');
-        doc.text(qTextLines, leftMargin, y, { align: 'justify' }); // Texto justificado, usando leftMargin
+        // Usamos a função auxiliar para desenhar o texto justificado
+        drawJustifiedText(qTextLines, leftMargin, y, contentWidth, undefined, 12); // Passamos o tamanho da fonte
         y += qTextLines.length * lineHeight;
         doc.setFont(undefined, 'normal');
 
         q.options.forEach(opt => {
             const oTextContent = `${opt.letter.toUpperCase()}) ${opt.text}`;
             const oTextLines = doc.splitTextToSize(oTextContent, indentedContentWidth);
-            doc.text(oTextLines, leftMargin + indentationForOptions, y, { align: 'justify' }); // Texto justificado e identado
+            // Usamos a função auxiliar para desenhar o texto justificado
+            drawJustifiedText(oTextLines, leftMargin + indentationForOptions, y, indentedContentWidth, undefined, 12);
             y += oTextLines.length * lineHeight;
         });
         y += sectionGap; // Espaço após cada questão
@@ -155,12 +183,14 @@ function exportToPdf() {
 
         // Desenha o título da fundamentação (ex: "1 - B)")
         doc.setFont(undefined, 'bold');
-        doc.text(fundTitleLines, leftMargin, y, { align: 'justify' }); // Título da fundamentação justificado
+        // Usamos a função auxiliar para desenhar o texto justificado
+        drawJustifiedText(fundTitleLines, leftMargin, y, contentWidth, undefined, 12);
         y += fundTitleLines.length * lineHeight + smallGap;
         doc.setFont(undefined, 'normal');
 
         // Desenha o texto da fundamentação
-        doc.text(fundTextLines, leftMargin, y, { align: 'justify' }); // Texto da fundamentação justificado
+        // Usamos a função auxiliar para desenhar o texto justificado
+        drawJustifiedText(fundTextLines, leftMargin, y, contentWidth, undefined, 12);
         y += fundTextLines.length * lineHeight + sectionGap; // Espaço após cada fundamentação
     });
 
