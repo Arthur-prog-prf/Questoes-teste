@@ -13,15 +13,43 @@ function startQuiz() {
 
 function setupQuestionNavigation() {
     const goToInput = document.getElementById('go-to-question');
+    const errorMessage = goToInput.nextElementSibling;
+    
     goToInput.max = currentQuiz.length;
+    goToInput.placeholder = `Ir para questão (1-${currentQuiz.length})`;
+    
+    goToInput.addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        const isValid = !isNaN(value) && value >= 1 && value <= currentQuiz.length;
+        
+        if (e.target.value === '') {
+            e.target.classList.remove('invalid');
+            errorMessage.style.display = 'none';
+        } else if (!isValid) {
+            e.target.classList.add('invalid');
+            errorMessage.textContent = `Digite um número entre 1 e ${currentQuiz.length}`;
+            errorMessage.style.display = 'block';
+        } else {
+            e.target.classList.remove('invalid');
+            errorMessage.style.display = 'none';
+        }
+    });
     
     goToInput.addEventListener('change', (e) => {
         const questionNum = parseInt(e.target.value);
-        if (!isNaN(questionNum)) {
+        if (!isNaN(questionNum) {
             const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
-            currentQuestionIndex = newIndex;
-            renderQuestions();
-            e.target.value = '';
+            if (questionNum >= 1 && questionNum <= currentQuiz.length) {
+                currentQuestionIndex = newIndex;
+                renderQuestions();
+                e.target.value = '';
+                e.target.classList.remove('invalid');
+                errorMessage.style.display = 'none';
+            } else {
+                e.target.classList.add('invalid');
+                errorMessage.textContent = `Digite um número entre 1 e ${currentQuiz.length}`;
+                errorMessage.style.display = 'block';
+            }
         }
     });
     
@@ -30,9 +58,17 @@ function setupQuestionNavigation() {
             const questionNum = parseInt(e.target.value);
             if (!isNaN(questionNum)) {
                 const newIndex = Math.min(Math.max(questionNum - 1, 0), currentQuiz.length - 1);
-                currentQuestionIndex = newIndex;
-                renderQuestions();
-                e.target.value = '';
+                if (questionNum >= 1 && questionNum <= currentQuiz.length) {
+                    currentQuestionIndex = newIndex;
+                    renderQuestions();
+                    e.target.value = '';
+                    e.target.classList.remove('invalid');
+                    errorMessage.style.display = 'none';
+                } else {
+                    e.target.classList.add('invalid');
+                    errorMessage.textContent = `Digite um número entre 1 e ${currentQuiz.length}`;
+                    errorMessage.style.display = 'block';
+                }
             }
         }
     });
@@ -102,6 +138,7 @@ function updateNavigationButtons() {
     prevBtn.disabled = currentQuestionIndex === 0;
     nextBtn.disabled = currentQuestionIndex >= currentQuiz.length - 1;
     document.getElementById('go-to-question').max = currentQuiz.length;
+    document.getElementById('go-to-question').placeholder = `Ir para questão (1-${currentQuiz.length})`;
 }
 
 function updateProgress() {
