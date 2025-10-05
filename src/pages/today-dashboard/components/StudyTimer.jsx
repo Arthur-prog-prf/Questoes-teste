@@ -5,7 +5,7 @@ import Button from '../../../components/ui/Button';
 const StudyTimer = () => {
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
-  const [currentSubject, setCurrentSubject] = useState('Matemática');
+  const [currentSubject, setCurrentSubject] = useState('');
   const [sessionStartTime, setSessionStartTime] = useState(null);
 
   const subjects = [
@@ -19,7 +19,7 @@ const StudyTimer = () => {
 
   useEffect(() => {
     let interval = null;
-    if (isActive) {
+    if (isActive && currentSubject) {
       interval = setInterval(() => {
         setTime(time => time + 1);
       }, 1000);
@@ -27,7 +27,7 @@ const StudyTimer = () => {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
-  }, [isActive, time]);
+  }, [isActive, time, currentSubject]);
 
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
@@ -41,6 +41,11 @@ const StudyTimer = () => {
   };
 
   const handleStartPause = () => {
+    if (!currentSubject) {
+      alert('Por favor, selecione uma matéria antes de iniciar o timer.');
+      return;
+    }
+    
     if (!isActive && time === 0) {
       setSessionStartTime(new Date());
     }
@@ -58,8 +63,16 @@ const StudyTimer = () => {
   };
 
   const handleSubjectChange = (subject) => {
+    if (isActive) {
+      const confirmChange = window.confirm('Alterar a matéria irá pausar o timer. Deseja continuar?');
+      if (!confirmChange) return;
+      setIsActive(false);
+    }
     setCurrentSubject(subject);
   };
+
+  const canStart = currentSubject && !isActive;
+  const timerDisplay = time > 0 || isActive ? formatTime(time) : '00:00';
 
   return (
     <div className="bg-white rounded-lg border border-border shadow-subtle p-6">
@@ -75,28 +88,37 @@ const StudyTimer = () => {
           </span>
         </div>
       </div>
+      
       {/* Timer Display */}
       <div className="text-center mb-8">
         <div className="text-6xl font-mono font-bold text-primary mb-2">
-          {formatTime(time)}
+          {timerDisplay}
         </div>
         <div className="text-lg text-text-secondary">
-          Estudando: <span className="font-medium text-foreground">{currentSubject}</span>
+          {currentSubject ? (
+            <>Estudando: <span className="font-medium text-foreground">{currentSubject}</span></>
+          ) : (
+            <span className="font-medium text-warning">Selecione uma matéria para começar</span>
+          )}
         </div>
       </div>
+      
       {/* Subject Selector */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-text-secondary mb-3">
-          Matéria Atual
+          Selecione a Matéria
         </label>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {subjects?.map((subject) => (
             <button
               key={subject}
               onClick={() => handleSubjectChange(subject)}
+              disabled={isActive}
               className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-150 ${
                 currentSubject === subject
                   ? 'bg-primary text-primary-foreground'
+                  : isActive
+                  ? 'bg-muted text-muted-foreground cursor-not-allowed opacity-50'
                   : 'bg-muted text-text-secondary hover:bg-secondary hover:text-secondary-foreground'
               }`}
             >
@@ -104,7 +126,13 @@ const StudyTimer = () => {
             </button>
           ))}
         </div>
+        {!currentSubject && (
+          <p className="text-sm text-warning mt-2">
+            * Escolha uma matéria antes de iniciar o timer
+          </p>
+        )}
       </div>
+      
       {/* Control Buttons */}
       <div className="flex items-center justify-center space-x-4">
         <Button
@@ -114,6 +142,7 @@ const StudyTimer = () => {
           iconName={isActive ? "Pause" : "Play"}
           iconPosition="left"
           className="min-w-32"
+          disabled={!currentSubject && time === 0}
         >
           {isActive ? 'Pausar' : time > 0 ? 'Continuar' : 'Iniciar'}
         </Button>
@@ -130,6 +159,7 @@ const StudyTimer = () => {
           </Button>
         )}
       </div>
+      
       {/* Session Info */}
       {sessionStartTime && (
         <div className="mt-6 pt-4 border-t border-border">
