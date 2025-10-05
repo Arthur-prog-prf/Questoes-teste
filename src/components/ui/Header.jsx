@@ -10,6 +10,7 @@ const Header = () => {
     { label: 'Hoje', path: '/today-dashboard', icon: 'Calendar' },
     { label: 'Edital', path: '/exam-syllabus-manager', icon: 'BookOpen' },
     { label: 'Planejamento', path: '/study-planner', icon: 'CalendarDays' },
+    { label: 'Central de Tarefas', path: '/task-management-hub', icon: 'Settings' },
     { label: 'Estatísticas', path: '/analytics-dashboard', icon: 'BarChart3' },
     { label: 'Conquistas', path: '/achievements-gallery', icon: 'Trophy' }
   ];
