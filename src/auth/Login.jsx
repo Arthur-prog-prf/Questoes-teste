@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import Button from '../../components/ui/Button';
-import Input from '../../components/ui/Input';
-import AppIcon from '../../components/AppIcon';
+// --- CORREÇÃO AQUI ---
+// Caminhos absolutos a partir da pasta 'src/'
+import { useAuth } from 'contexts/AuthContext';
+import Button from 'components/ui/Button';
+import Input from 'components/ui/Input';
+import AppIcon from 'components/AppIcon';
 
 const Login = () => {
   const [email, setEmail] = useState('');
