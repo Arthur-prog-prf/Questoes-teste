@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
+import { useAuth } from 'contexts/AuthContext'; // 1. Importar o useAuth
 
 const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // 2. Obter o usuário e a função de signOut do contexto
+  const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   const navigationItems = [
     { label: 'Hoje', path: '/today-dashboard', icon: 'Calendar' },
@@ -18,8 +23,15 @@ const Header = () => {
   const isActivePath = (path) => location?.pathname === path;
 
   const handleNavigation = (path) => {
-    window.location.href = path;
+    // Usar navigate para uma navegação mais fluida, sem recarregar a página
+    navigate(path);
     setIsMenuOpen(false);
+  };
+
+  // 3. Criar a função de logout
+  const handleLogout = async () => {
+    await signOut();
+    navigate('/login'); // Redirecionar para a página de login após o logout
   };
 
   return (
@@ -53,6 +65,17 @@ const Header = () => {
               <span>{item?.label}</span>
             </button>
           ))}
+          
+          {/* 4. Adicionar o botão de Sair se o usuário estiver logado */}
+          {user && (
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-150 text-red-500 hover:bg-red-50"
+            >
+              <Icon name="LogOut" size={18} />
+              <span>Sair</span>
+            </button>
+          )}
         </nav>
 
         {/* Mobile Menu Button */}
@@ -82,6 +105,16 @@ const Header = () => {
                 <span>{item?.label}</span>
               </button>
             ))}
+            {/* Botão de Sair no menu mobile */}
+            {user && (
+              <button
+                onClick={handleLogout}
+                className="flex items-center space-x-3 w-full px-3 py-3 rounded-md text-sm font-medium text-red-500 hover:bg-red-50"
+              >
+                <Icon name="LogOut" size={20} />
+                <span>Sair</span>
+              </button>
+            )}
           </nav>
         </div>
       )}
