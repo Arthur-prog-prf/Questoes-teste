@@ -12,7 +12,8 @@ import TaskManagementHub from './pages/task-management-hub';
 // --- Nossas Novas Importações ---
 import Login from 'auth/Login';
 import Register from 'auth/Register';
-import ForgotPassword from 'auth/ForgotPassword'; // <-- Adicione esta importação
+import ForgotPassword from 'auth/ForgotPassword';
+import UpdatePassword from 'auth/UpdatePassword'; // Importação da nova página
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from "./contexts/AuthContext";
 
@@ -25,7 +26,9 @@ const AppRoutes = () => {
       {/* Rotas Públicas */}
       <Route path="/login" element={user ? <Navigate to="/today-dashboard" replace /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/today-dashboard" replace /> : <Register />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} /> {/* <-- ADICIONE ESTA NOVA ROTA */}
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/update-password" element={<UpdatePassword />} /> {/* Nova rota para atualizar a senha */}
+
 
       {/* Rota Principal */}
       <Route 
