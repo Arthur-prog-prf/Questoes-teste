@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(false)
 
-  // Isolated async operations - never called from auth callbacks
   const profileOperations = {
     async load(userId) {
       if (!userId) return
@@ -38,15 +37,13 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Auth state handlers - PROTECTED from async modification
   const authStateHandlers = {
-    // This handler MUST remain synchronous - Supabase requirement
     onChange: (event, session) => {
       setUser(session?.user ?? null)
       setLoading(false)
       
       if (session?.user) {
-        profileOperations?.load(session?.user?.id) // Fire-and-forget
+        profileOperations?.load(session?.user?.id)
       } else {
         profileOperations?.clear()
       }
@@ -54,12 +51,10 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // Initial session check
     supabase?.auth?.getSession()?.then(({ data: { session } }) => {
       authStateHandlers?.onChange(null, session)
     })
 
-    // CRITICAL: This must remain synchronous
     const { data: { subscription } } = supabase?.auth?.onAuthStateChange(
       authStateHandlers?.onChange
     )
@@ -67,10 +62,8 @@ export const AuthProvider = ({ children }) => {
     return () => subscription?.unsubscribe()
   }, [])
 
-  // ===================== INÍCIO DA CORREÇÃO =====================
-
   // Auth methods
-  const signIn = async ({ email, password }) => { // Alterado para receber um objeto
+  const signIn = async ({ email, password }) => {
     try {
       const { data, error } = await supabase?.auth?.signInWithPassword({ email, password })
       return { data, error }
@@ -79,8 +72,7 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  // Função signUp não estava no arquivo, mas adicionando a versão corrigida
-  const signUp = async ({ email, password, options }) => { // Alterado para receber um objeto
+  const signUp = async ({ email, password, options }) => {
     try {
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -92,10 +84,7 @@ export const AuthProvider = ({ children }) => {
       return { error: { message: 'Network error. Please try again.' } };
     }
   }
-
-  // ====================== FIM DA CORREÇÃO =======================
-
-
+  
   const signOut = async () => {
     try {
       const { error } = await supabase?.auth?.signOut()
@@ -108,6 +97,23 @@ export const AuthProvider = ({ children }) => {
       return { error: { message: 'Network error. Please try again.' } }
     }
   }
+
+  // ===================== INÍCIO DA NOVA FUNÇÃO =====================
+  
+  const resetPasswordForEmail = async (email) => {
+    try {
+      // O redirectTo informa para qual página do seu site o usuário deve ser levado APÓS clicar no link do e-mail.
+      // window.location.origin pega a URL base do seu site (seja localhost ou o endereço na Netlify).
+      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/update-password`,
+      });
+      return { data, error };
+    } catch (error) {
+      return { error: { message: 'Network error. Please try again.' } };
+    }
+  };
+
+  // ====================== FIM DA NOVA FUNÇÃO =======================
 
   const updateProfile = async (updates) => {
     if (!user) return { error: { message: 'No user logged in' } }
@@ -127,9 +133,10 @@ export const AuthProvider = ({ children }) => {
     loading,
     profileLoading,
     signIn,
-    signUp, // Adicionando signUp ao contexto
+    signUp,
     signOut,
     updateProfile,
+    resetPasswordForEmail, // Adicionando a nova função ao contexto
     isAuthenticated: !!user
   }
 
