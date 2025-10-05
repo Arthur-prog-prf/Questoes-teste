@@ -1,181 +1,185 @@
 import React, { useState, useEffect } from 'react';
-import Icon from '../../components/AppIcon';
-import Button from '../../components/ui/Button';
 import Header from '../../components/ui/Header';
-import Sidebar from '../../components/ui/Sidebar';
+import Button from '../../components/ui/Button';
+import Icon from '../../components/AppIcon';
+import QuickActionsPanel from './components/QuickActionsPanel';
+import TaskSearchEngine from './components/TaskSearchEngine';
+import TaskLibrarySection from './components/TaskLibrarySection';
+import TaskHistoryViewer from './components/TaskHistoryViewer';
+import StudyOptimizationTools from './components/StudyOptimizationTools';
+import TaskBulkOperations from './components/TaskBulkOperations';
+import PlanningTipsWidget from './components/PlanningTipsWidget';
 
 const TaskManagementHub = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [activeTab, setActiveTab] = useState('library');
+  const [activeView, setActiveView] = useState('overview'); // 'overview', 'library', 'history', 'optimization'
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filterCriteria, setFilterCriteria] = useState({});
 
-  const tabOptions = [
-    { key: 'library', label: 'Biblioteca de Tarefas', icon: 'BookOpen' },
-    { key: 'actions', label: 'Ações Rápidas', icon: 'Zap' },
-    { key: 'optimization', label: 'Otimização de Estudos', icon: 'TrendingUp' },
-    { key: 'history', label: 'Histórico', icon: 'Clock' }
+  const handleTaskCreate = (taskData) => {
+    // Task creation logic
+    console.log('Creating task:', taskData);
+  };
+
+  const handleBulkOperation = (operation, tasks) => {
+    // Bulk operation logic
+    console.log('Bulk operation:', operation, tasks);
+  };
+
+  const handleTaskSelection = (tasks) => {
+    setSelectedTasks(tasks);
+  };
+
+  const handleTaskDelete = (taskId) => {
+    // Task deletion logic
+    console.log('Deleting task:', taskId);
+  };
+
+  const views = [
+    { key: 'overview', label: 'Visão Geral', icon: 'LayoutDashboard' },
+    { key: 'library', label: 'Biblioteca', icon: 'Library' },
+    { key: 'history', label: 'Histórico', icon: 'History' },
+    { key: 'optimization', label: 'Otimização', icon: 'Zap' }
   ];
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-screen bg-background">
       <Header />
-      <Sidebar 
-        isCollapsed={isSidebarCollapsed} 
-        onToggleCollapse={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-      />
-      <main className={`transition-all duration-300 ${isSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-60'} pt-16`}>
-        <div className="p-6">
-          {/* Header */}
-          <div className="bg-white border-b border-border shadow-subtle">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-6 gap-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0">
-                    <Icon name="Settings" size={24} color="white" />
-                  </div>
-                  <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
-                      Central de Gerenciamento de Tarefas
-                    </h1>
-                    <p className="text-text-secondary mt-1">
-                      Workspace avançado para organização, otimização e análise de estudos
-                    </p>
-                  </div>
-                </div>
+      <main className="pt-16">
+        <div className="p-6 max-w-7xl mx-auto">
+          {/* Page Header */}
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground mb-2">
+                Central de Gerenciamento de Tarefas
+              </h1>
+              <p className="text-text-secondary">
+                Gerencie, organize e otimize todas as suas tarefas de estudo em um só lugar
+              </p>
+            </div>
+            
+            {/* View Selector */}
+            <div className="flex items-center space-x-1 bg-muted rounded-lg p-1">
+              {views?.map((view) => (
+                <button
+                  key={view?.key}
+                  onClick={() => setActiveView(view?.key)}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    activeView === view?.key
+                      ? 'bg-white text-foreground shadow-sm'
+                      : 'text-text-secondary hover:text-foreground'
+                  }`}
+                >
+                  <Icon name={view?.icon} size={16} />
+                  <span className="hidden sm:inline">{view?.label}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
-                <div className="flex items-center space-x-3">
-                  <Button
-                    variant="outline"
-                    iconName="Plus"
-                    iconPosition="left"
-                  >
-                    Tarefa Rápida
-                  </Button>
-                  <Button
-                    variant="default"
-                    iconName="PlusCircle"
-                    iconPosition="left"
-                  >
-                    Tarefa Avançada
-                  </Button>
-                </div>
-              </div>
+          {/* Quick Actions Panel */}
+          <div className="mb-8">
+            <QuickActionsPanel 
+              onTaskCreate={handleTaskCreate}
+              onBulkOperation={handleBulkOperation}
+            />
+          </div>
 
-              {/* Navigation Tabs */}
-              <div className="flex items-center space-x-1 pb-4">
-                {tabOptions?.map((tab) => (
-                  <button
-                    key={tab?.key}
-                    onClick={() => setActiveTab(tab?.key)}
-                    className={`flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                      activeTab === tab?.key
-                        ? 'bg-primary text-white shadow-sm'
-                        : 'text-text-secondary hover:text-foreground hover:bg-muted'
-                    }`}
-                  >
-                    <Icon name={tab?.icon} size={16} />
-                    <span className="hidden sm:inline">{tab?.label}</span>
-                  </button>
-                ))}
+          {/* Search Engine */}
+          <div className="mb-8">
+            <TaskSearchEngine 
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              filterCriteria={filterCriteria}
+              onFilterChange={setFilterCriteria}
+            />
+          </div>
+
+          {/* Bulk Operations */}
+          {selectedTasks?.length > 0 && (
+            <div className="mb-6">
+              <TaskBulkOperations
+                selectedTasks={selectedTasks}
+                onClearSelection={() => setSelectedTasks([])}
+                onBulkOperation={handleBulkOperation}
+              />
+            </div>
+          )}
+
+          {/* Main Content Based on Active View */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="lg:col-span-3">
+              {activeView === 'overview' && (
+                <div className="space-y-8">
+                  <TaskLibrarySection 
+                    selectedTasks={selectedTasks}
+                    onTaskSelect={setSelectedTasks}
+                    onTaskSelection={handleTaskSelection}
+                    onTaskCreate={handleTaskCreate}
+                    onTaskDelete={handleTaskDelete}
+                  />
+                  <StudyOptimizationTools />
+                </div>
+              )}
+              
+              {activeView === 'library' && (
+                <TaskLibrarySection 
+                  selectedTasks={selectedTasks}
+                  onTaskSelect={setSelectedTasks}
+                  onTaskSelection={handleTaskSelection}
+                  onTaskCreate={handleTaskCreate}
+                  onTaskDelete={handleTaskDelete}
+                  fullView={true}
+                />
+              )}
+              
+              {activeView === 'history' && (
+                <TaskHistoryViewer />
+              )}
+              
+              {activeView === 'optimization' && (
+                <StudyOptimizationTools fullView={true} />
+              )}
+            </div>
+
+            {/* Tips Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="sticky top-8">
+                <PlanningTipsWidget activeView={activeView} />
               </div>
             </div>
           </div>
 
-          {/* Empty State */}
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="bg-white rounded-lg border border-border shadow-subtle">
-              <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                  <Icon name="Settings" size={32} color="var(--color-primary)" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground mb-2">
-                  Central de Tarefas Vazia
-                </h3>
-                <p className="text-text-secondary max-w-md mb-6">
-                  Comece criando suas primeiras tarefas para organizar seus estudos de forma avançada 
-                  com recursos de otimização e análise.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button 
-                    variant="default"
-                    iconName="Plus"
-                    iconPosition="left"
-                  >
-                    Criar Primeira Tarefa
-                  </Button>
-                  <Button 
-                    variant="outline"
-                    iconName="BookOpen"
-                    iconPosition="left"
-                    onClick={() => window.location.href = '/exam-syllabus-manager'}
-                  >
-                    Ver Matérias
-                  </Button>
-                </div>
+          {/* Empty State for First Time Users */}
+          <div className="mt-8 bg-white rounded-lg border border-border p-8 text-center">
+            <div className="max-w-md mx-auto">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Icon name="Settings" size={32} color="var(--color-primary)" />
               </div>
-            </div>
-
-            {/* Quick Stats - Empty State */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
-              <div className="bg-white rounded-lg border border-border p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-text-secondary">
-                    Total de Tarefas
-                  </h3>
-                  <Icon name="List" size={16} color="var(--color-text-secondary)" />
-                </div>
-                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-foreground">0</span>
-                </div>
-                <p className="text-sm text-text-secondary mt-2">
-                  Nenhuma tarefa criada ainda
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg border border-border p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-text-secondary">
-                    Tarefas Concluídas
-                  </h3>
-                  <Icon name="CheckCircle" size={16} color="var(--color-text-secondary)" />
-                </div>
-                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-foreground">0</span>
-                </div>
-                <p className="text-sm text-text-secondary mt-2">
-                  Conclua tarefas para ver seu progresso
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg border border-border p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-text-secondary">
-                    Horas Estudadas
-                  </h3>
-                  <Icon name="Clock" size={16} color="var(--color-text-secondary)" />
-                </div>
-                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-foreground">0</span>
-                  <span className="text-sm text-text-secondary ml-1">h</span>
-                </div>
-                <p className="text-sm text-text-secondary mt-2">
-                  Inicie seus estudos para acompanhar o tempo
-                </p>
-              </div>
-
-              <div className="bg-white rounded-lg border border-border p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-text-secondary">
-                    Precisão Média
-                  </h3>
-                  <Icon name="Target" size={16} color="var(--color-text-secondary)" />
-                </div>
-                <div className="flex items-baseline">
-                  <span className="text-3xl font-bold text-foreground">--</span>
-                  <span className="text-sm text-text-secondary ml-1">%</span>
-                </div>
-                <p className="text-sm text-text-secondary mt-2">
-                  Complete exercícios para ver sua precisão
-                </p>
+              <h3 className="text-lg font-semibold text-foreground mb-2">
+                Central de Controle dos seus Estudos
+              </h3>
+              <p className="text-text-secondary mb-6">
+                Use esta central para gerenciar todas as suas tarefas de estudo, 
+                otimizar seu cronograma e acompanhar seu progresso de forma centralizada.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <Button 
+                  variant="default"
+                  iconName="Plus"
+                  iconPosition="left"
+                  onClick={() => window.location.href = '/study-planner'}
+                >
+                  Ir para Planejador
+                </Button>
+                <Button 
+                  variant="outline"
+                  iconName="BookOpen"
+                  iconPosition="left"
+                  onClick={() => window.location.href = '/exam-syllabus-manager'}
+                >
+                  Ver Matérias
+                </Button>
               </div>
             </div>
           </div>
