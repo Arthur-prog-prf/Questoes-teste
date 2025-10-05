@@ -9,9 +9,10 @@ import StudyPlanner from './pages/study-planner';
 import ExamSyllabusManager from './pages/exam-syllabus-manager';
 import TaskManagementHub from './pages/task-management-hub';
 
-// --- Nossas Novas Importações (COM O CAMINHO CORRIGIDO) ---
+// --- Nossas Novas Importações ---
 import Login from 'auth/Login';
 import Register from 'auth/Register';
+import ForgotPassword from 'auth/ForgotPassword'; // <-- Adicione esta importação
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from "./contexts/AuthContext";
 
@@ -22,9 +23,9 @@ const AppRoutes = () => {
   return (
     <RouterRoutes>
       {/* Rotas Públicas */}
-      {/* Se o usuário tentar acessar /login já estando logado, ele é enviado para o dashboard */}
       <Route path="/login" element={user ? <Navigate to="/today-dashboard" replace /> : <Login />} />
       <Route path="/register" element={user ? <Navigate to="/today-dashboard" replace /> : <Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} /> {/* <-- ADICIONE ESTA NOVA ROTA */}
 
       {/* Rota Principal */}
       <Route 
@@ -70,7 +71,6 @@ const Routes = () => {
     <BrowserRouter>
       <ErrorBoundary>
         <ScrollToTop />
-        {/* O AuthContext precisa estar aqui para o AppRoutes funcionar */}
         <AppRoutes /> 
       </ErrorBoundary>
     </BrowserRouter>
