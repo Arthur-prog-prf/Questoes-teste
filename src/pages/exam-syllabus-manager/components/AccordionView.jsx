@@ -102,7 +102,7 @@ const AccordionView = ({
             {isExpanded && (
               <div className="border-t border-border">
                 <div className="p-4 space-y-4">
-                  {subject?.topics?.map((topic) => (
+                  {(subject?.topics || []).map((topic) => (
                     <div 
                       key={topic?.id} 
                       className="bg-muted rounded-lg p-4 border border-border"
