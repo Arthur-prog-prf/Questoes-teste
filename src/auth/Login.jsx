@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
@@ -11,6 +11,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // 🎯 Para pegar a página original
   const { signIn } = useAuth();
 
   const handleLogin = async (e) => {
@@ -39,7 +40,10 @@ const Login = () => {
         setError(error.message);
       } else {
         setPassword(''); // 🧹 Limpa a senha por segurança
-        navigate('/today-dashboard');
+        
+        // 🎯 Redireciona para a página original ou para o dashboard padrão
+        const from = location.state?.from?.pathname || '/today-dashboard';
+        navigate(from, { replace: true });
       }
     } catch (err) {
       // 🛡️ Captura erros inesperados
