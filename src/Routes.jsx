@@ -9,9 +9,9 @@ import StudyPlanner from './pages/study-planner';
 import ExamSyllabusManager from './pages/exam-syllabus-manager';
 import TaskManagementHub from './pages/task-management-hub';
 
-// --- Nossas Novas Importações ---
-import Login from './pages/auth/Login';
-import Register from './pages/auth/Register';
+// --- Nossas Novas Importações (COM O CAMINHO CORRIGIDO) ---
+import Login from 'auth/Login';
+import Register from 'auth/Register';
 import ProtectedRoute from './components/ProtectedRoute';
 import { useAuth } from "./contexts/AuthContext";
 
@@ -78,4 +78,3 @@ const Routes = () => {
 }
 
 export default Routes;
-
