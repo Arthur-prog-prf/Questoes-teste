@@ -8,6 +8,7 @@ import { useAuth } from 'contexts/AuthContext';
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState(''); // Estado para o novo campo
   const [fullName, setFullName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -19,19 +20,22 @@ const Register = () => {
     setError('');
     setSuccessMessage('');
 
-    // 🔒 VALIDAÇÃO 1: Campos obrigatórios
+    // --- Validação da confirmação de senha ---
+    if (password !== confirmPassword) {
+      setError('As senhas não coincidem');
+      return;
+    }
+
     if (!fullName.trim() || !email.trim() || !password) {
       setError('Preencha todos os campos');
       return;
     }
 
-    // 🔒 VALIDAÇÃO 2: Email válido
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Email inválido');
       return;
     }
-
-    // 🔒 VALIDAÇÃO 3: Senha forte
+    
     if (password.length < 6) {
       setError('A senha deve ter no mínimo 6 caracteres');
       return;
@@ -40,7 +44,6 @@ const Register = () => {
     setLoading(true);
 
     try {
-      // 📝 Tenta fazer o cadastro
       const { error } = await signUp({
         email,
         password,
@@ -55,16 +58,14 @@ const Register = () => {
         setError(error.message);
       } else {
         setSuccessMessage('Cadastro realizado com sucesso! Verifique seu e-mail para confirmar a conta antes de fazer o login.');
-        // 🧹 Limpa os campos após sucesso
         setEmail('');
         setPassword('');
+        setConfirmPassword(''); // Limpar o campo de confirmação
         setFullName('');
       }
     } catch (err) {
-      // 🛡️ Erro inesperado
       setError('Erro inesperado. Tente novamente.');
     } finally {
-      // ⏰ Sempre para o loading
       setLoading(false);
     }
   };
@@ -87,7 +88,7 @@ const Register = () => {
             value={fullName}
             onChange={(e) => {
               setFullName(e.target.value);
-              setError(''); // 🎯 Limpa erro ao digitar
+              setError('');
             }}
             placeholder="Seu nome completo"
             required
@@ -100,7 +101,7 @@ const Register = () => {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setError(''); // 🎯 Limpa erro ao digitar
+              setError('');
             }}
             placeholder="seu@email.com"
             required
@@ -113,9 +114,23 @@ const Register = () => {
             value={password}
             onChange={(e) => {
               setPassword(e.target.value);
-              setError(''); // 🎯 Limpa erro ao digitar
+              setError('');
             }}
             placeholder="Crie uma senha forte (mín. 6 caracteres)"
+            required
+            icon="Lock"
+          />
+
+          {/* --- NOVO CAMPO ADICIONADO AQUI --- */}
+          <Input
+            label="Confirme sua Senha"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError('');
+            }}
+            placeholder="Repita a senha"
             required
             icon="Lock"
           />
@@ -136,7 +151,7 @@ const Register = () => {
             type="submit" 
             fullWidth 
             loading={loading}
-            disabled={loading} // 🔐 Impede múltiplos cliques
+            disabled={loading}
           >
             {loading ? 'Cadastrando...' : 'Cadastrar'}
           </Button>
@@ -148,7 +163,7 @@ const Register = () => {
             to="/login" 
             className="font-semibold text-primary hover:underline"
           >
-            Faça login
+            Cadastre-se
           </Link>
         </p>
       </div>
