@@ -32,11 +32,13 @@ const AccordionView = ({
     { value: 'mastered', label: 'Dominado' }
   ];
 
-  const calculateSubjectProgress = (topics) => {
-    if (!topics?.length) return 0;
-    const masteredCount = topics?.filter(topic => topic?.status === 'mastered')?.length;
-    return Math.round((masteredCount / topics?.length) * 100);
-  };
+ const calculateSubjectProgress = (topics) => {
+    // Garante que estamos lidando com um array, mesmo que topics seja null ou undefined
+    const safeTopics = topics || []; 
+    if (safeTopics.length === 0) return 0;
+    const masteredCount = safeTopics.filter(topic => topic?.status === 'mastered')?.length;
+    return Math.round((masteredCount / safeTopics.length) * 100);
+};
 
   const formatLastStudied = (date) => {
     if (!date) return 'Nunca';
