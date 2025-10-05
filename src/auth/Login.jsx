@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-// --- CORREÇÃO AQUI ---
-// Caminhos absolutos a partir da pasta 'src/'
 import { useAuth } from 'contexts/AuthContext';
 import Button from 'components/ui/Button';
 import Input from 'components/ui/Input';
@@ -13,19 +11,17 @@ const Login = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // 🎯 Para pegar a página original
+  const location = useLocation();
   const { signIn } = useAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     
-    // 🔒 VALIDAÇÃO 1: Verifica se os campos estão preenchidos
     if (!email.trim() || !password) {
       setError('Preencha todos os campos');
       return;
     }
     
-    // 🔒 VALIDAÇÃO 2: Verifica se o email é válido
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError('Email inválido');
       return;
@@ -35,23 +31,18 @@ const Login = () => {
     setError('');
 
     try {
-      // 🔐 Tenta fazer login
       const { error } = await signIn({ email, password });
 
       if (error) {
         setError(error.message);
       } else {
-        setPassword(''); // 🧹 Limpa a senha por segurança
-        
-        // 🎯 Redireciona para a página original ou para o dashboard padrão
+        setPassword('');
         const from = location.state?.from?.pathname || '/today-dashboard';
         navigate(from, { replace: true });
       }
     } catch (err) {
-      // 🛡️ Captura erros inesperados
       setError('Erro inesperado. Tente novamente.');
     } finally {
-      // ⏰ Sempre para o loading, mesmo se der erro ou sucesso
       setLoading(false);
     }
   };
@@ -74,25 +65,33 @@ const Login = () => {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              setError(''); // 🎯 Limpa erro quando usuário digitar
+              setError('');
             }}
             placeholder="seu@email.com"
             required
             icon="Mail"
           />
           
-          <Input
-            label="Senha"
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              setError(''); // 🎯 Limpa erro quando usuário digitar
-            }}
-            placeholder="Sua senha"
-            required
-            icon="Lock"
-          />
+          <div> {/* Agrupador para senha e link */}
+            <Input
+              label="Senha"
+              type="password"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError('');
+              }}
+              placeholder="Sua senha"
+              required
+              icon="Lock"
+            />
+            {/* ADIÇÃO DO LINK "ESQUECEU A SENHA?" */}
+            <div className="text-right mt-2">
+              <Link to="/forgot-password" className="text-sm font-semibold text-primary hover:underline">
+                Esqueceu a senha?
+              </Link>
+            </div>
+          </div>
           
           {error && (
             <p className="text-red-500 text-sm text-center bg-red-50 p-3 rounded-lg">
@@ -104,7 +103,7 @@ const Login = () => {
             type="submit" 
             fullWidth 
             loading={loading}
-            disabled={loading} // 🔐 Impede múltiplos cliques
+            disabled={loading}
           >
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
