@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import Button from '../../../components/ui/Button';
 import Input from '../../../components/ui/Input';
 import Icon from '../../../components/AppIcon';
+import { subjectService } from '../../../services/subjectService';
 
 const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] }) => {
   const [subjectName, setSubjectName] = useState('');
   const [selectedExistingSubject, setSelectedExistingSubject] = useState('');
   const [topics, setTopics] = useState(['']);
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Extract existing subject names and topics
   const existingSubjectNames = existingSubjects?.map(subject => subject?.name) || [];
@@ -42,7 +44,7 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e?.preventDefault();
     const newErrors = {};
 
@@ -50,24 +52,46 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
       newErrors.subjectName = 'Nome da matéria é obrigatório';
     }
 
-    const validTopics = topics?.filter(topic => topic?.trim());
-
     if (Object.keys(newErrors)?.length > 0) {
       setErrors(newErrors);
       return;
     }
 
-    onAddSubject({
-      name: subjectName?.trim(),
-      topics: validTopics?.map(topic => topic?.trim())
-    });
+    setIsSubmitting(true);
+    
+    try {
+      const validTopics = topics?.filter(topic => topic?.trim());
+      
+      // Call the subject service to create the subject
+      const result = await subjectService?.createSubject({
+        name: subjectName?.trim(),
+        topics: validTopics
+      });
 
-    // Reset form
-    setSubjectName('');
-    setSelectedExistingSubject('');
-    setTopics(['']);
-    setErrors({});
-    onClose();
+      if (result?.error) {
+        // Show user-friendly error message
+        setErrors({ submit: result?.error });
+        return;
+      }
+
+      // Success - call parent handler
+      if (typeof onAddSubject === 'function') {
+        onAddSubject(result?.data);
+      }
+
+      // Reset form and close modal
+      setSubjectName('');
+      setSelectedExistingSubject('');
+      setTopics(['']);
+      setErrors({});
+      onClose();
+    } catch (error) {
+      setErrors({ 
+        submit: 'Something went wrong while creating the subject. Please try again.' 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleCancel = () => {
@@ -90,12 +114,32 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
           <button
             onClick={handleCancel}
             className="p-2 hover:bg-muted rounded-lg transition-colors duration-150"
+            disabled={isSubmitting}
           >
             <Icon name="X" size={20} />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {/* Display submission error */}
+          {errors?.submit && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+              <div className="flex items-center">
+                <Icon name="AlertCircle" size={16} className="text-red-600 mr-2" />
+                <div>
+                  <p className="text-sm text-red-800">{errors?.submit}</p>
+                  <button 
+                    type="button"
+                    onClick={() => navigator.clipboard?.writeText(errors?.submit)}
+                    className="text-xs text-red-600 hover:text-red-800 underline mt-1"
+                  >
+                    Copy error message
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Existing Subjects Section */}
           {existingSubjectNames?.length > 0 && (
             <div>
@@ -108,10 +152,11 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
                     key={index}
                     type="button"
                     onClick={() => handleSelectExistingSubject(name)}
+                    disabled={isSubmitting}
                     className={`p-3 text-left border rounded-lg transition-all duration-150 ${
                       selectedExistingSubject === name
                         ? 'border-primary bg-primary/10 text-primary' :'border-border hover:border-primary/50 hover:bg-muted/50'
-                    }`}
+                    } ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                   >
                     <span className="text-sm font-medium">{name}</span>
                   </button>
@@ -133,8 +178,13 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
               onChange={(e) => {
                 setSubjectName(e?.target?.value);
                 setSelectedExistingSubject('');
+                // Clear submit error when user starts typing
+                if (errors?.submit) {
+                  setErrors(prev => ({ ...prev, submit: null }));
+                }
               }}
               error={errors?.subjectName}
+              disabled={isSubmitting}
               required
             />
           </div>
@@ -152,6 +202,7 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
                 iconName="Plus"
                 iconPosition="left"
                 iconSize={14}
+                disabled={isSubmitting}
               >
                 Adicionar Tópico
               </Button>
@@ -174,7 +225,8 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
                           setTopics([...topics, topic]);
                         }
                       }}
-                      className="px-2 py-1 text-xs bg-muted hover:bg-primary/10 hover:text-primary rounded-full border border-border transition-colors duration-150"
+                      disabled={isSubmitting}
+                      className="px-2 py-1 text-xs bg-muted hover:bg-primary/10 hover:text-primary rounded-full border border-border transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       + {topic}
                     </button>
@@ -193,6 +245,7 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
                       value={topic}
                       onChange={(e) => handleTopicChange(index, e?.target?.value)}
                       list={`topics-list-${index}`}
+                      disabled={isSubmitting}
                     />
                     <datalist id={`topics-list-${index}`}>
                       {existingTopics?.filter(t => 
@@ -210,6 +263,7 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
                       onClick={() => handleRemoveTopic(index)}
                       iconName="Trash2"
                       iconSize={14}
+                      disabled={isSubmitting}
                     />
                   )}
                 </div>
@@ -222,17 +276,20 @@ const AddSubjectModal = ({ isOpen, onClose, onAddSubject, existingSubjects = [] 
               type="button"
               variant="outline"
               onClick={handleCancel}
+              disabled={isSubmitting}
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               variant="default"
-              iconName="Plus"
+              iconName={isSubmitting ? "Loader2" : "Plus"}
               iconPosition="left"
               iconSize={16}
+              disabled={isSubmitting || !subjectName?.trim()}
+              className={isSubmitting ? "animate-spin" : ""}
             >
-              Adicionar Matéria
+              {isSubmitting ? 'Criando...' : 'Adicionar Matéria'}
             </Button>
           </div>
         </form>
