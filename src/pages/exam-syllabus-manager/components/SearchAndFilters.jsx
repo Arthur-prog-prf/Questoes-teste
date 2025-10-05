@@ -31,45 +31,38 @@ const SearchAndFilters = ({
 
   return (
     <div className="bg-white rounded-lg border border-border p-4 mb-6">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="md:col-span-2">
-          <Input
-            type="search"
-            placeholder="Buscar tópicos..."
-            value={searchTerm}
-            onChange={(e) => onSearchChange(e?.target?.value)}
-            className="w-full"
-          />
-        </div>
-        <div>
-          <Select
-            placeholder="Filtrar por status"
-            options={statusOptions}
-            value={statusFilter}
-            onChange={onStatusFilterChange}
-          />
-        </div>
-        <div className="flex items-end gap-2">
-          <div className="flex-1">
-            <Select
-              placeholder="Filtrar por matéria"
-              options={subjectOptions}
-              value={subjectFilter}
-              onChange={onSubjectFilterChange}
-            />
-          </div>
-          <Button
-            variant="outline"
-            size="default"
-            onClick={onClearFilters}
-            iconName="X"
-            iconSize={16}
-          >
-            Limpar
-          </Button>
-        </div>
-      </div>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="sm:col-span-2">
+      <Input
+        type="search"
+        placeholder="Buscar tópicos..."
+        value={searchTerm}
+        onChange={(e) => onSearchChange(e?.target?.value)}
+        className="w-full"
+      />
     </div>
+    <Select
+      placeholder="Filtrar por status"
+      options={statusOptions}
+      value={statusFilter}
+      onChange={onStatusFilterChange}
+    />
+    <div className="flex items-end space-x-2">
+      <Select
+        placeholder="Filtrar por matéria"
+        options={subjectOptions}
+        value={subjectFilter}
+        onChange={onSubjectFilterChange}
+      />
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={onClearFilters}
+        iconName="X"
+      />
+    </div>
+  </div>
+</div>
   );
 };
 
