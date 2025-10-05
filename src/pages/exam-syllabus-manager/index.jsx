@@ -17,6 +17,7 @@ const ExamSyllabusManager = () => {
   const [viewMode, setViewMode] = useState('accordion'); // 'accordion' or 'table'
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [subjectFilter, setSubjectFilter] = useState(''); // <-- 1. ADICIONAR ESTE NOVO ESTADO
   const [selectedSubjects, setSelectedSubjects] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isErrorNotebookOpen, setIsErrorNotebookOpen] = useState(false);
@@ -59,7 +60,7 @@ const ExamSyllabusManager = () => {
         setSubjects(prev => [newSubjectData, ...prev]);
         setIsAddModalOpen(false);
       }
-    } catch (err) {
+    } catch (err) => {
       console.error('Error adding subject:', err);
       // The error handling is done in the modal
     }
@@ -204,15 +205,19 @@ const ExamSyllabusManager = () => {
 
           {/* Controls Row */}
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+            {/* --- 2. CORRIGIR AS PROPS AQUI --- */}
             <SearchAndFilters
               searchTerm={searchQuery}
               onSearchChange={setSearchQuery}
-              subjectFilter={statusFilter}
+              statusFilter={statusFilter}
               onStatusFilterChange={setStatusFilter}
+              subjectFilter={subjectFilter}
+              onSubjectFilterChange={setSubjectFilter}
               subjects={subjects}
               onClearFilters={() => {
                 setSearchQuery('');
                 setStatusFilter('all');
+                setSubjectFilter(''); // Limpar o novo estado também
               }}
             />
             
