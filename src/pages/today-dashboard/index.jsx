@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/ui/Header';
-import Sidebar from '../../components/ui/Sidebar';
 import Button from '../../components/ui/Button';
 import Icon from '../../components/AppIcon';
 
 const TodayDashboard = () => {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
@@ -15,10 +13,6 @@ const TodayDashboard = () => {
 
     return () => clearInterval(timer);
   }, []);
-
-  const handleToggleSidebar = () => {
-    setSidebarCollapsed(!sidebarCollapsed);
-  };
 
   const formatDate = (date) => {
     return date?.toLocaleDateString('pt-BR', {
@@ -41,15 +35,8 @@ const TodayDashboard = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <Header />
-      {/* Sidebar */}
-      <Sidebar 
-        isCollapsed={sidebarCollapsed} 
-        onToggleCollapse={handleToggleSidebar}
-      />
       {/* Main Content */}
-      <main className={`transition-all duration-300 pt-16 ${
-        sidebarCollapsed ? 'lg:ml-16' : 'lg:ml-60'
-      }`}>
+      <main className="pt-16">
         <div className="p-6 max-w-7xl mx-auto">
           {/* Page Header */}
           <div className="mb-8">
