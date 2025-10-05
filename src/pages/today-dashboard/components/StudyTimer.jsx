@@ -5,7 +5,7 @@ import Button from '../../../components/ui/Button';
 const StudyTimer = () => {
   const [isActive, setIsActive] = useState(false);
   const [time, setTime] = useState(0);
-  const [currentSubject, setCurrentSubject] = useState('');
+  const [currentSubject, setCurrentSubject] = useState(''); // Start with empty subject
   const [sessionStartTime, setSessionStartTime] = useState(null);
 
   const subjects = [
@@ -71,7 +71,6 @@ const StudyTimer = () => {
     setCurrentSubject(subject);
   };
 
-  const canStart = currentSubject && !isActive;
   const timerDisplay = time > 0 || isActive ? formatTime(time) : '00:00';
 
   return (
@@ -142,7 +141,7 @@ const StudyTimer = () => {
           iconName={isActive ? "Pause" : "Play"}
           iconPosition="left"
           className="min-w-32"
-          disabled={!currentSubject && time === 0}
+          disabled={!currentSubject}
         >
           {isActive ? 'Pausar' : time > 0 ? 'Continuar' : 'Iniciar'}
         </Button>
