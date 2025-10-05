@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Button from '../../../components/ui/Button';
 
-const WeeklyView = ({ 
+const WeeklyView = ({
   scheduledTasks,
-  onTaskMove, 
-  onTaskEdit, 
-  onTaskDelete, 
-  selectedWeek, 
+  onTaskMove,
+  onTaskEdit,
+  onTaskDelete,
+  selectedWeek,
   onWeekChange,
   onTimeSlotClick,
   onTaskUpdate
@@ -95,6 +95,27 @@ const WeeklyView = ({
     return hours * 60 + (minutes || 0);
   };
 
+  // Helper function to check for task overlaps
+  const isOverlap = (dayIndex, startTime, endTime) => {
+    const targetDate = getDateForDay(dayIndex);
+    const dateStr = targetDate?.toISOString()?.split('T')?.[0];
+
+    const newStartMinutes = parseTimeToMinutes(startTime);
+    const newEndMinutes = parseTimeToMinutes(endTime);
+
+    return scheduledTasks.some(task => {
+      // Don't compare the task against itself
+      if (task.id === draggedTask?.id || task.scheduledDate !== dateStr) {
+        return false;
+      }
+      const existingStartMinutes = parseTimeToMinutes(task.startTime);
+      const existingEndMinutes = parseTimeToMinutes(task.endTime);
+
+      // Check for overlap: (StartA < EndB) and (EndA > StartB)
+      return newStartMinutes < existingEndMinutes && newEndMinutes > existingStartMinutes;
+    });
+  };
+
   // Enhanced drag handlers with full synchronization
   const handleDragStart = (e, task) => {
     setDraggedTask(task);
@@ -113,6 +134,7 @@ const WeeklyView = ({
 
   const handleDrop = (e, dayIndex, timeSlot) => {
     e?.preventDefault();
+    
     if (draggedTask) {
       const targetDate = getDateForDay(dayIndex);
       
@@ -120,10 +142,31 @@ const WeeklyView = ({
       const startTimeMinutes = parseTimeToMinutes(timeSlot);
       const durationMinutes = (draggedTask?.duration || 1) * 60;
       const endTimeMinutes = startTimeMinutes + durationMinutes;
+
+      // Prevent dropping tasks past midnight in this view for simplicity
+      if (endTimeMinutes > 24 * 60) {
+        alert("A tarefa não pode terminar depois da meia-noite na visualização semanal.");
+        setDraggedTask(null);
+        setDragOverSlot(null);
+        return;
+      }
+
       const endHour = Math.floor(endTimeMinutes / 60);
       const endMinute = endTimeMinutes % 60;
       const newEndTime = `${String(endHour)?.padStart(2, '0')}:${String(endMinute)?.padStart(2, '0')}`;
       
+      // *** MODIFIED: ASK USER FOR CONFIRMATION ON OVERLAP ***
+      if (isOverlap(dayIndex, timeSlot, newEndTime)) {
+        const allowOverlap = window.confirm(
+          "Já existe uma tarefa agendada neste horário. Deseja sobrepor as tarefas mesmo assim?"
+        );
+        if (!allowOverlap) {
+          setDraggedTask(null);
+          setDragOverSlot(null);
+          return; // Abort the operation if the user cancels
+        }
+      }
+
       // Enhanced task update with full synchronization
       const updatedTask = {
         ...draggedTask,
@@ -137,10 +180,10 @@ const WeeklyView = ({
       } else if (onTaskMove) {
         onTaskMove(draggedTask?.id, { startTime: timeSlot, endTime: newEndTime, targetDate });
       }
-      
-      setDraggedTask(null);
-      setDragOverSlot(null);
     }
+    
+    setDraggedTask(null);
+    setDragOverSlot(null);
   };
 
   const getWeekDates = () => {
