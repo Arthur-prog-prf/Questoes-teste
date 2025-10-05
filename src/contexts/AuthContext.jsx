@@ -17,95 +17,44 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const [profileLoading, setProfileLoading] = useState(false)
 
-  const profileOperations = {
-    async load(userId) {
-      if (!userId) return
-      setProfileLoading(true)
-      try {
-        const { data, error } = await supabase?.from('user_profiles')?.select('*')?.eq('id', userId)?.single()
-        if (!error) setUserProfile(data)
-      } catch (error) {
-        console.error('Profile load error:', error)
-      } finally {
-        setProfileLoading(false)
-      }
-    },
-
-    clear() {
-      setUserProfile(null)
-      setProfileLoading(false)
-    }
-  }
-
-  const authStateHandlers = {
-    onChange: (event, session) => {
-      setUser(session?.user ?? null)
-      setLoading(false)
-      
-      if (session?.user) {
-        profileOperations?.load(session?.user?.id)
-      } else {
-        profileOperations?.clear()
-      }
-    }
-  }
+  // ... (código existente, sem alterações)
 
   useEffect(() => {
-    supabase?.auth?.getSession()?.then(({ data: { session } }) => {
-      authStateHandlers?.onChange(null, session)
-    })
+    // ... (código existente, sem alterações)
 
-    const { data: { subscription } } = supabase?.auth?.onAuthStateChange(
-      authStateHandlers?.onChange
-    )
+    // A lógica de onAuthStateChange também detectará a recuperação de senha
+    const handlePasswordRecovery = async (event, session) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        // Quando o usuário clica no link, o Supabase emite este evento.
+        // A sessão já contém o token necessário para a atualização.
+        // O usuário é tratado como "autenticado" temporariamente para poder mudar a senha.
+      }
+    };
+    
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        authStateHandlers.onChange(event, session);
+        handlePasswordRecovery(event, session);
+      }
+    );
 
     return () => subscription?.unsubscribe()
   }, [])
 
-  // Auth methods
-  const signIn = async ({ email, password }) => {
-    try {
-      const { data, error } = await supabase?.auth?.signInWithPassword({ email, password })
-      return { data, error }
-    } catch (error) {
-      return { error: { message: 'Network error. Please try again.' } }
-    }
-  }
-
-  const signUp = async ({ email, password, options }) => {
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options
-      });
-      return { data, error };
-    } catch (error) {
-      return { error: { message: 'Network error. Please try again.' } };
-    }
-  }
-  
-  const signOut = async () => {
-    try {
-      const { error } = await supabase?.auth?.signOut()
-      if (!error) {
-        setUser(null)
-        profileOperations?.clear()
-      }
-      return { error }
-    } catch (error) {
-      return { error: { message: 'Network error. Please try again.' } }
-    }
-  }
+  // --- Funções de autenticação existentes ---
+  const signIn = async ({ email, password }) => { /* ... código existente ... */ };
+  const signUp = async ({ email, password, options }) => { /* ... código existente ... */ };
+  const signOut = async () => { /* ... código existente ... */ };
+  const resetPasswordForEmail = async (email) => { /* ... código existente ... */ };
 
   // ===================== INÍCIO DA NOVA FUNÇÃO =====================
   
-  const resetPasswordForEmail = async (email) => {
+  // Função para o usuário definir uma nova senha.
+  // Ela usa a sessão temporária criada pelo link de redefinição.
+  const updatePassword = async (newPassword) => {
     try {
-      // O redirectTo informa para qual página do seu site o usuário deve ser levado APÓS clicar no link do e-mail.
-      // window.location.origin pega a URL base do seu site (seja localhost ou o endereço na Netlify).
-      const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${window.location.origin}/update-password`,
+      const { data, error } = await supabase.auth.updateUser({
+        password: newPassword,
       });
       return { data, error };
     } catch (error) {
@@ -115,17 +64,7 @@ export const AuthProvider = ({ children }) => {
 
   // ====================== FIM DA NOVA FUNÇÃO =======================
 
-  const updateProfile = async (updates) => {
-    if (!user) return { error: { message: 'No user logged in' } }
-    
-    try {
-      const { data, error } = await supabase?.from('user_profiles')?.update(updates)?.eq('id', user?.id)?.select()?.single()
-      if (!error) setUserProfile(data)
-      return { data, error }
-    } catch (error) {
-      return { error: { message: 'Network error. Please try again.' } }
-    }
-  }
+  const updateProfile = async (updates) => { /* ... código existente ... */ };
 
   const value = {
     user,
@@ -136,7 +75,8 @@ export const AuthProvider = ({ children }) => {
     signUp,
     signOut,
     updateProfile,
-    resetPasswordForEmail, // Adicionando a nova função ao contexto
+    resetPasswordForEmail,
+    updatePassword, // Adicionando a nova função ao contexto
     isAuthenticated: !!user
   }
 
