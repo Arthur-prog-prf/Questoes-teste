@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Icon from '../AppIcon';
-import { useAuth } from 'contexts/AuthContext'; // 1. Importar o useAuth
+import { useAuth } from 'contexts/AuthContext'; // 1. Importar o hook de autenticação
 
 const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   
-  // 2. Obter o usuário e a função de signOut do contexto
+  // 2. Obter o status do usuário e a função de logout
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
 
@@ -23,15 +23,15 @@ const Header = () => {
   const isActivePath = (path) => location?.pathname === path;
 
   const handleNavigation = (path) => {
-    // Usar navigate para uma navegação mais fluida, sem recarregar a página
+    // Usando o useNavigate para uma navegação mais rápida (SPA)
     navigate(path);
     setIsMenuOpen(false);
   };
 
-  // 3. Criar a função de logout
+  // 3. Função para executar o logout e redirecionar
   const handleLogout = async () => {
     await signOut();
-    navigate('/login'); // Redirecionar para a página de login após o logout
+    navigate('/login'); // Redireciona para a tela de login
   };
 
   return (
@@ -66,7 +66,7 @@ const Header = () => {
             </button>
           ))}
           
-          {/* 4. Adicionar o botão de Sair se o usuário estiver logado */}
+          {/* 4. Renderiza o botão de Sair apenas se o usuário estiver logado */}
           {user && (
             <button
               onClick={handleLogout}
