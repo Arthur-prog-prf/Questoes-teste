@@ -67,8 +67,10 @@ export const AuthProvider = ({ children }) => {
     return () => subscription?.unsubscribe()
   }, [])
 
+  // ===================== INÍCIO DA CORREÇÃO =====================
+
   // Auth methods
-  const signIn = async (email, password) => {
+  const signIn = async ({ email, password }) => { // Alterado para receber um objeto
     try {
       const { data, error } = await supabase?.auth?.signInWithPassword({ email, password })
       return { data, error }
@@ -76,6 +78,23 @@ export const AuthProvider = ({ children }) => {
       return { error: { message: 'Network error. Please try again.' } }
     }
   }
+
+  // Função signUp não estava no arquivo, mas adicionando a versão corrigida
+  const signUp = async ({ email, password, options }) => { // Alterado para receber um objeto
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options
+      });
+      return { data, error };
+    } catch (error) {
+      return { error: { message: 'Network error. Please try again.' } };
+    }
+  }
+
+  // ====================== FIM DA CORREÇÃO =======================
+
 
   const signOut = async () => {
     try {
@@ -108,6 +127,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     profileLoading,
     signIn,
+    signUp, // Adicionando signUp ao contexto
     signOut,
     updateProfile,
     isAuthenticated: !!user
