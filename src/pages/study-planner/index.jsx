@@ -9,13 +9,13 @@ import Icon from '../../components/AppIcon';
 import { subjectService } from '../../services/subjectService';
 import { taskService } from '../../services/taskService';
 import { useAuth } from '../../contexts/AuthContext';
+import TaskCreationModal from './components/TaskCreationModal'; // 1. IMPORTAR O NOVO MODAL
 
 const StudyPlanner = () => {
   const { user } = useAuth();
   const [currentView, setCurrentView] = useState('daily');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
-  // Supabase integration - replace mock data
+
   const [scheduledTasks, setScheduledTasks] = useState([]);
   const [availableTasks, setAvailableTasks] = useState([]);
   const [availableSubjects, setAvailableSubjects] = useState([]);
@@ -27,12 +27,10 @@ const StudyPlanner = () => {
     { key: 'weekly', label: 'Visão Semanal', icon: 'CalendarDays' }
   ];
 
-  // Load data on component mount and when user changes
   useEffect(() => {
     if (user) {
       loadInitialData();
     } else {
-      // Clear data when user logs out
       setScheduledTasks([]);
       setAvailableTasks([]);
       setAvailableSubjects([]);
@@ -45,14 +43,12 @@ const StudyPlanner = () => {
       setLoading(true);
       setError(null);
 
-      // Load subjects and tasks in parallel
       const [subjectsResult, tasksResult, unscheduledTasksResult] = await Promise.all([
         subjectService?.getSubjects(),
         user ? taskService?.getUserTasks(user?.id) : { data: [], error: null },
         user ? taskService?.getUnscheduledTasks(user?.id) : { data: [], error: null }
       ]);
 
-      // Handle subjects
       if (subjectsResult?.error) {
         console.warn('Failed to load subjects:', subjectsResult?.error);
         setAvailableSubjects([]);
@@ -60,17 +56,14 @@ const StudyPlanner = () => {
         setAvailableSubjects(subjectsResult?.data || []);
       }
 
-      // Handle scheduled tasks
       if (tasksResult?.error) {
         console.warn('Failed to load tasks:', tasksResult?.error);
         setScheduledTasks([]);
       } else {
-        // Filter scheduled tasks (have scheduled_date)
         const scheduled = (tasksResult?.data || [])?.filter(task => task?.scheduled_date);
         setScheduledTasks(scheduled);
       }
-
-      // Handle unscheduled tasks
+      
       if (unscheduledTasksResult?.error) {
         console.warn('Failed to load unscheduled tasks:', unscheduledTasksResult?.error);
         setAvailableTasks([]);
@@ -86,10 +79,12 @@ const StudyPlanner = () => {
     }
   };
 
-  // Enhanced task creation handler for time slot clicks with comprehensive modal
+  const [isTaskCreationModalOpen, setIsTaskCreationModalOpen] = useState(false);
+  const [taskCreationData, setTaskCreationData] = useState(null);
+  
+  // 2. A LÓGICA INTERNA DESTA FUNÇÃO FOI SIMPLIFICADA
   const handleCreateTaskInTimeSlot = (timeSlot, date, dayIndex) => {
     const selectedHour = parseInt(timeSlot?.split(':')?.[0]);
-    setIsTaskCreationModalOpen(true);
     setTaskCreationData({
       timeSlot,
       selectedHour,
@@ -97,36 +92,14 @@ const StudyPlanner = () => {
       dayIndex,
       duration: 1
     });
-    // Set default times based on clicked slot
-    setNewTaskForm(prev => ({
-      ...prev,
-      subject: '', // Ensure subject is reset for new tasks
-      topic: '', // Ensure topic is reset for new tasks
-      customStartTime: timeSlot, // Default to clicked time slot
-      customEndTime: `${String(selectedHour + 1)?.padStart(2, '0')}:00` // Default to next hour
-    }));
+    setIsTaskCreationModalOpen(true);
   };
-
-  const [isTaskCreationModalOpen, setIsTaskCreationModalOpen] = useState(false);
-  const [taskCreationData, setTaskCreationData] = useState(null);
-  const [newTaskForm, setNewTaskForm] = useState({
-    subject: '',
-    topic: '',
-    duration: 1,
-    priority: 'media',
-    description: '',
-    taskDate: '',
-    customStartTime: '',
-    customEndTime: ''
-  });
 
   const handleAddTask = (newTask) => {
     if (newTask) {
-      // Add to unscheduled tasks if it doesn't have a scheduled date
       if (!newTask?.scheduled_date) {
         setAvailableTasks(prev => [newTask, ...prev]);
       } else {
-        // Add to scheduled tasks if it has a scheduled date
         setScheduledTasks(prev => [newTask, ...prev]);
       }
     }
@@ -139,17 +112,14 @@ const StudyPlanner = () => {
       const scheduleData = {
         date: newDate?.toISOString()?.split('T')?.[0],
         startTime: newTimeSlot,
-        endTime: newTimeSlot // This should be calculated based on duration
+        endTime: newTimeSlot 
       };
 
       const result = await taskService?.scheduleTask(taskId, scheduleData, user?.id);
       if (result?.data) {
-        // Update local state
         setScheduledTasks(prev => prev?.map(task => 
           task?.id === taskId ? result?.data : task
         ));
-        
-        // Remove from unscheduled if it was there
         setAvailableTasks(prev => prev?.filter(task => task?.id !== taskId));
       }
     } catch (error) {
@@ -158,7 +128,6 @@ const StudyPlanner = () => {
   };
 
   const handleTaskEdit = (taskId, updatedTask) => {
-    // Update in the appropriate state
     setScheduledTasks(prev => prev?.map(task => 
       task?.id === taskId ? { ...task, ...updatedTask } : task
     ));
@@ -168,7 +137,6 @@ const StudyPlanner = () => {
   };
 
   const handleTaskDelete = (taskId) => {
-    // Remove from both scheduled and unscheduled tasks
     setScheduledTasks(prev => prev?.filter(task => task?.id !== taskId));
     setAvailableTasks(prev => prev?.filter(task => task?.id !== taskId));
   };
@@ -184,10 +152,8 @@ const StudyPlanner = () => {
   };
 
   const handleTaskSchedule = (task, dateTime) => {
-    // Remove from unscheduled
     setAvailableTasks(prev => prev?.filter(t => t?.id !== task?.id));
     
-    // Add to scheduled with updated information
     const scheduledTask = {
       ...task,
       scheduled_date: dateTime?.toISOString()?.split('T')?.[0],
@@ -199,7 +165,6 @@ const StudyPlanner = () => {
     setScheduledTasks(prev => [...prev, scheduledTask]);
   };
 
-  // Show loading state
   if (loading) {
     return (
       <div className="min-h-screen bg-surface">
@@ -218,7 +183,6 @@ const StudyPlanner = () => {
     );
   }
 
-  // Show error state
   if (error) {
     return (
       <div className="min-h-screen bg-surface">
@@ -380,6 +344,17 @@ const StudyPlanner = () => {
                 </div>
               </div>
             </div>
+          )}
+
+          {/* 3. RENDERIZAÇÃO CONDICIONAL DO MODAL */}
+          {isTaskCreationModalOpen && (
+            <TaskCreationModal
+              isOpen={isTaskCreationModalOpen}
+              onClose={() => setIsTaskCreationModalOpen(false)}
+              initialData={taskCreationData}
+              availableSubjects={availableSubjects}
+              onTaskCreated={handleAddTask}
+            />
           )}
         </div>
       </main>
