@@ -7,7 +7,7 @@ on:
     # Roda todos os dias às 8h da manhã (no fuso horário do servidor do GitHub, UTC)
     # Você pode ajustar o horário conforme sua preferência.
     # O formato é: minuto hora dia(mês) mês dia(semana)
-    - cron: '0 8 * * *'
+    - cron: '0 */8 * * *'
 
 jobs:
   keep-alive-query:
