@@ -1,0 +1,22 @@
+# .github/workflows/supabase-keep-alive.yml
+
+name: Supabase Keep Alive
+
+on:
+  schedule:
+    # Roda todos os dias às 8h da manhã (no fuso horário do servidor do GitHub, UTC)
+    # Você pode ajustar o horário conforme sua preferência.
+    # O formato é: minuto hora dia(mês) mês dia(semana)
+    - cron: '0 8 * * *'
+
+jobs:
+  keep-alive-query:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Acessa uma tabela do Supabase para manter o projeto ativo
+        run: |
+          curl -X GET \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/subjects?select=*&limit=1" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
